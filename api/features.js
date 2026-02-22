@@ -2,6 +2,7 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 const FormData = require('form-data');
+const ws = require('ws');
 
 // --- DATABASE---
 const jjcosplayVideoUrls = [ 
@@ -552,6 +553,53 @@ const handleDeepImg = async (prompt, style = 'realistic') => {
     }
 };
 
+const handleLive3D = async (prompt, style = 'Anime') => {
+    return new Promise((resolve, reject) => {
+        try {
+            const session_hash = Math.random().toString(36).substring(2);
+            const socket = new ws('wss://app.yimeta.ai/ai-art-generator/queue/join');
+            
+            // Timeout agar tidak gantung di Vercel (Max 60 detik)
+            const timer = setTimeout(() => {
+                socket.close();
+                reject(new Error('Live3D Timeout!'));
+            }, 60000);
+
+            socket.on('message', (data) => {
+                const d = JSON.parse(data.toString('utf8'));
+                if (d.msg === 'send_hash') {
+                    socket.send(JSON.stringify({ fn_index: 31, session_hash }));
+                } else if (d.msg === 'send_data') {
+                    socket.send(JSON.stringify({
+                        fn_index: 31,
+                        session_hash,
+                        data: [style, prompt, '', 7, ''] // Negative prompt dikosongkan/default
+                    }));
+                } else if (d.msg === 'process_completed') {
+                    clearTimeout(timer);
+                    socket.close();
+                    if (d.output?.data?.[0]?.[0]?.name) {
+                        resolve({
+                            status: "success",
+                            author: "IyuszTempest",
+                            result: d.output.data[0][0].name // URL Gambar
+                        });
+                    } else {
+                        reject(new Error('Data output tidak valid'));
+                    }
+                }
+            });
+
+            socket.on('error', (err) => {
+                clearTimeout(timer);
+                reject(err);
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
 // ==========================================
 // KATEGORI FUN
 // ==========================================
@@ -647,5 +695,6 @@ module.exports = {
     handleCreatePrompt,
     handleCreart,
     handleAiLabs: aiLabs.generate,
-    handleDeepImg
+    handleDeepImg,
+    handleLive3D
 };
