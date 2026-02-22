@@ -3,6 +3,7 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const FormData = require('form-data');
 const ws = require('ws');
+const { Readable } = require('stream');
 
 // --- DATABASE---
 const jjcosplayVideoUrls = [ 
@@ -371,6 +372,15 @@ async function translateToEn(text) {
     } catch { return text; }
 }
 
+// --- Helper Pixnova ---
+const getBaseHeaders = () => ({
+    'origin': 'https://pixnova.ai',
+    'referer': 'https://pixnova.ai/',
+    'x-code': '1752930995556',
+    'x-guide': 'SjwMWX+LcTqkoPt48PIOgZzt3eQ93zxCGvzs1VpdikRR9b9+HvKM0Qiceq6Zusjrv8bUEtDGZdVqjQf/bdOXBb0vEaUUDRZ29EXYW0kt047grMMceXzd3zppZoHZj9DeXZOTGaG50PpTHxTjX3gb0D1wmfjol2oh7d5jJFSIsY0=',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36'
+});
+
 // ENDPOINT SCRAPE
 
 // ==========================================
@@ -600,6 +610,54 @@ const handleLive3D = async (prompt, style = 'Anime') => {
     });
 };
 
+const handleF2Anime = async (imageBuffer) => {
+    try {
+        // 1. Upload Buffer
+        const stream = Readable.from(imageBuffer);
+        const form = new FormData();
+        form.append('file', stream, { filename: 'image.jpg', contentType: 'image/jpeg' });
+        form.append('fn_name', 'demo-photo2anime');
+        form.append('request_from', '2');
+        form.append('origin_from', '111977c0d5def647');
+
+        const upload = await axios.post('https://api.pixnova.ai/aitools/upload-img', form, {
+            headers: { ...getBaseHeaders(), ...form.getHeaders() }
+        });
+        const sourceImage = upload.data?.data?.path;
+
+        // 2. Create Task
+        const taskRes = await axios.post('https://api.pixnova.ai/aitools/of/create', {
+            fn_name: 'demo-photo2anime',
+            call_type: 3,
+            input: { source_image: sourceImage, strength: 0.6, prompt: 'use anime style, hd, 8k', request_from: 2 },
+            request_from: 2,
+            origin_from: '111977c0d5def647'
+        }, { headers: { ...getBaseHeaders(), 'content-type': 'application/json' } });
+        
+        const taskId = taskRes.data?.data?.task_id;
+
+        // 3. Polling (Status Check)
+        for (let i = 0; i < 15; i++) { // Max 30 detik agar tidak timeout di Vercel
+            await new Promise(r => setTimeout(r, 2000));
+            const check = await axios.post('https://api.pixnova.ai/aitools/of/check-status', {
+                task_id: taskId, fn_name: 'demo-photo2anime', call_type: 3, request_from: 2, origin_from: '111977c0d5def647'
+            }, { headers: { ...getBaseHeaders(), 'content-type': 'application/json' } });
+            
+            const data = check.data?.data;
+            if (data?.status === 2 && data?.result_image) {
+                return {
+                    status: "success",
+                    author: "IyuszTempest",
+                    result: data.result_image.startsWith('http') ? data.result_image : `https://oss-global.pixnova.ai/${data.result_image}`
+                };
+            }
+        }
+        throw new Error('Timeout di server Pixnova');
+    } catch (err) {
+        throw new Error(err.message);
+    }
+};
+
 // ==========================================
 // KATEGORI FUN
 // ==========================================
@@ -696,5 +754,6 @@ module.exports = {
     handleCreart,
     handleAiLabs: aiLabs.generate,
     handleDeepImg,
-    handleLive3D
+    handleLive3D,
+    handleF2Anime
 };
