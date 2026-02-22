@@ -374,11 +374,17 @@ async function translateToEn(text) {
 
 // --- Helper Pixnova ---
 const getBaseHeaders = () => ({
+    'authority': 'api.pixnova.ai',
+    'accept': 'application/json, text/plain, */*',
+    'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzE5MTk5OTksInN1YiI6Imdvb2dsZSAyOTE1NjEgMTExOTc3YzBkNWRlZjY0NyBhZGl0d2lidWJhd2FuZ0BnbWFpbC5jb20ifQ.2nTe_x6ZkOXvs0FL1hogCCDgmKJ372u_AaHQ-HyHs0I',
+    'fp': '0df2b908adc1538377106a60d0a4656a',
+    'fp1': 'tnQlcNBWQ4ZZ8fT0hPFSumfrL269cd0nahljUlxTIU8/6IavPmKwooWAyRo4aiCj',
     'origin': 'https://pixnova.ai',
     'referer': 'https://pixnova.ai/',
-    'x-code': '1752930995556',
-    'x-guide': 'SjwMWX+LcTqkoPt48PIOgZzt3eQ93zxCGvzs1VpdikRR9b9+HvKM0Qiceq6Zusjrv8bUEtDGZdVqjQf/bdOXBb0vEaUUDRZ29EXYW0kt047grMMceXzd3zppZoHZj9DeXZOTGaG50PpTHxTjX3gb0D1wmfjol2oh7d5jJFSIsY0=',
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36'
+    'theme-version': '83EmcUoQTUv50LhNx0VrdcK8rcGexcP35FcZDcpgWsAXEyO4xqL5shCY6sFIWB2Q',
+    'x-code': '1771747333264',
+    'x-guide': 'L2eSPTjjycakOw97x3LyJiq/IznnthQzrq3k6kN0WNC9lIE0BQtLpv/MEDKHg2GPZ/bkF3rGVV6BwO1ISOTNXkUJBro7QJdrqp8RgVvLQtKeoFkyh8j+M8q1+hkW6mKWVKstDnGPIxc7jQFT32OGhNJkbO4J6H5Wr6BFoWe0NQs=',
+    'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36'
 });
 
 // ENDPOINT SCRAPE
