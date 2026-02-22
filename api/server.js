@@ -66,73 +66,33 @@ app.get('/api/anime', checkApikey, async (req, res) => {
 });
 
 // --- CATEGORY AI ---
+// api/server.js
 app.get('/api/ai', checkApikey, async (req, res) => {
-    const { feature, query, type } = req.query;
+    const { feature, query, type, style } = req.query;
     try {
         switch (feature) {
             case 'ailabs':
-                if (!query) return res.status(400).json({ msg: "Promptnya mana masbro?" });
-                const result = await features.handleAiLabs(query, type || 'image');
-                return res.json({ status: "success", author: "IyuszTempest", result });
-            default:
+                if (!query) return res.status(400).json({ msg: "Prompt wajib diisi!" });
+                return res.json(await features.handleAiLabs(query, type || 'image'));
+                
+            case 'creart':
+                if (!query) return res.status(400).json({ msg: "Prompt wajib diisi!" });
+                return res.json(await features.handleCreart(query));
+
+            case 'createprompt':
+                if (!query) return res.status(400).json({ msg: "Prompt wajib diisi!" });
+                return res.json(await features.handleCreatePrompt(query));
+
+            case 'deepimg':
+                if (!query) return res.status(400).json({ msg: "Prompt wajib diisi!" });
+                return res.json(await features.handleDeepImg(query, style || 'realistic'));
+
+            default: 
                 return res.status(400).json({ status: false, msg: "Feature AI tidak ditemukan" });
         }
     } catch (e) {
         res.status(500).json({ status: false, msg: e.message });
     }
-});
-
-app.get('/api/ai', checkApikey, async (req, res) => {
-    const { feature, query } = req.query;
-    try {
-        switch (feature) {
-            case 'creart':
-                if (!query) return res.status(400).json({ msg: "Masukkan prompt gambar!" });
-                const result = await features.handleCreart(query);
-                return res.json(result);
-            case 'ailabs':
-                // ... logic ailabs kamu
-            default: 
-                return res.status(400).json({ status: false, msg: "Feature AI tidak ditemukan" });
-        }
-    } catch (e) { res.status(500).json({ status: false, msg: e.message }); }
-});
-
-app.get('/api/ai', checkApikey, async (req, res) => {
-    const { feature, query } = req.query;
-    try {
-        switch (feature) {
-            case 'createprompt':
-                if (!query) return res.status(400).json({ msg: "Masukkan ide prompt!" });
-                return res.json(await features.handleCreatePrompt(query));
-            case 'creart':
-                // ... logic creart kamu
-            case 'ailabs':
-                // ... logic ailabs kamu
-            default: 
-                return res.status(400).json({ status: false, msg: "Feature AI tidak ditemukan" });
-        }
-    } catch (e) { res.status(500).json({ status: false, msg: e.message }); }
-});
-
-app.get('/api/ai', checkApikey, async (req, res) => {
-    const { feature, query, style } = req.query; // Ambil parameter style juga
-    try {
-        switch (feature) {
-            case 'deepimg':
-                if (!query) return res.status(400).json({ msg: "Masukkan prompt gambar!" });
-                return res.json(await features.handleDeepImg(query, style || 'realistic'));
-            case 'createprompt':
-                if (!query) return res.status(400).json({ msg: "Masukkan ide prompt!" });
-                return res.json(await features.handleCreatePrompt(query));
-            case 'creart':
-                if (!query) return res.status(400).json({ msg: "Masukkan prompt gambar!" });
-                return res.json(await features.handleCreart(query));
-            // ... case ailabs
-            default: 
-                return res.status(400).json({ status: false, msg: "Feature AI tidak ditemukan" });
-        }
-    } catch (e) { res.status(500).json({ status: false, msg: e.message }); }
 });
 
 // --- CATEGORY: FUN ---
