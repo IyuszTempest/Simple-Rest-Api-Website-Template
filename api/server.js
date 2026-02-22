@@ -17,7 +17,8 @@ const listFeatures = {
     AI: [
         { name: "AiLabs Image/Video", path: "/api/ai?feature=ailabs&query=&type=image", desc: "Generate Image atau Video dari Teks" },
         { name: "Creart AI", path: "/api/ai?feature=creart&query=", desc: "High Quality AI Image Generator" },
-        { name: "Create Prompt", path: "/api/ai?feature=createprompt&query=", desc: "Buat prompt gambar yang detail secara otomatis" }
+        { name: "Create Prompt", path: "/api/ai?feature=createprompt&query=", desc: "Buat prompt gambar yang detail secara otomatis" },
+        { name: "DeepImage (Flux)", path: "/api/ai?feature=deepimg&query=&style=realistic", desc: "Generate gambar HD dengan style (Flux-1-Dev)" },
     ],
     Downloader: [],
     Fun: [
@@ -108,6 +109,26 @@ app.get('/api/ai', checkApikey, async (req, res) => {
                 // ... logic creart kamu
             case 'ailabs':
                 // ... logic ailabs kamu
+            default: 
+                return res.status(400).json({ status: false, msg: "Feature AI tidak ditemukan" });
+        }
+    } catch (e) { res.status(500).json({ status: false, msg: e.message }); }
+});
+
+app.get('/api/ai', checkApikey, async (req, res) => {
+    const { feature, query, style } = req.query; // Ambil parameter style juga
+    try {
+        switch (feature) {
+            case 'deepimg':
+                if (!query) return res.status(400).json({ msg: "Masukkan prompt gambar!" });
+                return res.json(await features.handleDeepImg(query, style || 'realistic'));
+            case 'createprompt':
+                if (!query) return res.status(400).json({ msg: "Masukkan ide prompt!" });
+                return res.json(await features.handleCreatePrompt(query));
+            case 'creart':
+                if (!query) return res.status(400).json({ msg: "Masukkan prompt gambar!" });
+                return res.json(await features.handleCreart(query));
+            // ... case ailabs
             default: 
                 return res.status(400).json({ status: false, msg: "Feature AI tidak ditemukan" });
         }
