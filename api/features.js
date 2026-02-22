@@ -117,7 +117,7 @@ const wangyImageUrls = [
     "https://files.catbox.moe/k051g5.jpg", 
     "https://files.catbox.moe/71b6dc.jpg", 
     "https://files.catbox.moe/viwj5r.jpg", 
-    "https://files.catbox.moe/btn4zz.jpg",];
+    "https://files.catbox.moe/btn4zz.jpg"];
 const euphyImageUrls = [
     "https://file.idnet.my.id/api/preview.php?file=5nw6c8du.jpg",
     "https://file.idnet.my.id/api/preview.php?file=4l7ypeso.jpg",
