@@ -766,5 +766,6 @@ module.exports = {
     handleAiLabs: aiLabs.generate,
     handleDeepImg,
     handleLive3D,
-    handleF2Anime
+    handleF2Anime,
+    handleF2AnimeFromUrl
 };
