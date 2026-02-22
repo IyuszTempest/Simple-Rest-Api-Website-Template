@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <title>Euphy Api - Dynamic Menu</title>
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #121212; color: white; padding: 20px; }
+        .category-box { border: 1px solid #ff4757; padding: 15px; margin-bottom: 20px; border-radius: 10px; }
+        .feature-btn { background: #333; padding: 10px; margin: 5px; display: inline-block; border-radius: 5px; text-decoration: none; color: #ff4757; font-weight: bold; }
+        .feature-btn:hover { background: #ff4757; color: white; }
+    </style>
+</head>
+<body>
+    <h1>Euphy Api Dashboard</h1>
+    <div id="dynamic-menu">Loading Fitur...</div>
+
+    <script>
+        async function loadMenu() {
+            const response = await fetch('/api/list'); //
+            const categories = await response.json(); //
+            const menuDiv = document.getElementById('dynamic-menu');
+            menuDiv.innerHTML = '';
+
+            for (const [catName, features] of Object.entries(categories)) {
+                let html = `<div class="category-box"><h2>「${catName.toUpperCase()}」</h2>`;
+                features.forEach(f => {
+                    html += `<a href="${f.path}&apikey=yusz123" class="feature-btn" target="_blank">${f.name}</a>`;
+                });
+                html += `</div>`;
+                menuDiv.innerHTML += html;
+            }
+        }
+        loadMenu(); //
+    </script>
+</body>
+</html>
