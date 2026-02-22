@@ -160,7 +160,7 @@ const euphyImageUrls = [
     "https://file.idnet.my.id/api/preview.php?file=5rvjpneb.jpg",
     "https://file.idnet.my.id/api/preview.php?file=dxsdatez.jpg"];
 
-const presetAM = [ 
+const presetsAM = [ 
     {UrlMb: 'https://alight.link/DkMZVF4nRRR3x3836', UrlXml: 'https://drive.google.com/file/d/1QkKltiQxMsjNDkoKCsoNMtkEj8MlQOzR/view?usp=drivesdk',Sound: 'https://drive.google.com/file/d/1QvYFwPzZ_HBqbDNdElTSqeXA5C17YOJ2/view?usp=drivesdk'},
             { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1cV83fK5_afiB5P5-Y6kuky_Gn2fbRaDj/view?usp=drivesdk', Sound: '-' },
             { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1dxQxx3Vtk1hdDthyiwmx_BkeIdGcAD4e/view?usp=drivesdk', Sound: '-' },
@@ -363,38 +363,54 @@ const presetAM = [
 // ENDPOINT SCRAPE
 
 
-// KATEGORI ANIME
 const handleJjcosplay = async () => {
     const randomUrl = jjcosplayVideoUrls[Math.floor(Math.random() * jjcosplayVideoUrls.length)];
-    return { status: "success", author: "IyuszTempest", media: { type: "video", url: randomUrl } };
+    return { 
+        status: "success", 
+        author: "IyuszTempest", 
+        media: { type: "video", url: randomUrl } 
+    };
 };
 
 const handleEuphy = async () => {
     const randomUrl = euphyImageUrls[Math.floor(Math.random() * euphyImageUrls.length)];
-    return { status: "success", author: "IyuszTempest", media: { type: "image", url: randomUrl } };
+    return { 
+        status: "success", 
+        author: "IyuszTempest", 
+        media: { type: "image", url: randomUrl } 
+    };
 };
 
 const handleLivechart = async (query) => {
-    const url = `https://www.livechart.me/search?q=${encodeURIComponent(query)}`;
-    const { data } = await axios.get(url, { headers: { 'User-Agent': 'Mozilla/5.0' } });
-    const $ = cheerio.load(data);
-    
-    return $('.anime-list .anime-item').map((_, el) => ({
-        title: $(el).find('.anime-item_body_title strong a').text().trim(),
-        link: 'https://www.livechart.me' + $(el).find('.anime-item_body_title strong a').attr('href'),
-        image: $(el).find('.anime-item__poster-wrap img').attr('src'),
-        rating: $(el).find('.info .icon-star').parent().text().trim() || 'N/A'
-    })).get();
+    try {
+        const url = `https://www.livechart.me/search?q=${encodeURIComponent(query)}`;
+        const { data } = await axios.get(url, { headers: { 'User-Agent': 'Mozilla/5.0' } });
+        const $ = cheerio.load(data);
+        
+        return $('.anime-list .anime-item').map((_, el) => ({
+            title: $(el).find('.anime-item_body_title strong a').text().trim(),
+            link: 'https://www.livechart.me' + $(el).find('.anime-item_body_title strong a').attr('href'),
+            image: $(el).find('.anime-item__poster-wrap img').attr('src'),
+            rating: $(el).find('.info .icon-star').parent().text().trim() || 'N/A'
+        })).get();
+    } catch (error) {
+        throw new Error("Gagal mengambil data dari Livechart");
+    }
 };
 
 const handleJikanmoe = async (query) => {
-    const res = await axios.get(`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(query)}`);
-    return res.data.data;
+    try {
+        const res = await axios.get(`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(query)}`);
+        return res.data.data;
+    } catch (error) {
+        throw new Error("Gagal mengambil data dari JikanMoe");
+    }
 };
 
-
-
+// ==========================================
 // KATEGORI FUN
+// ==========================================
+
 const handleLahelu = async () => {
     try {
         const randomCursor = Math.floor(Math.random() * 50) + 1;
@@ -406,19 +422,14 @@ const handleLahelu = async () => {
             post.content && post.content.some(item => item.type === 1 || item.type === 4)
         );
 
-        if (postsWithMedia.length === 0) {
-            throw new Error("Tidak ada media ditemukan");
-        }
+        if (postsWithMedia.length === 0) throw new Error("Tidak ada media ditemukan");
 
-        const randomIndex = Math.floor(Math.random() * postsWithMedia.length);
-        const randomPost = postsWithMedia[randomIndex];
-
-        const title = randomPost.title;
+        const randomPost = postsWithMedia[Math.floor(Math.random() * postsWithMedia.length)];
         const mediaItem = randomPost.content.find(item => item.type === 1 || item.type === 4);
         
         return {
-            status: "Sukses Kak!",
-            message: title,
+            status: "success",
+            message: randomPost.title,
             author: "IyuszTempest",
             media: {
                 type: "video",
@@ -430,30 +441,34 @@ const handleLahelu = async () => {
     }
 };
 
-
-
+// ==========================================
 // KATEGORI NSFW
+// ==========================================
+
 const handleWangy = async () => {
     const randomUrl = wangyImageUrls[Math.floor(Math.random() * wangyImageUrls.length)];
-    return { status: "success", author: "IyuszTempest", media: { type: "image", url: randomUrl } };
-};
-
-
-
-// KATEGORI TOOLS
-const handlepresetAM = async () => {
-    // Mengambil satu preset secara acak dari database
-    const randompreset = presetAM[Math.floor(Math.random() * presetAM.length)];
-    return {
-        status: "sukses kak!",
-        author: "IyuszTempest",
-        message: "Berhasil mendapatkan preset Alight Motion random.",
-        result: randompreset
+    return { 
+        status: "success", 
+        author: "IyuszTempest", 
+        media: { type: "image", url: randomUrl } 
     };
 };
 
+// ==========================================
+// KATEGORI TOOLS
+// ==========================================
 
-// EXPORT SEMUA FUNGSI
+const handlePresetAM = async () => {
+    const randomPreset = presetsAM[Math.floor(Math.random() * presetsAM.length)];
+    return {
+        status: "success",
+        author: "IyuszTempest",
+        message: "Berhasil mendapatkan preset Alight Motion random.",
+        result: randomPreset
+    };
+};
+
+// --- EXPORT SEMUA FUNGSI ---
 module.exports = { 
     handleJjcosplay, 
     handleWangy, 
@@ -461,5 +476,5 @@ module.exports = {
     handleLivechart, 
     handleJikanmoe,
     handleLahelu,
-    handlerpresetAM
+    handlePresetAM
 };
