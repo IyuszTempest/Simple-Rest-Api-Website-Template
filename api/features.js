@@ -692,6 +692,40 @@ const handleF2AnimeFromUrl = async (imageUrl) => {
 };
 
 // ==========================================
+// KATEGORI DOWNLOADER
+// ==========================================
+
+const handleAio = async (url) => {
+    const key = process.env.RAPIDAPI_KEY || '1dda0d29d3mshc5f2aacec619c44p16f219jsn99a62a516f98';
+    if (!url || !url.includes('http')) throw new Error('URL wajib diisi masbro!');
+
+    try {
+        const { data } = await axios.post('https://auto-download-all-in-one.p.rapidapi.com/v1/social/autolink', 
+        { url: url }, 
+        {
+            headers: {
+                'content-type': 'application/json; charset=utf-8',
+                'x-rapidapi-host': 'auto-download-all-in-one.p.rapidapi.com',
+                'x-rapidapi-key': key,
+                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36'
+            }
+        });
+
+        if (data.status === 'fail' || !data.medias) {
+            throw new Error(data.msg || 'Gagal ngambil data, mungkin link mati.');
+        }
+
+        return {
+            status: "success",
+            author: "IyuszTempest",
+            result: data
+        };
+    } catch (error) {
+        throw new Error(`API Error: ${error.message}`);
+    }
+};
+
+// ==========================================
 // KATEGORI FUN
 // ==========================================
 
@@ -789,5 +823,6 @@ module.exports = {
     handleDeepImg,
     handleLive3D,
     handleF2Anime,
-    handleF2AnimeFromUrl
+    handleF2AnimeFromUrl,
+    handleAio
 };
