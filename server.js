@@ -1,34 +1,28 @@
+// server.js
 const express = require('express');
-const { scrapeAnime, chatAI } = require('./features'); // Ambil fiturnya
 const app = express();
-const PORT = 3000;
+const features = require('./features'); //
 
-// Middleware API Key Sederhana
-const validateKey = (req, res, next) => {
-    const { apikey } = req.query;
-    if (apikey === 'masamba') return next();
-    res.status(403).json({ status: false, message: "Apikey salah!" });
+// Daftar fitur otomatis (Update di sini saja)
+const listFeatures = {
+    anime: [
+        { name: "Livechart", path: "/api/anime?feature=livechart" },
+        { name: "Jikan Moe", path: "/api/anime?feature=jikanmoe" }
+    ],
+    fun: [
+        { name: "Lahelu Random", path: "/api/fun?feature=lahelu" },
+        { name: "Blue Archive", path: "/api/fun?feature=bluearchive" }
+    ],
+    downloader: [
+        { name: "TikTok DL", path: "/api/downloader?feature=tiktok" }
+    ]
 };
-try {
-        switch (feature) {
-            case 'lahelu':
-                const resultLahelu = await handleLahelu();
-                return res.status(200).json(resultLahelu);
-            
-            case 'bluearchive':
-                const resultBA = await handleBlueArchive(query);
-                return res.status(200).json(resultBA);
-            
-            default:
-                res.status(400).json({
-                    status: 'error',
-                    message: "Pilih feature: lahelu atau bluearchive"
-                });
-        }
-    } catch (error) {
-        res.status(500).json({ status: 'error', message: error.message });
-    }
+
+// Endpoint Metadata biar HTML tau fiturnya apa aja
+app.get('/api/list', (req, res) => {
+    res.json(listFeatures); //
 });
-app.listen(PORT, () => {
-    console.log(`Server running di https://iyusztempest.my.id`);
-});
+
+// Middleware & Route lainnya...
+app.use(express.static('public')); //
+app.listen(3000, () => console.log("Sukses Terhubung!"));
