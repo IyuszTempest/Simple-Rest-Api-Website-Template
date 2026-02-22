@@ -448,7 +448,7 @@ const handleLahelu = async () => {
 const handleWangy = async () => {
     const randomUrl = wangyImageUrls[Math.floor(Math.random() * wangyImageUrls.length)];
     return { 
-        status: "success", 
+        status: "Sukses kak!", 
         author: "IyuszTempest", 
         media: { type: "image", url: randomUrl } 
     };
@@ -468,6 +468,27 @@ const handlePresetAM = async () => {
     };
 };
 
+const handleSub4Unlock = async (url) => {
+    try {
+        const Key = 'global.apifgsi'; 
+        const apiUrl = `https://fgsi.dpdns.org/api/tools/skip/sub4unlock?apikey=${Key}&url=${encodeURIComponent(url)}`;
+        
+        const response = await axios.get(apiUrl);
+        
+        if (response.data && response.data.data) {
+            return {
+                status: "Sukses kak!",
+                author: "IyuszTempest",
+                result: response.data.data.linkGo // Mengambil link tujuan
+            };
+        } else {
+            throw new Error("Gagal melewati link.");
+        }
+    } catch (error) {
+        throw new Error("Terjadi kesalahan pada API Skiplink.");
+    }
+};
+
 // --- EXPORT SEMUA FUNGSI ---
 module.exports = { 
     handleJjcosplay, 
@@ -476,5 +497,6 @@ module.exports = {
     handleLivechart, 
     handleJikanmoe,
     handleLahelu,
-    handlePresetAM
+    handlePresetAM,
+    handleSub4Unlock
 };
