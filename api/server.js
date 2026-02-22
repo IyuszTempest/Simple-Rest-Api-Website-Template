@@ -29,25 +29,6 @@ const listFeatures = {
 // --- ENDPOINT LIST ---
 app.get('/api/list', (req, res) => res.json(listFeatures));
 
-// --- CATEGORY: FUN ---
-app.get('/api/fun', async (req, res) => {
-    const { feature, query, apikey } = req.query;
-    if (apikey !== 'yusz123') return res.status(403).json({ status: false, msg: "Apikey Salah!" });
-
-    try {
-        switch (feature) {
-            case 'lahelu': 
-                return res.json(await features.handleLahelu());
-            case 'bluearchive': 
-                return res.json(await features.handleBlueArchive(query));
-            default: 
-                return res.status(400).json({ status: false, msg: "Feature Fun tidak ditemukan" });
-        }
-    } catch (e) {
-        res.status(500).json({ status: false, msg: e.message });
-    }
-});
-
 // --- CATEGORY: ANIME ---
 app.get('/api/anime', async (req, res) => {
     const { feature, query, apikey } = req.query;
@@ -59,8 +40,6 @@ app.get('/api/anime', async (req, res) => {
                 return res.json(await features.handleEuphy());
             case 'jjcosplay': 
                 return res.json(await features.handleJjcosplay());
-            case 'wangy': 
-                return res.json(await features.handleWangy());
             case 'livechart': 
                 if (!query) return res.status(400).json({ msg: "Query wajib diisi!" });
                 return res.json({ status: "success", author: "IyuszTempest", data: await features.handleLivechart(query) });
@@ -68,7 +47,58 @@ app.get('/api/anime', async (req, res) => {
                 if (!query) return res.status(400).json({ msg: "Query wajib diisi!" });
                 return res.json({ status: "success", author: "IyuszTempest", data: await features.handleJikanmoe(query) });
             default: 
-                return res.status(400).json({ status: false, msg: "Feature Anime tidak ditemukan" });
+                return res.status(400).json({ status: false, msg: "Endpoint Anime tidak ditemukan" });
+        }
+    } catch (e) {
+        res.status(500).json({ status: false, msg: e.message });
+    }
+});
+
+// --- CATEGORY: FUN ---
+app.get('/api/fun', async (req, res) => {
+    const { feature, query, apikey } = req.query;
+    if (apikey !== 'yusz123') return res.status(403).json({ status: false, msg: "Apikey Salah!" });
+
+    try {
+        switch (feature) {
+            case 'lahelu': 
+                return res.json(await features.handleLahelu());
+            default: 
+                return res.status(400).json({ status: false, msg: "Feature Fun tidak ditemukan" });
+        }
+    } catch (e) {
+        res.status(500).json({ status: false, msg: e.message });
+    }
+});
+
+// --- CATEGORY NSFW ---
+app.get('/api/nsfw', async (req, res) => {
+    const { feature, query, apikey } = req.query;
+    if (apikey !== 'yusz123') return res.status(403).json({ status: false, msg: "Apikey Salah!" });
+
+    try {
+        switch (feature) {
+            case 'wangy': 
+                return res.json(await features.handleWangy());
+            default: 
+                return res.status(400).json({ status: false, msg: "Endpoint NSFW tidak ditemukan" });
+        }
+    } catch (e) {
+        res.status(500).json({ status: false, msg: e.message });
+    }
+});
+
+// --- CATEGORY TOOLS ---
+app.get('/api/tools', async (req, res) => {
+    const { feature, apikey } = req.query;
+    if (apikey !== 'yusz123') return res.status(403).json({ status: false, msg: "Apikey Salah!" });
+
+    try {
+        switch (feature) {
+            case 'presetam': 
+                return res.json(await features.handlePresetAM());
+            default: 
+                return res.status(400).json({ status: false, msg: "Endpoint Tools tidak ditemukan" });
         }
     } catch (e) {
         res.status(500).json({ status: false, msg: e.message });
