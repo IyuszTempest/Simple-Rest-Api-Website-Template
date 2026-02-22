@@ -662,14 +662,25 @@ const handleF2AnimeFromUrl = async (imageUrl) => {
     try {
         const response = await axios.get(imageUrl, { 
             responseType: 'arraybuffer',
+            timeout: 10000, // Maksimal nunggu download 10 detik
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36'
             }
         });
+
+        // Cek ukuran file
+        if (response.data.length > 4 * 1024 * 1024) {
+            throw new Error("Gambar terlalu besar! Maksimal 4MB untuk Vercel.");
+        }
+
         const buffer = Buffer.from(response.data);
         return await handleF2Anime(buffer); 
     } catch (err) {
-        // Biar ketahuan error aslinya dari mana
+        // Cek apakah error datang dari respon API Pixnova
+        if (err.response) {
+            console.error("Data Error:", err.response.data.toString());
+            throw new Error(`API Pixnova Error (${err.response.status}): ${err.response.data}`);
+        }
         throw new Error("Gagal mengambil gambar dari URL: " + err.message);
     }
 };
