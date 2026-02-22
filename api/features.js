@@ -157,8 +157,245 @@ const euphyImageUrls = [
     "https://file.idnet.my.id/api/preview.php?file=cw1hlhqo.jpg",
     "https://file.idnet.my.id/api/preview.php?file=5rvjpneb.jpg",
     "https://file.idnet.my.id/api/preview.php?file=dxsdatez.jpg"];
+const presetsAM = [ 
+    {
+                UrlMb: 'https://alight.link/DkMZVF4nRRR3x3836',
+                UrlXml: 'https://drive.google.com/file/d/1QkKltiQxMsjNDkoKCsoNMtkEj8MlQOzR/view?usp=drivesdk',
+                Sound: 'https://drive.google.com/file/d/1QvYFwPzZ_HBqbDNdElTSqeXA5C17YOJ2/view?usp=drivesdk'
+            },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1cV83fK5_afiB5P5-Y6kuky_Gn2fbRaDj/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1dxQxx3Vtk1hdDthyiwmx_BkeIdGcAD4e/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1eObZsSxmTkC1cCiBmtxTB9NmWHHLB66i/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1exWyGrWdc4i03bT8Rc2NCm-4feuLmh6u/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1faBdZwgG3JK9VladABNhPTYRkbGtBM58/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1xoKFz_QLf3lsWrzMZROtDKJrOo-cijtD/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1xyMpkeypEv6o6W9V-wvNNNEwyOci7_RL/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1kS8RI123T2hJOrm1LWbqNroWgXUtd5QL/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1moLhSZM6FPyGm9nyV7fDbvSv_xqIVwNP/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1y8py0ImGJ5xsWewO0WMflQTFGv8SxKHu/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1yKBNmwBfVXtBfXq-XJPJz__q4ZyfLN1e/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1yRmC66V22gkKelm0DNdNMPqvoWYPB-Ct/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1pcryzHXhLOX3QYHsiuTjYc4JDZgs1XQI/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1tTXgc-QDLYt_9sK3LrUNYfaGkVp9lDKy/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1u2V9wQhFeJRv-eqWf-LZB5BF7eXi_a-q/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1yTuFXERF_F_uDJqC2GHW2yboHI2yI1Ur/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1yci1nJiJKRmjIlPyjPmeut5aGvoM9VcL/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1vhSrONcUHYFxriqceBmkvwlOZkR5eSum/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: 'https://alight.link/XRLz1TimNE7fYrfw8', UrlXml: '-', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://www.mediafire.com/file/ob10a4qykwy6ypp/led_calculator.zip/file', Sound: '-' },
+            { UrlMb: 'https://alight.link/Awj31G9wjmQp3Pkt5', UrlXml: '-', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/14wR6I0qRtTRy7ppOEMsje5HW9HyoXvPJ/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/158aIUL3BZWS2wnDJcYsYFhmamuyynExs/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/16lsXzTSOYvgqf2A9VyD5SvKQWNa7IRDM/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: 'https://alight.link/SfNkbYLpPdvLbV2B7', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/c5f1dLpVpQm5jruF9', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/JZBB2o8GTfMtAYFG9', UrlXml: '-', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/15RAJkgnjOBxrwKlJs1S-t93LFNhT-JTT/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: 'https://alight.link/NxDMGoYpdVwsxbRf7', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/oSvQTq98BWUin4yU6', UrlXml: '-', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1BDVKCdiwwkB7-kCsm_v8NVgNrQOmVKp9/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1BIrAWO996Apd0aANOa7NrAAKA0i5EfUX/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: 'https://alight.link/att2NaPxd5swmtae9', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/Q8vN9YGRxgLCjWGN6', UrlXml: '-', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1Ftjprho6lHwLkShveh71zxncLC2jYxUO/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1HK-AhrwV2f_oTbuNOZn6FagfNDPls3cJ/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: 'https://alight.link/A8NMLyaNPdeb2rXw6', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/FHkeF7c37MsZ5uUx7', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/iopbzi2keZg7nwka', UrlXml: '-', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1JdN2CwezGaAS1NUanmbbO3ajJ5PYJWQq/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: 'https://alight.link/YqkytdjS83SAbUKC7', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alightcreative.com/am/share/u/aJxjlZ84V1bgDOt2V3GJF0hgZh92/p/rW4SB8yyez-77ed56ae07f03e54?intro-snow', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/yvz1gchrtuLkxWMb6', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/LZgk55PSWUjCKMPX7', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/pVo5biGLMnueNJQb6', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alightcreative.com/am/share/u/2mzO7bv0VNV9gNcEbRm26LkCSsQ2/p/zcsaoVFIMm-3bd8a7fd6a5d3273', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alightcreative.com/am/share/u/O5CLVawqayZc8YX7DO0VDpTOWFY2/p/1WuXeAFpEN-b3306cf4f501e485', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alightcreative.com/am/share/u/oBRsH4rzJzgvkwYKSq5wjBpRVyq1/p/YrtG8HDeAJ-0b6a13e320bd157f?source=link', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alightcreative.com/am/share/u/odvVtPb6U6V0MN4DY5IMlqu5lVq2/p/l7RKBoxJEw-d1b22389481e48a7', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alightcreative.com/am/share/u/2mzO7bv0VNV9gNcEbRm26LkCSsQ2/p/KS3I5zTInL-d61cdfb61e030fe9', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alightcreative.com/am/share/u/2mzO7bv0VNV9gNcEbRm26LkCSsQ2/p/IM2fTo2J0J-f0516d4ca8e943f7', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/1ZEnCaJPbfykQdxz7', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alightcreative.com/am/share/u/Z2gQ3NRyZ3R8Jt2aqfWQGxxDcZf1/p/znRmjyiFzW-6a7b991ef7f65ad6', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alightcreative.com/am/share/u/z1ouBMfNtcg4SATnmJHmfN1S7dt2/p/BgBGNFnyFE-c7f0b0668dbc1b0f', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alightcreative.com/am/share/u/ZvfRV3YNwchQIG3MgS2vQQeSItm2/p/8Op3v4wLJ8-8740c0f2b9972d20', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/4qrKPurrH9j5QRuTA', UrlXml: '-', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1FDycTanD5OlgnPej8b2dYL9uRKc-iPNC/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: 'https://alight.link/KVVkHGtVod8cABy97', UrlXml: '-', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://www.mediafire.com/file/e8mv734tz0s5p9r/Proyek+Baru+58+[C58F6C1].png/file', Sound: '-' },
+            { UrlMb: 'https://alightcreative.com/am/share/u/wrBDQ30X0DMLcoSgz6xMQXwJ10S2/p/WClvZGtDJS-672a34c4e85c00ce', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/ZwKdUDm51YE2Z5cU8', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/cfDrf1i8GFRAnFHK8', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/LT3j5LwCuA4qUfMo7', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/2gsxnJHudevPQkt88', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/jk2iEZaCFHcKMhty6', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/ppH8x8gWNJF56LXe6', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/VtdJwKDrHdNNgPSg6', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/R8WEEqoWXyiY797V7', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/ABUtnb1Dj9oXnMvb8', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/MuwcQmKnjBYFx5GSA', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/XFk8dEuQXexTKyBC6', UrlXml: '-', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1-_EkltObxtC7H_2Qw5Oe9wzpX2uB8Jed/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1-Y94NIUfOGu3hJrcYqcn-CJY9HDwTrh5/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: 'https://alight.link/oYPREC4sTVZcWrh97', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/HMCbcay2x3wqg884A', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/7g7k58iwEGDkdWeZ9', UrlXml: '-', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/drive/folders/14KUAAqce4OGgoqH7ahEr7sqKeE4RF39m', Sound: '-' },
+            { UrlMb: 'https://alight.link/adcdhtm1F9UCnMyL6', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/h4WGevL1KBfSFyf69', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/5RnqNZUqMQ8zqNGF8', UrlXml: '-', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/drive/folders/1rElQsgSRGUQwAXDwjlVEVc4gnWjNke1x', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1GThL4sFkTkCQ9Wfg5lo0fqtWgIeD7siL/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: 'https://alight.link/VvVoHYM2oXmghvm87', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/AFAtNtiorvqJHs1d7', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/7MHX6dhPK2KmtcgN7', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/CC6KcjZWBcmxfum99', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/EAAZeEi4Xuj51BGy6', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/n8shRmEDxXVdgCYj7', UrlXml: '-', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1d42efb-9CXlNaGx4yZqHxfVR6RZNClMU/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: 'https://alight.link/Lkz5eF1kcEjhVXLi8', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/DZQP2AMktPKYW9r98', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/x1JXpJDwBbGzUkNr6', UrlXml: '-', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1hGiW-8r02vhBY49GnUjUtjo_lJIhObt7/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: 'https://alight.link/VpibRmB29QVbg986A', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/Tu6t45DsBk3bZU7g7', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/FxEK9K18Xq4YxpaN9', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/g5hhaMH5PgdggAdc7', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/st1WudPwpifM9B9f6', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/xCiantLvt7cReMQq8', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/BTVZQDh8DonFZQrv9', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/F3phKZ5bGZFbhHFL7', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/X61rr7ChShhVxvBc6', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/feQriwm1pxrwNfjEA', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/yioW3CENCqXGhryM9', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/9bFUvop111pznFDYA', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/rFmiqqjNh8nmRUKg9', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/9LN52aEA3hWxWSsS9', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/beRZwdPchm4PbxNAA', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/2SkbBL26xXw3e6mp7', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/nePGCvCipTcjMu146', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/apvhWb9X6MhGhUr69', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/vQeKULAVpFXUhhLK8', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/XRUB2wpELovfLLQr8', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/2NntvdwzuTqEPbed9', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/Y5MMReDqKbjj1ii89', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/2AwKCiWoAYizAQaFA', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/zSt168BqhZ9uAoL88', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/PQ3moiVe158DTTZK9', UrlXml: '-', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/drive/folders/12C6jkskb8TyZfN659on8qNLXN7FritNK', Sound: '-' },
+            { UrlMb: 'https://alight.link/EZx2wygN5m8JMC9g7', UrlXml: '-', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://www.mediafire.com/file/ini848stjknle71/Proyek_Baru_77%5BB7335B9%5D.mp4/file_', Sound: '-' },
+            { UrlMb: 'https://alight.link/pBCS5P5WjReg9gsw8', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/uK8q9h3bZkSeF2XY7', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/dxnr1pHeRjPEsvuk9', UrlXml: '-', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1IcampuZy77Ev_q2bSojZRaKWzD1Tdwn-/view', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1IcRWsWLcDygo9yASIufe5xcOs2LQrYpQ/view', Sound: '-' },
+            { UrlMb: 'https://alight.link/HGjs1ZFifkFjEAiq5', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/sY1c88sK1s7Mgduv9', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/mWAWTT9cA9GZWaLr8', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/jXbpiZUYj6nWEeSX9', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/uLAeJG5U41N3DJsx9', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/dwS3CkeJAJVYFcwg8', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/hNh7dxAoqfQcJ5zTA', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/bix5GLU8EPXTYeXu8', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/hkzmEsF84gBVrj369', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/dqyWbVM4RBzU1aba7', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/Ncw9PPo2C4SGNdtr6', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/qHmC86d4c3DwEcdz7', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/AC3AJxWCktLeUPxz9', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/jqdEAbdTjyDuZusz6', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/h8DHjhctFYbH4gVX6', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/F8bjQ29cfqzquo8B9', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/G4J2iyvBoxTA8cGA8', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/3YbLNkJ7pABAGgnQA', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/CFhNFD6iUeMXPVof9', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/1fHfvwWb3HizZiqNA', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/2wscC5cBQq4Y1RVp8', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/JXk6dY2SD3vuGPSq6', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/cyyK6zUAo43Fjwdi9', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/o3iq7mjySVCYmZEx8', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/BdC93H2hFJE1EuX77', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/bRAFmNfNa1qvXzj7A', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/qP7C7x6JvrFsy3vT6', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/WT6AqiVx5LLX8Nd56', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/oFebB2NqEvadhQ2M7', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/DVbeDc1Z2vBD4tK99', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/1RNTztJTnCvFHGVR7', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/bfPGHdan4B1bXJBC6', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/iKu6SdcTzSc71Rpj9', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/BuREsPcDyZqLkJRU9', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/zK6oNQztAJFN9EBu8', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/4zcVLF9zUdc348ax6?source=link', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/JJnuHhYMf91xXayZA?source=link', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/qVHZdwwu6Qpe2Bjz8?source=link', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/Lc13peYpgWY9CQBM7?source=link', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/MHkHWYDhes856SbX8?source=link', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/BehzRQ25dWt5z9ve9', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/ctbWi5Su2ASbMNPS6', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/9HwBeKqtxXozsYwt8', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/8Qvi3v1bJwyHNY6N7', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/27dJt4CEj7jUtPHY9', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/iTZsy9PvSy5nEMAY7', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/Ps6xxHPXvWgLXKVa6', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/bf1YtRB3C7TC1zZe8', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/MoQwCR2K8FG4zomu7', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/yceqYf7N4UJgfGUt8', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/8ddreXWxTA5oQ8sh9', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/jDUXKYm8hUX9VDMn6', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/hQZKG3PKqkG4VgeN9', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/ay4ncDNCJW1GfsbW9', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/La7qK8JvEvrV8Bnp9?source=link', UrlXml: '-', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1tvue5CA6dwba_ULXVTkpaCEZJGJMdJGQ/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1JM5SaWxqz95yDO3U9qmP_luBSwjauZFi/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1OPP2UYnwoi3oJEhW3NnoLldW818L6Na-/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: 'https://alightcreative.com/am/share/u/PML4gYQgxLgeYfpCKcKR1sB5oSy1/p/SOd4SIrKj4-042b30f6b50a524c', UrlXml: '-', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1DRCrXApZkK5viRAyE6rzrVD2ZhtfOv-6/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: 'https://alightcreative.com/am/share/u/NIteSbeCEoeSfH5aDuUFjLRSUE13/p/FRK7mHpqbU-e5bd913b971837c4', UrlXml: '-', Sound: '-' },
+            { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/18uicba4SZno9amQ0mDF7TPthz63IdN1q/view?usp=drivesdk', Sound: '-' },
+            { UrlMb: 'https://alight.link/wQA78JPnyrc1CcfF9', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/K8eVNRBzRD4iN1QR9', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/hwDwnN3TfHS7aArY8', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/RWdxLfExXZzoHJVSA', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/mqahAZUUp9GF8TJx7', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/iopbzi2keZg7nwkaA', UrlXml: '-', Sound: '-' },
+            { UrlMb: 'https://alight.link/xxKnbdJx5p7GPjWo7', UrlXml: '-', Sound: '-' }
+];
 
-// Fungsi Scraper Lahelu
+
+// ENDPOINT SCRAPE
+
+
+// KATEGORI ANIME
+const handleJjcosplay = async () => {
+    const randomUrl = jjcosplayVideoUrls[Math.floor(Math.random() * jjcosplayVideoUrls.length)];
+    return { status: "success", author: "IyuszTempest", media: { type: "video", url: randomUrl } };
+};
+
+const handleEuphy = async () => {
+    const randomUrl = euphyImageUrls[Math.floor(Math.random() * euphyImageUrls.length)];
+    return { status: "success", author: "IyuszTempest", media: { type: "image", url: randomUrl } };
+};
+
+const handleLivechart = async (query) => {
+    const url = `https://www.livechart.me/search?q=${encodeURIComponent(query)}`;
+    const { data } = await axios.get(url, { headers: { 'User-Agent': 'Mozilla/5.0' } });
+    const $ = cheerio.load(data);
+    
+    return $('.anime-list .anime-item').map((_, el) => ({
+        title: $(el).find('.anime-item_body_title strong a').text().trim(),
+        link: 'https://www.livechart.me' + $(el).find('.anime-item_body_title strong a').attr('href'),
+        image: $(el).find('.anime-item__poster-wrap img').attr('src'),
+        rating: $(el).find('.info .icon-star').parent().text().trim() || 'N/A'
+    })).get();
+};
+
+const handleJikanmoe = async (query) => {
+    const res = await axios.get(`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(query)}`);
+    return res.data.data;
+};
+
+
+
+// KATEGORI FUN
 const handleLahelu = async () => {
     try {
         const randomCursor = Math.floor(Math.random() * 50) + 1;
@@ -194,38 +431,28 @@ const handleLahelu = async () => {
     }
 };
 
-const handleJjcosplay = async () => {
-    const randomUrl = jjcosplayVideoUrls[Math.floor(Math.random() * jjcosplayVideoUrls.length)];
-    return { status: "success", author: "IyuszTempest", media: { type: "video", url: randomUrl } };
-};
 
+
+// KATEGORI NSFW
 const handleWangy = async () => {
     const randomUrl = wangyImageUrls[Math.floor(Math.random() * wangyImageUrls.length)];
     return { status: "success", author: "IyuszTempest", media: { type: "image", url: randomUrl } };
 };
 
-const handleEuphy = async () => {
-    const randomUrl = euphyImageUrls[Math.floor(Math.random() * euphyImageUrls.length)];
-    return { status: "success", author: "IyuszTempest", media: { type: "image", url: randomUrl } };
+
+
+// KATEGORI TOOLS
+const handlePresetAM = async () => {
+    // Mengambil satu preset secara acak dari database
+    const randomPreset = presetsAM[Math.floor(Math.random() * presetsAM.length)];
+    return {
+        status: "success",
+        author: "IyuszTempest",
+        message: "Berhasil mendapatkan preset Alight Motion random.",
+        result: randomPreset
+    };
 };
 
-const handleLivechart = async (query) => {
-    const url = `https://www.livechart.me/search?q=${encodeURIComponent(query)}`;
-    const { data } = await axios.get(url, { headers: { 'User-Agent': 'Mozilla/5.0' } });
-    const $ = cheerio.load(data);
-    
-    return $('.anime-list .anime-item').map((_, el) => ({
-        title: $(el).find('.anime-item_body_title strong a').text().trim(),
-        link: 'https://www.livechart.me' + $(el).find('.anime-item_body_title strong a').attr('href'),
-        image: $(el).find('.anime-item__poster-wrap img').attr('src'),
-        rating: $(el).find('.info .icon-star').parent().text().trim() || 'N/A'
-    })).get();
-};
-
-const handleJikanmoe = async (query) => {
-    const res = await axios.get(`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(query)}`);
-    return res.data.data;
-};
 
 // EXPORT SEMUA FUNGSI
 module.exports = { 
@@ -234,5 +461,6 @@ module.exports = {
     handleEuphy, 
     handleLivechart, 
     handleJikanmoe,
-    handleLahelu
+    handleLahelu,
+    handlerPresetAM
 };
