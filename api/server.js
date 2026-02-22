@@ -14,7 +14,9 @@ const listFeatures = {
         { name: "Livechart Search", path: "/api/anime?feature=livechart&query=", desc: "Cari anime di Livechart.me" },
         { name: "Jikan Moe", path: "/api/anime?feature=jikanmoe&query=", desc: "Cari anime via Jikan API" }
     ],
-    AI: [],
+    AI: [
+        { name: "AiLabs Image/Video", path: "/api/ai?feature=ailabs&query=&type=image", desc: "Generate Image atau Video dari Teks" }
+    ],
     Downloader: [],
     Fun: [
         { name: "Lahelu Random", path: "/api/fun?feature=lahelu", desc: "Meme random dari Lahelu" }
@@ -58,6 +60,23 @@ app.get('/api/anime', checkApikey, async (req, res) => {
             default: return res.status(400).json({ status: false, msg: "Endpoint Anime tidak ditemukan" });
         }
     } catch (e) { res.status(500).json({ status: false, msg: e.message }); }
+});
+
+// --- CATEGORY AI ---
+app.get('/api/ai', checkApikey, async (req, res) => {
+    const { feature, query, type } = req.query;
+    try {
+        switch (feature) {
+            case 'ailabs':
+                if (!query) return res.status(400).json({ msg: "Promptnya mana masbro?" });
+                const result = await features.handleAiLabs(query, type || 'image');
+                return res.json({ status: "success", author: "IyuszTempest", result });
+            default:
+                return res.status(400).json({ status: false, msg: "Feature AI tidak ditemukan" });
+        }
+    } catch (e) {
+        res.status(500).json({ status: false, msg: e.message });
+    }
 });
 
 // --- CATEGORY: FUN ---
