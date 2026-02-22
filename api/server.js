@@ -22,7 +22,9 @@ const listFeatures = {
         { name: "Live3D AI", path: "/api/ai?feature=live3d&query=&style=Anime", desc: "AI Image Generator (Support NSFW)" },
         { name: "Photo to Anime", path: "/api/ai?feature=f2anime", desc: "Ubah foto wajah menjadi karakter anime" }
     ],
-    Downloader: [],
+    Downloader: [
+        { name: "AIO Downloader (IG/FB/TT)", path: "/api/download?feature=aio&url=", desc: "Download media dari berbagai sosial media" }
+    ],
     Fun: [
         { name: "Lahelu Random", path: "/api/fun?feature=lahelu", desc: "Meme random dari Lahelu" }
     ],
@@ -92,6 +94,23 @@ app.get('/api/ai', checkApikey, async (req, res) => {
                 return res.json(await features.handleF2AnimeFromUrl(query));
             default: 
                 return res.status(400).json({ status: false, msg: "Feature AI tidak ditemukan" });
+        }
+    } catch (e) {
+        res.status(500).json({ status: false, msg: e.message });
+    }
+});
+
+// --- CATEGORY DOWNLOADER ---
+app.get('/api/download', checkApikey, async (req, res) => {
+    const { feature, url } = req.query;
+    try {
+        switch (feature) {
+            case 'aio':
+                if (!url) return res.status(400).json({ msg: "Mana link-nya, masbro?" });
+                const result = await features.handleAio(url);
+                return res.json(result);
+            default:
+                return res.status(400).json({ status: false, msg: "Feature Downloader tidak ditemukan" });
         }
     } catch (e) {
         res.status(500).json({ status: false, msg: e.message });
