@@ -2,7 +2,7 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 
-// --- DATABASE (JJ, Wangy, Euphy) ---
+// --- DATABASE---
 const jjcosplayVideoUrls = [ 
     "https://files.catbox.moe/id50en.mp4",
     "https://files.catbox.moe/b7gzby.mp4",
@@ -28,6 +28,7 @@ const jjcosplayVideoUrls = [
     "https://files.catbox.moe/3eg5uz.mp4",
     "https://files.catbox.moe/erh5h9.mp4",
     "https://files.catbox.moe/rc0vxb.mp4"];
+
 const wangyImageUrls = [
     "https://files.catbox.moe/4r4b5b.jpg",
     "https://files.catbox.moe/r577fm.jpg", 
@@ -118,6 +119,7 @@ const wangyImageUrls = [
     "https://files.catbox.moe/71b6dc.jpg", 
     "https://files.catbox.moe/viwj5r.jpg", 
     "https://files.catbox.moe/btn4zz.jpg"];
+
 const euphyImageUrls = [
     "https://file.idnet.my.id/api/preview.php?file=5nw6c8du.jpg",
     "https://file.idnet.my.id/api/preview.php?file=4l7ypeso.jpg",
@@ -157,12 +159,9 @@ const euphyImageUrls = [
     "https://file.idnet.my.id/api/preview.php?file=cw1hlhqo.jpg",
     "https://file.idnet.my.id/api/preview.php?file=5rvjpneb.jpg",
     "https://file.idnet.my.id/api/preview.php?file=dxsdatez.jpg"];
-const presetsAM = [ 
-    {
-                UrlMb: 'https://alight.link/DkMZVF4nRRR3x3836',
-                UrlXml: 'https://drive.google.com/file/d/1QkKltiQxMsjNDkoKCsoNMtkEj8MlQOzR/view?usp=drivesdk',
-                Sound: 'https://drive.google.com/file/d/1QvYFwPzZ_HBqbDNdElTSqeXA5C17YOJ2/view?usp=drivesdk'
-            },
+
+const presetAM = [ 
+    {UrlMb: 'https://alight.link/DkMZVF4nRRR3x3836', UrlXml: 'https://drive.google.com/file/d/1QkKltiQxMsjNDkoKCsoNMtkEj8MlQOzR/view?usp=drivesdk',Sound: 'https://drive.google.com/file/d/1QvYFwPzZ_HBqbDNdElTSqeXA5C17YOJ2/view?usp=drivesdk'},
             { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1cV83fK5_afiB5P5-Y6kuky_Gn2fbRaDj/view?usp=drivesdk', Sound: '-' },
             { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1dxQxx3Vtk1hdDthyiwmx_BkeIdGcAD4e/view?usp=drivesdk', Sound: '-' },
             { UrlMb: '-', UrlXml: 'https://drive.google.com/file/d/1eObZsSxmTkC1cCiBmtxTB9NmWHHLB66i/view?usp=drivesdk', Sound: '-' },
@@ -442,14 +441,14 @@ const handleWangy = async () => {
 
 
 // KATEGORI TOOLS
-const handlePresetAM = async () => {
+const handlepresetAM = async () => {
     // Mengambil satu preset secara acak dari database
-    const randomPreset = presetsAM[Math.floor(Math.random() * presetsAM.length)];
+    const randompreset = presetAM[Math.floor(Math.random() * presetAM.length)];
     return {
-        status: "success",
+        status: "sukses kak!",
         author: "IyuszTempest",
         message: "Berhasil mendapatkan preset Alight Motion random.",
-        result: randomPreset
+        result: randompreset
     };
 };
 
@@ -462,5 +461,5 @@ module.exports = {
     handleLivechart, 
     handleJikanmoe,
     handleLahelu,
-    handlerPresetAM
+    handlerpresetAM
 };
