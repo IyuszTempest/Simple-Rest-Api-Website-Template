@@ -15,7 +15,8 @@ const listFeatures = {
         { name: "Jikan Moe", path: "/api/anime?feature=jikanmoe&query=", desc: "Cari anime via Jikan API" }
     ],
     AI: [
-        { name: "AiLabs Image/Video", path: "/api/ai?feature=ailabs&query=&type=image", desc: "Generate Image atau Video dari Teks" }
+        { name: "AiLabs Image/Video", path: "/api/ai?feature=ailabs&query=&type=image", desc: "Generate Image atau Video dari Teks" },
+        { name: "Creart AI", path: "/api/ai?feature=creart&query=", desc: "High Quality AI Image Generator" }
     ],
     Downloader: [],
     Fun: [
@@ -77,6 +78,22 @@ app.get('/api/ai', checkApikey, async (req, res) => {
     } catch (e) {
         res.status(500).json({ status: false, msg: e.message });
     }
+});
+
+app.get('/api/ai', checkApikey, async (req, res) => {
+    const { feature, query } = req.query;
+    try {
+        switch (feature) {
+            case 'creart':
+                if (!query) return res.status(400).json({ msg: "Masukkan prompt gambar!" });
+                const result = await features.handleCreart(query);
+                return res.json(result);
+            case 'ailabs':
+                // ... logic ailabs kamu
+            default: 
+                return res.status(400).json({ status: false, msg: "Feature AI tidak ditemukan" });
+        }
+    } catch (e) { res.status(500).json({ status: false, msg: e.message }); }
 });
 
 // --- CATEGORY: FUN ---
