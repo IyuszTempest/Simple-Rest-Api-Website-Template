@@ -26,3 +26,5 @@ app.get('/api/list', (req, res) => {
 // Middleware & Route lainnya...
 app.use(express.static('public')); //
 app.listen(3000, () => console.log("Sukses Terhubung!"));
+
+module.exports = app;
