@@ -87,6 +87,10 @@ app.get('/api/ai', checkApikey, async (req, res) => {
             case 'live3d':
                 if (!query) return res.status(400).json({ msg: "Masukkan prompt gambar!" });
                 return res.json(await features.handleLive3D(query, style || 'Anime'));
+            case 'f2anime':
+                if (!query) return res.status(400).json({ msg: "Masukkan URL gambar!" });
+                // Bot kirim URL gambar lewat parameter query
+                return res.json(await features.handleF2AnimeFromUrl(query));
             default: 
                 return res.status(400).json({ status: false, msg: "Feature AI tidak ditemukan" });
         }
