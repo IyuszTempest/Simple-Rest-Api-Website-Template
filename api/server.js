@@ -23,7 +23,8 @@ const listFeatures = {
         { name: "Photo to Anime", path: "/api/ai?feature=f2anime", desc: "Ubah foto wajah menjadi karakter anime" }
     ],
     Downloader: [
-        { name: "AIO Downloader (IG/FB/TT)", path: "/api/download?feature=aio&url=", desc: "Download media dari berbagai sosial media" }
+        { name: "AIO Downloader (IG/FB/TT)", path: "/api/download?feature=aio&url=", desc: "Download media dari berbagai sosial media" },
+        { name: "TikTok Downloader", path: "/api/download?feature=tiktok&url=", desc: "Download Video (No WM) atau Slide Foto TikTok" }
     ],
     Fun: [
         { name: "Lahelu Random", path: "/api/fun?feature=lahelu", desc: "Meme random dari Lahelu" }
@@ -109,6 +110,9 @@ app.get('/api/download', checkApikey, async (req, res) => {
                 if (!url) return res.status(400).json({ msg: "Mana link-nya, masbro?" });
                 const result = await features.handleAio(url);
                 return res.json(result);
+            case 'tiktok':
+                if (!url) return res.status(400).json({ msg: "Link TikTok-nya mana Senpai?" });
+                return res.json(await features.handleTikTok(url));
             default:
                 return res.status(400).json({ status: false, msg: "Feature Downloader tidak ditemukan" });
         }
