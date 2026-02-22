@@ -660,11 +660,16 @@ const handleF2Anime = async (imageBuffer) => {
 
 const handleF2AnimeFromUrl = async (imageUrl) => {
     try {
-        const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+        const response = await axios.get(imageUrl, { 
+            responseType: 'arraybuffer',
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36'
+            }
+        });
         const buffer = Buffer.from(response.data);
-        // Panggil fungsi handleF2Anime yang asli pakai buffer hasil download
         return await handleF2Anime(buffer); 
     } catch (err) {
+        // Biar ketahuan error aslinya dari mana
         throw new Error("Gagal mengambil gambar dari URL: " + err.message);
     }
 };
