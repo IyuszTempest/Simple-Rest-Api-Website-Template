@@ -1,30 +1,32 @@
-// server.js
+// api/server.js
 const express = require('express');
 const app = express();
-const features = require('./features'); //
+const { handleLahelu, handleBlueArchive } = require('./features');
 
-// Daftar fitur otomatis (Update di sini saja)
+app.use(express.json());
+
+// DAFTAR MENU OTOMATIS
 const listFeatures = {
-    anime: [
-        { name: "Livechart", path: "/api/anime?feature=livechart" },
-        { name: "Jikan Moe", path: "/api/anime?feature=jikanmoe" }
-    ],
     fun: [
-        { name: "Lahelu Random", path: "/api/fun?feature=lahelu" },
-        { name: "Blue Archive", path: "/api/fun?feature=bluearchive" }
+        { name: "Lahelu Random", path: "/api/fun?feature=lahelu", desc: "Meme random dari Lahelu" },
+        { name: "Blue Archive", path: "/api/fun?feature=bluearchive&query=", desc: "Data karakter Blue Archive" }
     ],
-    downloader: [
-        { name: "TikTok DL", path: "/api/downloader?feature=tiktok" }
-    ]
+    // Nanti tinggal tambah kategori di sini, HTML bakal update sendiri!
 };
 
-// Endpoint Metadata biar HTML tau fiturnya apa aja
-app.get('/api/list', (req, res) => {
-    res.json(listFeatures); //
-});
+app.get('/api/list', (req, res) => res.json(listFeatures));
 
-// Middleware & Route lainnya...
-app.use(express.static('public')); //
-app.listen(3000, () => console.log("Sukses Terhubung!"));
+app.get('/api/fun', async (req, res) => {
+    const { feature, query, apikey } = req.query;
+    if (apikey !== 'yusz123') return res.status(403).json({ status: false, msg: "Apikey Salah!" });
+
+    try {
+        if (feature === 'lahelu') return res.json(await handleLahelu());
+        if (feature === 'bluearchive') return res.json(await handleBlueArchive(query));
+        res.status(400).json({ status: false, msg: "Fitur tidak ada" });
+    } catch (e) {
+        res.status(500).json({ status: false, msg: e.message });
+    }
+});
 
 module.exports = app;
