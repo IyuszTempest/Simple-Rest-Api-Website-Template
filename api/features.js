@@ -2,7 +2,7 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 const FormData = require('form-data');
-const ws = require('ws');
+const ws = require('ws'); b
 
 // --- DATABASE---
 const jjcosplayVideoUrls = [ 
