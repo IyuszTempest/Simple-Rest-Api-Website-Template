@@ -492,6 +492,32 @@ const handleCreart = async (prompt, imageBuffer = null) => {
     }
 };
 
+const handleCreatePrompt = async (prompt) => {
+    const payload = { content: prompt, op: 'op-prompt' };
+    const headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
+        'Origin': 'https://junia.ai',
+        'Referer': 'https://junia.ai/',
+        'Content-Type': 'application/json'
+    };
+
+    try {
+        const response = await axios.post('https://api-v1.junia.ai/api/free-tools/generate', payload, { headers });
+        const result = response.data?.result || response.data;
+        
+        if (!result) throw new Error('API tidak memberikan respon');
+
+        return {
+            status: "success",
+            author: "IyuszTempest",
+            credit: "Scrape by NB Script",
+            result: result
+        };
+    } catch (error) {
+        throw new Error("Gagal membuat prompt AI");
+    }
+};
+
 // ==========================================
 // KATEGORI FUN
 // ==========================================
@@ -584,6 +610,7 @@ module.exports = {
     handleLahelu,
     handlePresetAM,
     handleSub4Unlock,
-    handleAiLabs: aiLabs.generate,
-    handleCreart
+    handleCreatePrompt,
+    handleCreart,
+    handleAiLabs
 };
