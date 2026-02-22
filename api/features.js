@@ -1,6 +1,7 @@
 // api/features.js
 const axios = require('axios');
 const cheerio = require('cheerio');
+const FormData = require('form-data');
 
 // --- DATABASE---
 const jjcosplayVideoUrls = [ 
@@ -362,7 +363,9 @@ const presetsAM = [
 
 // ENDPOINT SCRAPE
 
-
+// ==========================================
+// KATEGORI ANIME
+// ==========================================
 const handleJjcosplay = async () => {
     const randomUrl = jjcosplayVideoUrls[Math.floor(Math.random() * jjcosplayVideoUrls.length)];
     return { 
@@ -406,6 +409,46 @@ const handleJikanmoe = async (query) => {
         throw new Error("Gagal mengambil data dari JikanMoe");
     }
 };
+// ==========================================
+// KATEGORI AI
+// ==========================================
+const aiLabs = {
+    api: {
+        base: 'https://text2video.aritek.app',
+        endpoints: { text2img: '/text2img', generate: '/txt2videov3', video: '/video' }
+    },
+    setup: {
+        cipher: 'hbMcgZLlzvghRlLbPcTbCpfcQKM0PcU0zhPcTlOFMxBZ1oLmruzlVp9remPgi0QWP0QW',
+        dec(text, shift) {
+            return [...text].map(c =>
+                /[a-z]/.test(c) ? String.fromCharCode((c.charCodeAt(0) - 97 - shift + 26) % 26 + 97) :
+                /[A-Z]/.test(c) ? String.fromCharCode((c.charCodeAt(0) - 65 - shift + 26) % 26 + 65) : c
+            ).join('');
+        }
+    },
+    // Fungsi Generate Utama
+    generate: async (prompt, type = 'image') => {
+        const token = aiLabs.setup.dec(aiLabs.setup.cipher, 3);
+        
+        if (type === 'image') {
+            const form = new FormData();
+            form.append('prompt', prompt);
+            form.append('token', token);
+            const res = await axios.post(aiLabs.api.base + aiLabs.api.endpoints.text2img, form, {
+                headers: { ...form.getHeaders(), 'user-agent': 'NB Android/1.0.0' }
+            });
+            return res.data;
+        } else {
+            // Logic Video (Simplified for API response)
+            const payload = { deviceID: "euphy" + Math.random(), isPremium: 1, prompt, used: [], versionCode: 59 };
+            const res = await axios.post(aiLabs.api.base + aiLabs.api.endpoints.generate, payload, {
+                headers: { authorization: token, 'user-agent': 'NB Android/1.0.0' }
+            });
+            return res.data; // Mengembalikan key untuk dicek manual atau via bot
+        }
+    }
+};
+
 
 // ==========================================
 // KATEGORI FUN
@@ -498,5 +541,6 @@ module.exports = {
     handleJikanmoe,
     handleLahelu,
     handlePresetAM,
-    handleSub4Unlock
+    handleSub4Unlock,
+    handleAiLabs: aiLabs.generate
 };
