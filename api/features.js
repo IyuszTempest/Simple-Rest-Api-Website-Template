@@ -518,6 +518,40 @@ const handleCreatePrompt = async (prompt) => {
     }
 };
 
+const handleDeepImg = async (prompt, style = 'realistic') => {
+    const deviceId = `dev-${Math.floor(Math.random() * 1000000)}`;
+    try {
+        const response = await axios.post('https://api-preview.chatgot.io/api/v1/deepimg/flux-1-dev', {
+            prompt: `${prompt} -style ${style.toLowerCase()}`,
+            size: "1024x1024",
+            device_id: deviceId
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Origin': 'https://deepimg.ai',
+                'Referer': 'https://deepimg.ai/',
+            }
+        });
+
+        if (response.data?.data?.images?.length > 0) {
+            return {
+                status: "success",
+                author: "IyuszTempest",
+                credit: "OwnBlox",
+                result: {
+                    url: response.data.data.images[0].url,
+                    prompt: prompt,
+                    style: style
+                }
+            };
+        } else {
+            throw new Error("Gagal mendapatkan gambar dari DeepImage.");
+        }
+    } catch (error) {
+        throw new Error(error.message || "Terjadi kesalahan pada API DeepImage.");
+    }
+};
+
 // ==========================================
 // KATEGORI FUN
 // ==========================================
@@ -612,5 +646,6 @@ module.exports = {
     handleSub4Unlock,
     handleCreatePrompt,
     handleCreart,
-    handleAiLabs
+    handleAiLabs,
+    handleDeepImg
 };
