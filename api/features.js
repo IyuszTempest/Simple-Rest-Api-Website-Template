@@ -646,6 +646,6 @@ module.exports = {
     handleSub4Unlock,
     handleCreatePrompt,
     handleCreart,
-    handleAiLabs,
+    handleAiLabs: aiLabs.generate,
     handleDeepImg
 };
