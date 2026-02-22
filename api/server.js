@@ -23,7 +23,8 @@ const listFeatures = {
         { name: "Wangy NSFW", path: "/api/nsfw?feature=wangy", desc: "Gambar waifu wangy random" }
     ],
     Tools: [
-        { name: "Preset AM", path: "/api/tools?feature=presetam", desc: "Kumpulan link preset AM random (XML/MB)" }
+        { name: "Preset AM", path: "/api/tools?feature=presetam", desc: "Kumpulan link preset AM random (XML/MB)" },
+        { name: "Sub4Unlock Skip", path: "/api/tools?feature=sub4unlock&query=", desc: "Lewati link sub4unlock secara instan" }
     ]
 };
 
@@ -90,6 +91,23 @@ app.get('/api/tools', checkApikey, async (req, res) => {
             default: return res.status(400).json({ status: false, msg: "Endpoint Tools tidak ditemukan" });
         }
     } catch (e) { res.status(500).json({ status: false, msg: e.message }); }
+});
+
+app.get('/api/tools', checkApikey, async (req, res) => {
+    const { feature, query } = req.query; // Gunakan query untuk menampung URL link
+    try {
+        switch (feature) {
+            case 'sub4unlock':
+                if (!query) return res.status(400).json({ msg: "Masukkan link sub4unlock!" });
+                return res.json(await features.handleSub4Unlock(query));
+            case 'presetam': 
+                return res.json(await features.handlePresetAM());
+            default: 
+                return res.status(400).json({ status: false, msg: "Endpoint Tools tidak ditemukan" });
+        }
+    } catch (e) { 
+        res.status(500).json({ status: false, msg: e.message }); 
+    }
 });
 
 // Export untuk Vercel
