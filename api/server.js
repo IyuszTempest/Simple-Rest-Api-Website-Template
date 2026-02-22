@@ -19,6 +19,7 @@ const listFeatures = {
         { name: "Creart AI", path: "/api/ai?feature=creart&query=", desc: "High Quality AI Image Generator" },
         { name: "Create Prompt", path: "/api/ai?feature=createprompt&query=", desc: "Buat prompt gambar yang detail secara otomatis" },
         { name: "DeepImage (Flux)", path: "/api/ai?feature=deepimg&query=&style=realistic", desc: "Generate gambar HD dengan style (Flux-1-Dev)" },
+        { name: "Live3D AI", path: "/api/ai?feature=live3d&query=&style=Anime", desc: "AI Image Generator (Support NSFW)" }
     ],
     Downloader: [],
     Fun: [
@@ -86,6 +87,10 @@ app.get('/api/ai', checkApikey, async (req, res) => {
             case 'deepimg':
                 if (!query) return res.status(400).json({ msg: "Prompt wajib diisi!" });
                 return res.json(await features.handleDeepImg(query, style || 'realistic'));
+            
+            case 'live3d':
+                if (!query) return res.status(400).json({ msg: "Masukkan prompt gambar!" });
+                return res.json(await features.handleLive3D(query, style || 'Anime'));
 
             default: 
                 return res.status(400).json({ status: false, msg: "Feature AI tidak ditemukan" });
