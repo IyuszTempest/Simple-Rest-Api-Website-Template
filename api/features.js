@@ -725,6 +725,65 @@ const handleAio = async (url) => {
     }
 };
 
+const handleTikTok = async (tiktokUrl) => {
+    try {
+        // 1. Get Token & Cookie
+        const initialRes = await axios.get('https://tmate.cc/id', {
+            headers: { 'User-Agent': 'Mozilla/5.0' }
+        });
+        const cookie = initialRes.headers['set-cookie']?.map(c => c.split(';')[0]).join('; ') || '';
+        const tokenMatch = initialRes.data.match(/<input[^>]+name="token"[^>]+value="([^"]+)"/i);
+        const token = tokenMatch?.[1];
+
+        if (!token) throw new Error('Gagal ambil token TMate');
+
+        // 2. Action Download
+        const params = new URLSearchParams();
+        params.append('url', tiktokUrl);
+        params.append('token', token);
+
+        const res = await axios.post('https://tmate.cc/action', params.toString(), {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'User-Agent': 'Mozilla/5.0',
+                'Referer': 'https://tmate.cc/id',
+                'Cookie': cookie
+            }
+        });
+
+        const html = res.data?.data;
+        if (!html) throw new Error('Data TikTok tidak ditemukan');
+
+        // 3. Parsing Data
+        const titleMatch = html.match(/<h1[^>]*>(.*?)<\/h1>/i);
+        const title = titleMatch?.[1]?.replace(/<[^>]+>/g, '').trim() || 'Tanpa Judul';
+
+        const matches = [...html.matchAll(/<a[^>]+href="(https:\/\/[^"]+)"[^>]*>\s*<span>\s*<span>([^<]*)<\/span><\/span><\/a>/gi)];
+        const links = matches.map(([_, href, label]) => ({ href, label: label.trim() }));
+
+        const video = links.find(v => /download without watermark/i.test(v.label))?.href;
+        const audio = links.find(v => /download mp3 audio/i.test(v.label))?.href;
+        
+        // Cek Slide Foto
+        const imageMatches = [...html.matchAll(/<img[^>]+src="(https:\/\/tikcdn\.app\/a\/images\/[^"]+)"/gi)];
+        const images = [...new Set(imageMatches.map(m => m[1]))];
+
+        return {
+            status: "success",
+            author: "IyuszTempest",
+            result: {
+                type: images.length > 0 ? 'image' : 'video',
+                title,
+                video: video || null,
+                audio: audio || null,
+                images: images.length > 0 ? images : null
+            }
+        };
+    } catch (error) {
+        throw new Error(`TikTok Scraper Error: ${error.message}`);
+    }
+};
+
 // ==========================================
 // KATEGORI FUN
 // ==========================================
@@ -824,5 +883,6 @@ module.exports = {
     handleLive3D,
     handleF2Anime,
     handleF2AnimeFromUrl,
-    handleAio
+    handleAio,
+    handleTikTok
 };
