@@ -360,6 +360,15 @@ const presetsAM = [
             { UrlMb: 'https://alight.link/xxKnbdJx5p7GPjWo7', UrlXml: '-', Sound: '-' }
 ];
 
+// --- Helper Translate ---
+async function translateToEn(text) {
+    try {
+        const res = await axios.get("https://translate.googleapis.com/translate_a/single", {
+            params: { client: "gtx", sl: "auto", tl: "en", dt: "t", q: text }
+        });
+        return res.data[0][0][0];
+    } catch { return text; }
+}
 
 // ENDPOINT SCRAPE
 
@@ -449,6 +458,39 @@ const aiLabs = {
     }
 };
 
+const handleCreart = async (prompt, imageBuffer = null) => {
+    try {
+        const translated = await translateToEn(prompt);
+        const form = new FormData();
+        form.append("prompt", translated);
+        form.append("aspect_ratio", "4x5");
+        form.append("guidance_scale", "9.5");
+        form.append("controlnet_conditioning_scale", "0.5");
+
+        let endpoint = "text2image";
+        if (imageBuffer) {
+            endpoint = "image2image";
+            form.append("input_image_type", "image2image");
+            form.append("image_file", imageBuffer, "image.png");
+        } else {
+            form.append("input_image_type", "text2image");
+        }
+
+        const response = await axios.post(`https://api.creartai.com/api/v2/${endpoint}`, form, {
+            headers: form.getHeaders(),
+            responseType: "arraybuffer"
+        });
+
+        // Kita balikkan dalam bentuk base64 agar aman di JSON
+        return {
+            status: "success",
+            author: "IyuszTempest",
+            result: Buffer.from(response.data).toString('base64')
+        };
+    } catch (err) {
+        throw new Error(err.message);
+    }
+};
 
 // ==========================================
 // KATEGORI FUN
@@ -542,5 +584,6 @@ module.exports = {
     handleLahelu,
     handlePresetAM,
     handleSub4Unlock,
-    handleAiLabs: aiLabs.generate
+    handleAiLabs: aiLabs.generate,
+    handleCreart
 };
