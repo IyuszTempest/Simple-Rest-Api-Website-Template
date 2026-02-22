@@ -9,7 +9,6 @@ app.use(express.json());
 // Dashboard HTML kamu akan otomatis membaca list ini
 const listFeatures = {
     Anime: [
-        { name: "Blue Archive", path: "/api/anime?feature=bluearchive&query=", desc: "Data karakter Blue Archive" },
         { name: "Euphy Random", path: "/api/anime?feature=euphy", desc: "Gambar Euphylia Magenta random" },
         { name: "JJ Cosplay", path: "/api/anime?feature=jjcosplay", desc: "Video cosplay random" },
         { name: "Livechart Search", path: "/api/anime?feature=livechart&query=", desc: "Cari anime di Livechart.me" },
