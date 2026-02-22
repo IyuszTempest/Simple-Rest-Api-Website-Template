@@ -658,6 +658,17 @@ const handleF2Anime = async (imageBuffer) => {
     }
 };
 
+const handleF2AnimeFromUrl = async (imageUrl) => {
+    try {
+        const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+        const buffer = Buffer.from(response.data);
+        // Panggil fungsi handleF2Anime yang asli pakai buffer hasil download
+        return await handleF2Anime(buffer); 
+    } catch (err) {
+        throw new Error("Gagal mengambil gambar dari URL: " + err.message);
+    }
+};
+
 // ==========================================
 // KATEGORI FUN
 // ==========================================
