@@ -1,77 +1,79 @@
 // api/server.js
 const express = require('express');
 const app = express();
-const { handleLahelu, handleBlueArchive } = require('./features');
+const features = require('./features'); // Mengambil semua fungsi dari features.js
 
 app.use(express.json());
 
-// DAFTAR MENU OTOMATIS
+// --- DAFTAR MENU OTOMATIS ---
+// Dashboard HTML kamu akan otomatis membaca list ini
 const listFeatures = {
-    //kategori Anime
     Anime: [
-        { name: "Blue Archive", path: "/api/fun?feature=bluearchive&query=", desc: "Data karakter Blue Archive" },
+        { name: "Blue Archive", path: "/api/anime?feature=bluearchive&query=", desc: "Data karakter Blue Archive" },
         { name: "Euphy Random", path: "/api/anime?feature=euphy", desc: "Gambar Euphylia Magenta random" },
         { name: "JJ Cosplay", path: "/api/anime?feature=jjcosplay", desc: "Video cosplay random" },
         { name: "Livechart Search", path: "/api/anime?feature=livechart&query=", desc: "Cari anime di Livechart.me" },
         { name: "Jikan Moe", path: "/api/anime?feature=jikanmoe&query=", desc: "Cari anime via Jikan API" }
-        ],
-
-    //Kategori AI
-    AI: [
-        ],
-
-    //Kategori Downloader
-    Downloader: [
-        ],
-
-    //Kategori Fun
+    ],
+    AI: [],
+    Downloader: [],
     Fun: [
         { name: "Lahelu Random", path: "/api/fun?feature=lahelu", desc: "Meme random dari Lahelu" }
     ],
-
-    //Kategori NSFW
     Nsfw: [
         { name: "Wangy NSFW", path: "/api/anime?feature=wangy", desc: "Gambar waifu wangy random" }
-        ],
-
-    //Kategori Tools
-    Tools: [
-        ]
-
+    ],
+    Tools: []
 };
 
+// --- ENDPOINT LIST ---
 app.get('/api/list', (req, res) => res.json(listFeatures));
 
+// --- CATEGORY: FUN ---
 app.get('/api/fun', async (req, res) => {
     const { feature, query, apikey } = req.query;
     if (apikey !== 'yusz123') return res.status(403).json({ status: false, msg: "Apikey Salah!" });
 
     try {
-        if (feature === 'lahelu') return res.json(await handleLahelu());
-        if (feature === 'bluearchive') return res.json(await handleBlueArchive(query));
-        res.status(400).json({ status: false, msg: "Endpointnya ga ada" });
-    app.get('/api/list', (req, res) => res.json(listFeatures));
-
-app.get('/api/anime', async (req, res) => {
-    const { feature, query, apikey } = req.query;
-    if (apikey !== 'yusz123') return res.status(403).json({ status: false, msg: "Apikey Salah!" });
-
-    try {
         switch (feature) {
-            case 'euphy': return res.json(await features.handleEuphy());
-            case 'jjcosplay': return res.json(await features.handleJjcosplay());
-            case 'wangy': return res.json(await features.handleWangy());
-            case 'livechart': 
-                if (!query) return res.status(400).json({ msg: "Query wajib diisi!" });
-                return res.json({ status: "success", author: "IyuszTempest", data: await features.handleLivechart(query) });
-            case 'jikanmoe':
-                if (!query) return res.status(400).json({ msg: "Query wajib diisi!" });
-                return res.json({ status: "success", author: "IyuszTempest", data: await features.handleJikanmoe(query) });
-            default: return res.status(400).json({ msg: "Fitur tidak ditemukan" });
+            case 'lahelu': 
+                return res.json(await features.handleLahelu());
+            case 'bluearchive': 
+                return res.json(await features.handleBlueArchive(query));
+            default: 
+                return res.status(400).json({ status: false, msg: "Feature Fun tidak ditemukan" });
         }
     } catch (e) {
         res.status(500).json({ status: false, msg: e.message });
     }
 });
 
+// --- CATEGORY: ANIME ---
+app.get('/api/anime', async (req, res) => {
+    const { feature, query, apikey } = req.query;
+    if (apikey !== 'yusz123') return res.status(403).json({ status: false, msg: "Apikey Salah!" });
+
+    try {
+        switch (feature) {
+            case 'euphy': 
+                return res.json(await features.handleEuphy());
+            case 'jjcosplay': 
+                return res.json(await features.handleJjcosplay());
+            case 'wangy': 
+                return res.json(await features.handleWangy());
+            case 'livechart': 
+                if (!query) return res.status(400).json({ msg: "Query wajib diisi!" });
+                return res.json({ status: "success", author: "IyuszTempest", data: await features.handleLivechart(query) });
+            case 'jikanmoe':
+                if (!query) return res.status(400).json({ msg: "Query wajib diisi!" });
+                return res.json({ status: "success", author: "IyuszTempest", data: await features.handleJikanmoe(query) });
+            default: 
+                return res.status(400).json({ status: false, msg: "Feature Anime tidak ditemukan" });
+        }
+    } catch (e) {
+        res.status(500).json({ status: false, msg: e.message });
+    }
+});
+
+// Export untuk Vercel
 module.exports = app;
