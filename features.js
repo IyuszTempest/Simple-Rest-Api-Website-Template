@@ -1,28 +1,38 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
-
-// Fungsi Scraper Anime (Contoh: Otakudesu)
-const scrapeAnime = async () => {
+// Fungsi Scraper Lahelu
+const handleLahelu = async () => {
     try {
-        const { data } = await axios.get('https://otakudesu.cloud/venz/');
-        const $ = cheerio.load(data);
-        const anime = [];
-        $('.venz ul li').each((i, el) => {
-            anime.push({
-                title: $(el).find('h2').text().trim(),
-                status: $(el).find('.epz').text().trim(),
-                link: $(el).find('a').attr('href')
-            });
-        });
-        return anime;
-    } catch (e) {
-        return { error: "Gagal ambil data anime" };
+        const randomCursor = Math.floor(Math.random() * 50) + 1;
+        const laheluApiUrl = `https://lahelu.com/api/post/get-recommendations?field=5&cursor=${randomCursor}`;
+        const response = await fetch(laheluApiUrl);
+        const data = await response.json();
+
+        const postsWithMedia = data.postInfos.filter(post =>
+            post.content && post.content.some(item => item.type === 1 || item.type === 4)
+        );
+
+        if (postsWithMedia.length === 0) {
+            throw new Error("Tidak ada media ditemukan");
+        }
+
+        const randomIndex = Math.floor(Math.random() * postsWithMedia.length);
+        const randomPost = postsWithMedia[randomIndex];
+
+        const title = randomPost.title;
+        const mediaItem = randomPost.content.find(item => item.type === 1 || item.type === 4);
+        
+        return {
+            status: "success",
+            message: title,
+            author: "IyuszTempest",
+            media: {
+                type: "video",
+                url: mediaItem.value
+            }
+        };
+    } catch (error) {
+        throw error;
     }
 };
 
-// Fungsi AI Simpel (Contoh: Simsimi atau API lain)
-const chatAI = async (query) => {
-    return { response: `Euphy menjawab: Kamu tadi tanya "${query}" ya?` };
-};
 
-module.exports = { scrapeAnime, chatAI };
+module.exports = { handleLahelu };
