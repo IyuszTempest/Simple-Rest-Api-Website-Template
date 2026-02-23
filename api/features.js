@@ -931,9 +931,6 @@ const handleSub4Unlock = async (url) => {
     }
 };
 
-
-const cheerio = require('cheerio'); // Pastikan sudah install cheerio ya
-
 const handleHappymod = async (keyword) => {
     try {
         if (!keyword) throw new Error("Keyword wajib diisi");
