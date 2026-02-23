@@ -3,48 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Euphy Api - Dashboard</title>
+    <title>Euphy Api - All Feature</title>
     
-    <link rel="icon" type="image/jpeg" href="https://files.catbox.moe/pm0mmf.jpg">
+    <link rel="icon" type="image/jpeg" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXHFJP9VXUiUz_U1QVB_9ZLyYDGQ5flkJXBFTOoSaDOaIgkv5X3I8nyxo&s=10">
     <meta property="og:title" content="Euphy Api by IyuszTempest" />
-    <meta property="og:description" content="Selamat datang di website API untuk kebutuhan bot WhatsApp dan lainnya." />
-    <meta property="og:image" content="https://file.idnet.my.id/api/preview.php?file=mzf5qw0n.jpg" />
+    <meta property="og:description" content="APIkey Dashboard made in Indonesia" />
     
-    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="bg-decoration"></div>
+    <div class="anime-bg-character"></div>
+    <div class="glass-overlay"></div>
     
     <div class="container">
         <header>
-            <div class="logo-area">
-                <span class="jp-text">エウフィ・API</span>
-                <h1>✨ Euphy Api</h1>
+            <div class="ios-status-bar">
+                <span class="jp-text">iOS エディション</span>
+                <h1>Euphy Api</h1>
             </div>
-            <p class="subtitle">Creative & Simple API Dashboard</p>
             
-            <div class="info-pills">
-                <div class="pill"><i class="fas fa-circle status-dot"></i> Status: Online</div>
-                <div class="pill"><i class="fas fa-key"></i> Key: <code>yusz123</code></div>
+            <div class="ios-info-pills">
+                <div class="pill blur-effect"><i class="fas fa-signal"></i> Online</div>
+                <div class="pill blur-effect"><i class="fas fa-lock"></i> <code>yusz123</code></div>
             </div>
         </header>
 
         <main id="menu-container">
-            <div class="loading-state">
-                <div class="loading-icon"></div>
-                <p>Loading menu...</p>
+            <div class="ios-loading">
+                <div class="ios-spinner"></div>
             </div>
         </main>
 
         <footer>
-            <div class="footer-content">
-                <p>&copy; 2026 <b>IyuszTempest</b></p>
-                <div class="footer-links">
-                    <a href="https://github.com/IyuszTempest" target="_blank"><i class="fab fa-github"></i></a>
-                </div>
-            </div>
+            <p>&copy; 2026 <b>IyuszTempest</b></p>
         </footer>
     </div>
 
@@ -58,22 +51,24 @@
 
                 for (const [category, items] of Object.entries(data)) {
                     let section = document.createElement('section');
-                    section.className = 'category-group';
+                    section.className = 'ios-section';
                     
-                    let title = `<h2 class="category-header"><span>${category}</span></h2>`;
-                    let grid = `<div class="api-grid">`;
+                    let title = `<h2 class="ios-header">${category}</h2>`;
+                    let grid = `<div class="ios-grid">`;
                     
                     items.forEach(item => {
                         const separator = item.path.includes('?') ? '&' : '?';
                         const fullPath = `${item.path}${separator}apikey=yusz123`;
                         
                         grid += `
-                            <div class="api-card">
-                                <div class="card-tag">${category}</div>
-                                <h3>${item.name}</h3>
-                                <p>${item.desc}</p>
-                                <a href="${fullPath}" target="_blank" class="btn-api">
-                                    Execute <i class="fas fa-arrow-right"></i>
+                            <div class="ios-card blur-effect">
+                                <div class="card-icon"><i class="fas fa-cube"></i></div>
+                                <div class="card-content">
+                                    <h3>${item.name}</h3>
+                                    <p>${item.desc}</p>
+                                </div>
+                                <a href="${fullPath}" target="_blank" class="ios-arrow">
+                                    <i class="fas fa-chevron-right"></i>
                                 </a>
                             </div>`;
                     });
@@ -83,7 +78,7 @@
                     container.appendChild(section);
                 }
             } catch (e) {
-                document.getElementById('menu-container').innerHTML = `<div class="error-box">Gagal memuat data.</div>`;
+                document.getElementById('menu-container').innerHTML = `<div class="ios-error">Gagal memuat sistem.</div>`;
             }
         }
         loadMenu();
