@@ -4,13 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Euphy Api - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="overlay"></div>
     <div class="container">
-        <h1>✨ Euphy Api Dashboard</h1>
-        <p>Apikey Simple.</p>
-        <div id="menu-container">Lagi Loading, sabar ya...</div>
+        <header>
+            <h1>✨ Euphy Api</h1>
+            <p>Simple Dashboard for Your API Needs</p>
+            <div class="status-bar">
+                <span>Status: <b style="color: #00ff88;">Online</b></span> | 
+                <span>Apikey: <code class="apikey-tag">yusz123</code></span>
+            </div>
+        </header>
+
+        <div id="menu-container">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Mencari Waifu... eh, memuat menu...</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 IyuszTempest | Powered by Euphylia Magenta</p>
+        </footer>
     </div>
 
     <script>
@@ -22,20 +40,38 @@
                 container.innerHTML = '';
 
                 for (const [category, items] of Object.entries(data)) {
-                    let section = `<div class="category"><h2>「${category.toUpperCase()}」</h2>`;
+                    let section = document.createElement('div');
+                    section.className = 'category-section';
+                    
+                    let title = `<h2 class="category-title"><span>#</span> ${category.toUpperCase()}</h2>`;
+                    let grid = `<div class="menu-grid">`;
+                    
                     items.forEach(item => {
-                        section += `
+                        // Perbaikan link: ganti & jadi ? kalau pathnya belum ada ?
+                        const separator = item.path.includes('?') ? '&' : '?';
+                        const fullPath = `${item.path}${separator}apikey=yusz123`;
+                        
+                        grid += `
                             <div class="card">
-                                <h3>${item.name}</h3>
-                                <p>${item.desc}</p>
-                                <a href="${item.path}&apikey=yusz123" target="_blank">Cek Endpoint</a>
+                                <div class="card-body">
+                                    <h3>${item.name}</h3>
+                                    <p>${item.desc}</p>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="${fullPath}" target="_blank" class="btn-check">Cek Link</a>
+                                </div>
                             </div>`;
                     });
-                    section += `</div>`;
-                    container.innerHTML += section;
+                    
+                    grid += `</div>`;
+                    section.innerHTML = title + grid;
+                    container.appendChild(section);
                 }
             } catch (e) {
-                document.getElementById('menu-container').innerText = "Gagal memuat menu.";
+                document.getElementById('menu-container').innerHTML = `
+                    <div class="error-msg">
+                        <p>❌ Gagal memuat menu. Pastikan server berjalan!</p>
+                    </div>`;
             }
         }
         loadMenu();
