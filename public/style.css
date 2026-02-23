@@ -13,21 +13,22 @@ body {
     overflow-x: hidden;
 }
 
-/* Character PNG di Latar Belakang */
+/* Character PNG di Latar Belakang - Full Screen Edition */
 .anime-character {
     position: fixed;
-    bottom: -30px;
-    right: -20px;
-    width: 400px;
-    height: 550px;
-    background-image: url('https://files.catbox.moe/pm0mmf.jpg'); /* Karakter PNG lu */
-    background-size: contain;
+    top: 0;
+    left: 0;
+    width: 100vw; /* Mengikuti lebar layar penuh */
+    height: 100vh; /* Mengikuti tinggi layar penuh */
+    background-image: url('https://images-ng.pixai.art/images/orig/504f7f6e-e8d2-44ec-a7d9-87bdc736b6b3'); 
+    background-size: cover; /* Menutup seluruh layar dengan proporsional */
     background-repeat: no-repeat;
-    background-position: bottom right;
-    z-index: -1;
-    opacity: 0.2; /* Dibuat samar biar tetep rapi */
+    background-position: center; /* Gambar fokus di tengah */
+    z-index: -1; /* Tetap di belakang konten */
+    opacity: 0.15; /* Dibuat lebih samar lagi agar teks dashboard tetap terbaca jelas */
     pointer-events: none;
 }
+
 
 .container {
     max-width: 1100px;
