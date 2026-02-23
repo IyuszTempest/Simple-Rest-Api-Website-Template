@@ -1,185 +1,100 @@
-/* public/style.css */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-
 :root {
-    --ios-bg: #f2f2f7;
-    --ios-accent: #ff2d55; /* Karakteristik Euphy & iOS Pink */
-    --glass: rgba(255, 255, 255, 0.7);
-    --text-primary: #000000;
-    --text-secondary: #8e8e93;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    --primary: #ff4d94;
+    --bg: #f8f9fa;
+    --text: #333;
+    --border: #ececec;
 }
 
 body {
-    background-color: var(--ios-bg);
-    font-family: 'SF Pro Display', 'Poppins', sans-serif;
-    color: var(--text-primary);
-    min-height: 100vh;
+    background-color: var(--bg);
+    font-family: 'Poppins', sans-serif;
+    color: var(--text);
+    margin: 0;
     overflow-x: hidden;
 }
 
-/* Latar Belakang Anime PNG */
-.anime-bg-character {
+/* Character PNG di Latar Belakang */
+.anime-character {
     position: fixed;
-    bottom: -20px;
-    right: -10px;
-    width: 450px;
-    height: 600px;
-    background-image: url('https://images-ng.pixai.art/images/orig/504f7f6e-e8d2-44ec-a7d9-87bdc736b6b3'); /* Ganti link ini dengan PNG transparan pilihanmu */
+    bottom: -30px;
+    right: -20px;
+    width: 400px;
+    height: 550px;
+    background-image: url('https://files.catbox.moe/pm0mmf.jpg'); /* Karakter PNG lu */
     background-size: contain;
     background-repeat: no-repeat;
     background-position: bottom right;
     z-index: -1;
-    opacity: 0.2; /* Dibuat samar agar tidak mengganggu bacaan */
-}
-
-.glass-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    backdrop-filter: blur(5px);
-    z-index: -2;
+    opacity: 0.2; /* Dibuat samar biar tetep rapi */
+    pointer-events: none;
 }
 
 .container {
-    max-width: 900px;
+    max-width: 1100px;
     margin: 0 auto;
-    padding: 40px 20px;
+    padding: 50px 20px;
 }
 
-/* Header Style iOS */
 header {
-    margin-bottom: 40px;
-    padding-top: 20px;
-}
-
-header h1 {
-    font-size: 2.2rem;
-    font-weight: 600;
-    letter-spacing: -1px;
-}
-
-.jp-text {
-    font-size: 0.7rem;
-    color: var(--ios-accent);
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.ios-info-pills {
-    display: flex;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.blur-effect {
-    background: var(--glass);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.pill {
-    padding: 6px 15px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
-
-/* iOS Section & Cards */
-.ios-section {
-    margin-bottom: 30px;
-}
-
-.ios-header {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-    margin-left: 15px;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.ios-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 1px; /* Efek separator tipis */
-    background: rgba(200, 200, 200, 0.2);
-    border-radius: 15px;
-    overflow: hidden;
-}
-
-.ios-card {
-    display: flex;
-    align-items: center;
-    padding: 15px 20px;
-    transition: background 0.2s;
-    text-decoration: none;
-    color: inherit;
-}
-
-.ios-card:active {
-    background: rgba(0, 0, 0, 0.05);
-}
-
-.card-icon {
-    width: 35px;
-    height: 35px;
-    background: var(--ios-accent);
-    color: white;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    margin-right: 15px;
-}
-
-.card-content {
-    flex: 1;
-}
-
-.card-content h3 {
-    font-size: 1rem;
-    font-weight: 500;
-}
-
-.card-content p {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-}
-
-.ios-arrow {
-    color: #c7c7cc;
-    font-size: 0.9rem;
-}
-
-/* Footer */
-footer {
     text-align: center;
-    padding: 40px 0;
-    color: var(--text-secondary);
-    font-size: 0.8rem;
+    margin-bottom: 60px;
 }
 
-/* Spinner iOS Style */
-.ios-spinner {
-    width: 30px;
-    height: 30px;
-    border: 3px solid rgba(0,0,0,0.1);
-    border-top: 3px solid var(--ios-accent);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 40px auto;
+.jp-tag { color: var(--primary); font-size: 0.7rem; font-weight: bold; letter-spacing: 2px; }
+header h1 { font-size: 2.5rem; margin: 10px 0; }
+.info-row { display: flex; justify-content: center; gap: 10px; margin-top: 20px; }
+.badge { background: white; padding: 6px 15px; border-radius: 50px; font-size: 0.8rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+.status i { color: #00ff88; font-size: 0.6rem; margin-right: 5px; }
+
+/* Grid & Cards ala Gambar 2 */
+.cat-title {
+    text-align: center;
+    font-size: 1.2rem;
+    margin: 40px 0 30px;
+    position: relative;
 }
 
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.cat-title::after {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 2px;
+    background: var(--border);
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.api-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.api-card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid var(--border);
+    transition: 0.3s;
+}
+
+.api-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+    border-color: var(--primary);
+}
+
+.tag-label { font-size: 0.6rem; color: var(--primary); font-weight: bold; text-transform: uppercase; }
+.api-card h3 { margin: 10px 0; font-size: 1.1rem; }
+.api-card p { font-size: 0.8rem; color: #777; margin-bottom: 25px; min-height: 40px; }
+.api-card a { 
+    text-decoration: none; 
+    color: var(--text); 
+    font-size: 0.8rem; 
+    font-weight: bold; 
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 3px;
+}
+
+footer { text-align: center; margin-top: 80px; color: #bbb; font-size: 0.8rem; }
