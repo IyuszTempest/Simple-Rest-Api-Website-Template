@@ -1015,7 +1015,8 @@ module.exports = {
     handleTikTok,
     handleHappymod,
     handleYtmp3,
-    // --- Kategori Waifu ---
+
+    // --- Kategori Waifu & Husbu ---
     handleElaina: () => getImg('elaina'),
     handleKurumi: () => getImg('kurumi'),
     handleNezuko: () => getImg('nezuko'),
@@ -1024,37 +1025,29 @@ module.exports = {
     handleSakura: () => getImg('sakura'),
     handleHinata: () => getImg('hinata'),
     handleMegumin: () => getImg('megumin'),
-    handleRem: () => getImg('rem'), // Asumsi file rem.json tersedia
-    
-    // --- Kategori Husbu ---
-    handleItachi: () => getImg('itachi'),
-    handleSasuke: () => getImg('sasuke'),
-    handleMinato: () => getImg('minato'),
-    handleMikey: () => getImg('mikey'),
-    handleKeneki: () => getImg('keneki'),
-    
-    // --- Kategori Spesial ---
-    handleWaifu: () => getImg('waifu'),
-    handleHusbu: () => getImg('husbu'),
-    handleLoli: () => getImg('loli'),
-    handleNekonime: () => getImg('nekonime'),
-
-    handleMadara: () => getImg('madara'),
-    handleMinato: () => getImg('minato'),
-    handleKakasih: () => getImg('kakasih'),
-    handleTsunade: () => getImg('tsunade'),
-    handleHinata: () => getImg('hinata'),
-    
-    // --- Waifu & Husbu Addition ---
+    handleRem: () => getImg('rem'),
     handleAsuna: () => getImg('asuna'),
     handleEmilia: () => getImg('emilia'),
     handleInori: () => getImg('inori'),
     handleToukachan: () => getImg('toukachan'),
     handleYumeko: () => getImg('yumeko'),
-    handleRem: () => getImg('rem'),
     
-    // --- Miscellaneous Anime ---
+    // --- Kategori Shinobi & Husbu ---
+    handleItachi: () => getImg('itachi'),
+    handleSasuke: () => getImg('sasuke'),
+    handleMinato: () => getImg('minato'),
+    handleMikey: () => getImg('mikey'),
+    handleKeneki: () => getImg('keneki'),
+    handleMadara: () => getImg('madara'),
+    handleKakasih: () => getImg('kakasih'),
+    handleTsunade: () => getImg('tsunade'),
+    
+    // --- Kategori Spesial & Misc ---
+    handleWaifu: () => getImg('waifu'),
+    handleHusbu: () => getImg('husbu'),
+    handleLoli: () => getImg('loli'),
+    handleNekonime: () => getImg('nekonime'),
     handleDoraemon: () => getImg('doraemon'),
     handlePokemon: () => getImg('pokemon'),
-    handleNeko2: () => getImg('neko2'),
+    handleNeko2: () => getImg('neko2')
 };
