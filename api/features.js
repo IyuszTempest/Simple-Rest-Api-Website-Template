@@ -436,13 +436,12 @@ const handleJikanmoe = async (query) => {
     }
 };
 
-const getImg = async (fileName) => {
+const getImg = async (type) => {
     try {
-        const res = await axios.get(`https://raw.githubusercontent.com/Leoo7z/Image-Source/main/image/${fileName}.json`);
-        const data = res.data;
+        const { data } = await axios.get(`https://raw.githubusercontent.com/Alpinnn/Database/main/anime/${type}.json`);
         return data[Math.floor(Math.random() * data.length)];
-    } catch {
-        return "https://i.ibb.co/37456Ym/download.png"; // Fallback kalau error
+    } catch (e) {
+        return "https://telegra.ph/file/default-error.jpg"; // Fallback jika link mati
     }
 };
 
