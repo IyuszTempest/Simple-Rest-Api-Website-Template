@@ -13,7 +13,7 @@ const listFeatures = {
         { name: "JJ Cosplay", path: "/api/anime?feature=jjcosplay", desc: "Video cosplay random" },
         { name: "Livechart Search", path: "/api/anime?feature=livechart&query=", desc: "Cari anime di Livechart.me" },
         { name: "Jikan Moe", path: "/api/anime?feature=jikanmoe&query=", desc: "Cari anime via Jikan API" },
-        { name: "Elaina", path: "/api/anime/elaina?apikey=", desc: "Random Image Elaina (Favorit Yus)" },
+        { name: "Elaina", path: "/api/anime/elaina", desc: "Random Image Elaina" },
         { name: "Kurumi", path: "/api/anime/kurumi", desc: "Random Image Tokisaki Kurumi" },
         { name: "Megumin", path: "/api/anime/megumin", desc: "Random Image Megumin" },
         { name: "Sagiri", path: "/api/anime/sagiri", desc: "Random Image Izumi Sagiri" },
