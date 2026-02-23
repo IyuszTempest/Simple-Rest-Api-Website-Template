@@ -794,6 +794,62 @@ const handleTikTok = async (tiktokUrl) => {
     }
 };
 
+const handleYtmp3 = async (youtubeUrl) => {
+    try {
+        // Regex yang lebih kuat untuk menangkap Video ID
+        const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+        const match = youtubeUrl.match(regex);
+        const videoId = match ? match[1] : null;
+
+        if (!videoId) throw new Error("Video ID tidak ditemukan. Pastikan URL YouTube valid!");
+
+        const ajaxUrl = 'https://ssyoutube.online/wp-admin/admin-ajax.php';
+
+        // Step 1: Ambil info video dan raw link
+        const step1Payload = new URLSearchParams({
+            action: 'get_mp3_yt_option',
+            videoId: videoId
+        });
+
+        const res1 = await axios.post(ajaxUrl, step1Payload, {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        });
+
+        if (!res1.data.success || !res1.data.data.link) {
+            throw new Error("Gagal mendapatkan raw link MP3.");
+        }
+
+        const { title, link: rawMp3Link, thumbnail } = res1.data.data;
+
+        // Step 2: Ambil Proxied URL agar link bisa di-download langsung
+        const step2Payload = new URLSearchParams({
+            action: 'mp3_yt_generic_proxy_ajax',
+            targetUrl: rawMp3Link
+        });
+
+        const res2 = await axios.post(ajaxUrl, step2Payload, {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        });
+
+        if (!res2.data.success || !res2.data.data.proxiedUrl) {
+            throw new Error("Gagal melakukan proxy link audio.");
+        }
+
+        return {
+            status: "success",
+            author: "IyuszTempest",
+            result: {
+                title: title,
+                videoId: videoId,
+                thumbnail: thumbnail,
+                download_url: res2.data.data.proxiedUrl
+            }
+        };
+    } catch (error) {
+        throw new Error(`YT-MP3 Error: ${error.message}`);
+    }
+};
+
 // ==========================================
 // KATEGORI FUN
 // ==========================================
@@ -999,6 +1055,7 @@ module.exports = {
     handleDoraemon: () => getImg('doraemon'),
     handlePokemon: () => getImg('pokemon'),
     handleNeko2: () => getImg('neko2'),
-    handleHappymod
+    handleHappymod,
+    handleYtmp3
 
 };
