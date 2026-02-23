@@ -41,7 +41,8 @@ const listFeatures = {
     ],
     Downloader: [
         { name: "AIO Downloader (IG/FB/TT)", path: "/api/download?feature=aio&url=", desc: "Download media dari berbagai sosial media" },
-        { name: "TikTok Downloader", path: "/api/download?feature=tiktok&url=", desc: "Download Video (No WM) atau Slide Foto TikTok" }
+        { name: "TikTok Downloader", path: "/api/download?feature=tiktok&url=", desc: "Download Video (No WM) atau Slide Foto TikTok" },
+        { name: "YouTube MP3", path: "/api/download?feature=ytmp3&url=", desc: "Download lagu dari YouTube" }
     ],
     Fun: [
         { name: "Lahelu Random", path: "/api/fun?feature=lahelu", desc: "Meme random dari Lahelu" }
@@ -161,6 +162,9 @@ app.get('/api/download', checkApikey, async (req, res) => {
             case 'tiktok':
                 if (!url) return res.status(400).json({ msg: "Link TikTok-nya mana Senpai?" });
                 return res.json(await features.handleTikTok(url));
+            case 'ytmp3':
+                if (!url) return res.status(400).json({ msg: "Masukkan link YouTube-nya!" });
+                return res.json(await features.handleYtmp3(url));
             default:
                 return res.status(400).json({ status: false, msg: "Feature Downloader tidak ditemukan" });
         }
