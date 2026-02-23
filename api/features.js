@@ -1013,6 +1013,8 @@ module.exports = {
     handleF2AnimeFromUrl,
     handleAio,
     handleTikTok,
+    handleHappymod,
+    handleYtmp3,
     // --- Kategori Waifu ---
     handleElaina: () => getImg('elaina'),
     handleKurumi: () => getImg('kurumi'),
@@ -1055,7 +1057,4 @@ module.exports = {
     handleDoraemon: () => getImg('doraemon'),
     handlePokemon: () => getImg('pokemon'),
     handleNeko2: () => getImg('neko2'),
-    handleHappymod,
-    handleYtmp3
-
 };
