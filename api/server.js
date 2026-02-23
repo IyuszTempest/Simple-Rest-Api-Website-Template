@@ -13,7 +13,7 @@ const listFeatures = {
         { name: "JJ Cosplay", path: "/api/anime?feature=jjcosplay", desc: "Video cosplay random" },
         { name: "Livechart Search", path: "/api/anime?feature=livechart&query=", desc: "Cari anime di Livechart.me" },
         { name: "Jikan Moe", path: "/api/anime?feature=jikanmoe&query=", desc: "Cari anime via Jikan API" },
-        { name: "Elaina", path: "/api/anime/elaina", desc: "Random Image Elaina (Favorit Yus)" },
+        { name: "Elaina", path: "/api/anime/elaina?apikey=", desc: "Random Image Elaina (Favorit Yus)" },
         { name: "Kurumi", path: "/api/anime/kurumi", desc: "Random Image Tokisaki Kurumi" },
         { name: "Megumin", path: "/api/anime/megumin", desc: "Random Image Megumin" },
         { name: "Sagiri", path: "/api/anime/sagiri", desc: "Random Image Izumi Sagiri" },
@@ -89,7 +89,6 @@ app.get('/api/anime', checkApikey, async (req, res) => {
 });
 
 // --- Endpoint Anime Jalur Langsung (/api/anime/:char) ---
-// Kita buat otomatis supaya semua karakter yang kita daftarkan di features.js langsung jalan
 const animeChars = [
     'elaina', 'kurumi', 'megumin', 'sagiri', 'itachi', 'mikey', 'keneki', 
     'loli', 'nekonime', 'madara', 'minato', 'kakasih', 'tsunade', 'asuna', 
@@ -99,10 +98,19 @@ const animeChars = [
 animeChars.forEach(char => {
     app.get(`/api/anime/${char}`, checkApikey, async (req, res) => {
         try {
-            // Memanggil fungsi dinamis dari features.js (misal: handleElaina)
             const functionName = `handle${char.charAt(0).toUpperCase() + char.slice(1)}`;
+            
+            if (typeof features[functionName] !== 'function') {
+                return res.status(500).json({ status: false, msg: `Fungsi ${functionName} belum dibuat di features.js` });
+            }
+
             const imageUrl = await features[functionName]();
-            res.json({ status: true, author: "IyuszTempest", result: imageUrl });
+            res.json({ 
+                status: true, 
+                author: "IyuszTempest", 
+                character: char,
+                result: imageUrl 
+            });
         } catch (e) {
             res.status(500).json({ status: false, msg: e.message });
         }
