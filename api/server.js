@@ -1,12 +1,20 @@
 // api/server.js
 const express = require('express');
 const app = express();
-const features = require('./features'); // Mengambil semua fungsi dari features.js
+const path = require('path');
 
 app.use(express.json());
 
-// --- DAFTAR MENU OTOMATIS ---
-// Dashboard HTML akan otomatis membaca list ini
+// --- PROTEKSI REQUIRE (AGAR DASHBOARD TIDAK MATI) ---
+let features;
+try {
+    features = require('./features');
+} catch (e) {
+    console.error("EROR FATAL DI FEATURES.JS:", e.message);
+    features = {}; // Fallback agar route /api/list tetap bisa diakses
+}
+
+// --- DAFTAR MENU ---
 const listFeatures = {
     Anime: [
         { name: "Euphy Random", path: "/api/anime?feature=euphy", desc: "Gambar Euphylia Magenta random" },
@@ -43,7 +51,7 @@ const listFeatures = {
         { name: "Photo to Anime", path: "/api/ai?feature=f2anime", desc: "Ubah foto wajah menjadi karakter anime" }
     ],
     Downloader: [
-        { name: "AIO Downloader (IG/FB/TT)", path: "/api/download?feature=aio&url=", desc: "Download media dari berbagai sosial media" },
+        { name: "AIO Downloader", path: "/api/download?feature=aio&url=", desc: "Download media dari berbagai sosial media" },
         { name: "TikTok Downloader", path: "/api/download?feature=tiktok&url=", desc: "Download Video (No WM) atau Slide Foto TikTok" },
         { name: "YouTube MP3", path: "/api/download?feature=ytmp3&url=", desc: "Download lagu dari YouTube" }
     ],
@@ -56,26 +64,20 @@ const listFeatures = {
     Tools: [
         { name: "Preset AM", path: "/api/tools?feature=presetam", desc: "Kumpulan link preset AM random (XML/MB)" },
         { name: "Sub4Unlock Skip", path: "/api/tools?feature=sub4unlock&query=", desc: "Lewati link sub4unlock secara instan" },
-        { name: "Happymod Search", path: "/api/tools/happymod?query=", desc: "Cari aplikasi modifikasi di Happymod" }
+        { name: "Happymod Search", path: "/api/tools?feature=happymod&query=", desc: "Cari aplikasi modifikasi di Happymod" }
     ]
 };
 
-
-// --- MIDDLEWARE KEAMANAN ---
-// Fungsi ini otomatis mengecek Apikey untuk semua endpoint /api/*
+// --- MIDDLEWARE ---
 const checkApikey = (req, res, next) => {
     const { apikey } = req.query;
-    if (apikey === 'yusz123') return next(); // Lanjut jika benar
+    if (apikey === 'yusz123') return next();
     res.status(403).json({ status: false, msg: "Apikey Salah atau Tidak Ada!" });
 };
 
-
-
-// --- ENDPOINT LIST ---
+// --- ENDPOINTS ---
 app.get('/api/list', (req, res) => res.json(listFeatures));
 
-// --- CATEGORY: ANIME ---
-// --- Endpoint Anime dengan Query Parameter (?feature=) ---
 app.get('/api/anime', checkApikey, async (req, res) => {
     const { feature, query } = req.query;
     try {
@@ -88,95 +90,48 @@ app.get('/api/anime', checkApikey, async (req, res) => {
             case 'jikanmoe':
                 if (!query) return res.status(400).json({ msg: "Query wajib diisi!" });
                 return res.json({ status: "success", author: "IyuszTempest", data: await features.handleJikanmoe(query) });
-            default: return res.status(400).json({ status: false, msg: "Endpoint Anime tidak ditemukan" });
+            default: return res.status(400).json({ status: false, msg: "Endpoint tidak ditemukan" });
         }
     } catch (e) { res.status(500).json({ status: false, msg: e.message }); }
 });
 
-// --- Endpoint Anime Jalur Langsung (/api/anime/:char) ---
-const animeChars = [
-    'elaina', 'kurumi', 'megumin', 'sagiri', 'itachi', 'mikey', 'keneki', 
-    'loli', 'nekonime', 'madara', 'minato', 'kakasih', 'tsunade', 'asuna', 
-    'emilia', 'yumeko', 'inori', 'doraemon', 'pokemon', 'neko2'
-];
-
+const animeChars = ['elaina', 'kurumi', 'megumin', 'sagiri', 'itachi', 'mikey', 'keneki', 'loli', 'nekonime', 'madara', 'minato', 'kakasih', 'tsunade', 'asuna', 'emilia', 'yumeko', 'inori', 'doraemon', 'pokemon', 'neko2'];
 animeChars.forEach(char => {
     app.get(`/api/anime/${char}`, checkApikey, async (req, res) => {
         try {
             const functionName = `handle${char.charAt(0).toUpperCase() + char.slice(1)}`;
-            
-            if (typeof features[functionName] !== 'function') {
-                return res.status(500).json({ status: false, msg: `Fungsi ${functionName} belum dibuat di features.js` });
-            }
-
-            const imageUrl = await features[functionName]();
-            res.json({ 
-                status: true, 
-                author: "IyuszTempest", 
-                character: char,
-                result: imageUrl 
-            });
-        } catch (e) {
-            res.status(500).json({ status: false, msg: e.message });
-        }
+            res.json({ status: true, author: "IyuszTempest", character: char, result: await features[functionName]() });
+        } catch (e) { res.status(500).json({ status: false, msg: e.message }); }
     });
 });
 
-// --- CATEGORY AI ---
 app.get('/api/ai', checkApikey, async (req, res) => {
     const { feature, query, type, style } = req.query;
     try {
         switch (feature) {
-            case 'ailabs':
-                if (!query) return res.status(400).json({ msg: "Prompt wajib diisi!" });
-                return res.json(await features.handleAiLabs(query, type || 'image'));
-            case 'creart':
-                if (!query) return res.status(400).json({ msg: "Prompt wajib diisi!" });
-                return res.json(await features.handleCreart(query));
-            case 'createprompt':
-                if (!query) return res.status(400).json({ msg: "Prompt wajib diisi!" });
-                return res.json(await features.handleCreatePrompt(query));
-            case 'deepimg':
-                if (!query) return res.status(400).json({ msg: "Prompt wajib diisi!" });
-                return res.json(await features.handleDeepImg(query, style || 'realistic'));
-            case 'live3d':
-                if (!query) return res.status(400).json({ msg: "Masukkan prompt gambar!" });
-                return res.json(await features.handleLive3D(query, style || 'Anime'));
-            case 'f2anime':
-                if (!query) return res.status(400).json({ msg: "Masukkan URL gambar di parameter query!" });
-                return res.json(await features.handleF2AnimeFromUrl(query));
-            default: 
-                return res.status(400).json({ status: false, msg: "Feature AI tidak ditemukan" });
+            case 'ailabs': return res.json(await features.handleAiLabs(query, type || 'image'));
+            case 'creart': return res.json(await features.handleCreart(query));
+            case 'createprompt': return res.json(await features.handleCreatePrompt(query));
+            case 'deepimg': return res.json(await features.handleDeepImg(query, style || 'realistic'));
+            case 'live3d': return res.json(await features.handleLive3D(query, style || 'Anime'));
+            case 'f2anime': return res.json(await features.handleF2AnimeFromUrl(query));
+            default: return res.status(400).json({ status: false, msg: "Feature AI tidak ditemukan" });
         }
-    } catch (e) {
-        res.status(500).json({ status: false, msg: e.message });
-    }
+    } catch (e) { res.status(500).json({ status: false, msg: e.message }); }
 });
 
-// --- CATEGORY DOWNLOADER ---
 app.get('/api/download', checkApikey, async (req, res) => {
     const { feature, url } = req.query;
     try {
         switch (feature) {
-            case 'aio':
-                if (!url) return res.status(400).json({ msg: "Mana link-nya, masbro?" });
-                const result = await features.handleAio(url);
-                return res.json(result);
-            case 'tiktok':
-                if (!url) return res.status(400).json({ msg: "Link TikTok-nya mana Senpai?" });
-                return res.json(await features.handleTikTok(url));
-            case 'ytmp3':
-                if (!url) return res.status(400).json({ msg: "Masukkan link YouTube-nya!" });
-                return res.json(await features.handleYtmp3(url));
-            default:
-                return res.status(400).json({ status: false, msg: "Feature Downloader tidak ditemukan" });
+            case 'aio': return res.json(await features.handleAio(url));
+            case 'tiktok': return res.json(await features.handleTikTok(url));
+            case 'ytmp3': return res.json(await features.handleYtmp3(url));
+            default: return res.status(400).json({ status: false, msg: "Feature Downloader tidak ditemukan" });
         }
-    } catch (e) {
-        res.status(500).json({ status: false, msg: e.message });
-    }
+    } catch (e) { res.status(500).json({ status: false, msg: e.message }); }
 });
 
-// --- CATEGORY: FUN ---
 app.get('/api/fun', checkApikey, async (req, res) => {
     const { feature } = req.query;
     try {
@@ -187,7 +142,6 @@ app.get('/api/fun', checkApikey, async (req, res) => {
     } catch (e) { res.status(500).json({ status: false, msg: e.message }); }
 });
 
-// --- CATEGORY: NSFW ---
 app.get('/api/nsfw', checkApikey, async (req, res) => {
     const { feature } = req.query;
     try {
@@ -198,39 +152,17 @@ app.get('/api/nsfw', checkApikey, async (req, res) => {
     } catch (e) { res.status(500).json({ status: false, msg: e.message }); }
 });
 
-// --- CATEGORY: TOOLS ---
 app.get('/api/tools', checkApikey, async (req, res) => {
     const { feature, query } = req.query; 
     try {
         switch (feature) {
-            case 'presetam': 
-                return res.json(await features.handlePresetAM());
-            
-            case 'sub4unlock':
-                if (!query) return res.status(400).json({ msg: "Masukkan link sub4unlock!" });
-                return res.json(await features.handleSub4Unlock(query));
-            
-            case 'happymod':
-                if (!query) return res.status(400).json({ msg: "Keyword pencarian wajib diisi!" });
-                // Pastikan handleHappymod sudah di-export di features.js
-                return res.json(await features.handleHappymod(query));
-
-            default: 
-                return res.status(400).json({ status: false, msg: "Feature Tools tidak ditemukan" });
+            case 'presetam': return res.json(await features.handlePresetAM());
+            case 'sub4unlock': return res.json(await features.handleSub4Unlock(query));
+            case 'happymod': return res.json(await features.handleHappymod(query));
+            default: return res.status(400).json({ status: false, msg: "Feature Tools tidak ditemukan" });
         }
-    } catch (e) { 
-        res.status(500).json({ status: false, msg: e.message }); 
-    }
+    } catch (e) { res.status(500).json({ status: false, msg: e.message }); }
 });
 
-
-let features;
-try {
-    features = require('./features');
-} catch (e) {
-    console.error("Critical Error di features.js:", e.message);
-    features = {}; // Biar server nggak mati, tapi fitur emang bakal off sementara
-}
-
-// Export untuk Vercel
 module.exports = app;
+        
