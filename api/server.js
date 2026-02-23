@@ -223,5 +223,14 @@ app.get('/api/tools', checkApikey, async (req, res) => {
     }
 });
 
+
+let features;
+try {
+    features = require('./features');
+} catch (e) {
+    console.error("Critical Error di features.js:", e.message);
+    features = {}; // Biar server nggak mati, tapi fitur emang bakal off sementara
+}
+
 // Export untuk Vercel
 module.exports = app;
