@@ -435,6 +435,17 @@ const handleJikanmoe = async (query) => {
         throw new Error("Gagal mengambil data dari JikanMoe");
     }
 };
+
+const getImg = async (fileName) => {
+    try {
+        const res = await axios.get(`https://raw.githubusercontent.com/Leoo7z/Image-Source/main/image/${fileName}.json`);
+        const data = res.data;
+        return data[Math.floor(Math.random() * data.length)];
+    } catch {
+        return "https://i.ibb.co/37456Ym/download.png"; // Fallback kalau error
+    }
+};
+
 // ==========================================
 // KATEGORI AI
 // ==========================================
@@ -883,5 +894,48 @@ module.exports = {
     handleF2Anime,
     handleF2AnimeFromUrl,
     handleAio,
-    handleTikTok
+    handleTikTok,
+    // --- Kategori Waifu ---
+    handleElaina: () => getImg('elaina'),
+    handleKurumi: () => getImg('kurumi'),
+    handleNezuko: () => getImg('nezuko'),
+    handleMiku: () => getImg('miku'),
+    handleSagiri: () => getImg('sagiri'),
+    handleSakura: () => getImg('sakura'),
+    handleHinata: () => getImg('hinata'),
+    handleMegumin: () => getImg('megumin'),
+    handleRem: () => getImg('rem'), // Asumsi file rem.json tersedia
+    
+    // --- Kategori Husbu ---
+    handleItachi: () => getImg('itachi'),
+    handleSasuke: () => getImg('sasuke'),
+    handleMinato: () => getImg('minato'),
+    handleMikey: () => getImg('mikey'),
+    handleKeneki: () => getImg('keneki'),
+    
+    // --- Kategori Spesial ---
+    handleWaifu: () => getImg('waifu'),
+    handleHusbu: () => getImg('husbu'),
+    handleLoli: () => getImg('loli'),
+    handleNekonime: () => getImg('nekonime'),
+
+    handleMadara: () => getImg('madara'),
+    handleMinato: () => getImg('minato'),
+    handleKakasih: () => getImg('kakasih'),
+    handleTsunade: () => getImg('tsunade'),
+    handleHinata: () => getImg('hinata'),
+    
+    // --- Waifu & Husbu Addition ---
+    handleAsuna: () => getImg('asuna'),
+    handleEmilia: () => getImg('emilia'),
+    handleInori: () => getImg('inori'),
+    handleToukachan: () => getImg('toukachan'),
+    handleYumeko: () => getImg('yumeko'),
+    handleRem: () => getImg('rem'),
+    
+    // --- Miscellaneous Anime ---
+    handleDoraemon: () => getImg('doraemon'),
+    handlePokemon: () => getImg('pokemon'),
+    handleNeko2: () => getImg('neko2')
+
 };
