@@ -4,30 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Euphy Api - Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <link rel="icon" type="image/jpeg" href="https://files.catbox.moe/pm0mmf.jpg">
+    <meta property="og:title" content="Euphy Api by IyuszTempest" />
+    <meta property="og:description" content="Selamat datang di website API untuk kebutuhan bot WhatsApp dan lainnya." />
+    <meta property="og:image" content="https://file.idnet.my.id/api/preview.php?file=mzf5qw0n.jpg" />
+    
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="overlay"></div>
+    <div class="bg-decoration"></div>
+    
     <div class="container">
         <header>
-            <h1>✨ Euphy Api</h1>
-            <p>Simple Dashboard for Your API Needs</p>
-            <div class="status-bar">
-                <span>Status: <b style="color: #00ff88;">Online</b></span> | 
-                <span>Apikey: <code class="apikey-tag">yusz123</code></span>
+            <div class="logo-area">
+                <span class="jp-text">エウフィ・API</span>
+                <h1>✨ Euphy Api</h1>
+            </div>
+            <p class="subtitle">Creative & Simple API Dashboard</p>
+            
+            <div class="info-pills">
+                <div class="pill"><i class="fas fa-circle status-dot"></i> Status: Online</div>
+                <div class="pill"><i class="fas fa-key"></i> Key: <code>yusz123</code></div>
             </div>
         </header>
 
-        <div id="menu-container">
-            <div class="loading">
-                <div class="spinner"></div>
-                <p>Mencari Waifu... eh, memuat menu...</p>
+        <main id="menu-container">
+            <div class="loading-state">
+                <div class="loading-icon"></div>
+                <p>Loading menu...</p>
             </div>
-        </div>
+        </main>
 
         <footer>
-            <p>&copy; 2026 IyuszTempest | Powered by Euphylia Magenta</p>
+            <div class="footer-content">
+                <p>&copy; 2026 <b>IyuszTempest</b></p>
+                <div class="footer-links">
+                    <a href="https://github.com/IyuszTempest" target="_blank"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
         </footer>
     </div>
 
@@ -40,26 +57,24 @@
                 container.innerHTML = '';
 
                 for (const [category, items] of Object.entries(data)) {
-                    let section = document.createElement('div');
-                    section.className = 'category-section';
+                    let section = document.createElement('section');
+                    section.className = 'category-group';
                     
-                    let title = `<h2 class="category-title"><span>#</span> ${category.toUpperCase()}</h2>`;
-                    let grid = `<div class="menu-grid">`;
+                    let title = `<h2 class="category-header"><span>${category}</span></h2>`;
+                    let grid = `<div class="api-grid">`;
                     
                     items.forEach(item => {
-                        // Perbaikan link: ganti & jadi ? kalau pathnya belum ada ?
                         const separator = item.path.includes('?') ? '&' : '?';
                         const fullPath = `${item.path}${separator}apikey=yusz123`;
                         
                         grid += `
-                            <div class="card">
-                                <div class="card-body">
-                                    <h3>${item.name}</h3>
-                                    <p>${item.desc}</p>
-                                </div>
-                                <div class="card-footer">
-                                    <a href="${fullPath}" target="_blank" class="btn-check">Cek Link</a>
-                                </div>
+                            <div class="api-card">
+                                <div class="card-tag">${category}</div>
+                                <h3>${item.name}</h3>
+                                <p>${item.desc}</p>
+                                <a href="${fullPath}" target="_blank" class="btn-api">
+                                    Execute <i class="fas fa-arrow-right"></i>
+                                </a>
                             </div>`;
                     });
                     
@@ -68,10 +83,7 @@
                     container.appendChild(section);
                 }
             } catch (e) {
-                document.getElementById('menu-container').innerHTML = `
-                    <div class="error-msg">
-                        <p>❌ Gagal memuat menu. Pastikan server berjalan!</p>
-                    </div>`;
+                document.getElementById('menu-container').innerHTML = `<div class="error-box">Gagal memuat data.</div>`;
             }
         }
         loadMenu();
