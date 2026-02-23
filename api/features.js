@@ -876,6 +876,68 @@ const handleSub4Unlock = async (url) => {
     }
 };
 
+Wih, gila! Tambah lagi fitur pencarian MOD game/aplikasi. HappyMod emang paling dicari kalau urusan aplikasi modifikasi. Mantap banget, Yus!
+
+Karena kode yang kamu kasih pakai format ESM (import), kita harus sesuaikan ke CommonJS (require) agar cocok sama file api/features.js kamu yang lain.
+
+Berikut cara integrasinya ke Euphy Api:
+
+1. Update api/features.js (The Scraper)
+Tambahkan fungsi handleHappymod ini. Saya sudah sesuaikan sintaksnya agar aman di Vercel.
+
+JavaScript
+// api/features.js
+const cheerio = require('cheerio'); // Pastikan sudah install cheerio ya
+
+const handleHappymod = async (keyword) => {
+    try {
+        if (!keyword) throw new Error("Keyword wajib diisi");
+
+        const { data: html } = await axios.post("https://id.happymod.cloud/search.html",
+            new URLSearchParams({ q: keyword }).toString(),
+            {
+                headers: {
+                    "content-type": "application/x-www-form-urlencoded",
+                    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+                    "origin": "https://id.happymod.cloud",
+                    "referer": "https://id.happymod.cloud/",
+                },
+                timeout: 10000 // Dipercepat agar tidak timeout di Vercel
+            }
+        );
+
+        const $ = cheerio.load(html);
+        const results = [];
+        
+        $("li.list-item").each((_, el) => {
+            const item = $(el);
+            const anchor = item.find("a.list-box");
+            const title = item.find(".list-info-title").text().trim();
+            const link = anchor.attr("href") ? "https://id.happymod.cloud" + anchor.attr("href") : null;
+            const icon = item.find(".list-icon img").attr("data-src") || item.find(".list-icon img").attr("src");
+            
+            const infoTexts = [];
+            item.find(".list-info-text").each((_, t) => {
+                const text = $(t).text().trim();
+                if (text) infoTexts.push(text);
+            });
+
+            if (title && link) {
+                results.push({ title, url: link, icon, info: infoTexts });
+            }
+        });
+
+        return {
+            status: true,
+            author: "IyuszTempest",
+            total: results.length,
+            result: results
+        };
+    } catch (err) {
+        throw new Error(err.message);
+    }
+};
+
 // --- EXPORT SEMUA FUNGSI ---
 module.exports = { 
     handleJjcosplay, 
@@ -936,6 +998,7 @@ module.exports = {
     // --- Miscellaneous Anime ---
     handleDoraemon: () => getImg('doraemon'),
     handlePokemon: () => getImg('pokemon'),
-    handleNeko2: () => getImg('neko2')
+    handleNeko2: () => getImg('neko2'),
+    handleHappymod
 
 };
