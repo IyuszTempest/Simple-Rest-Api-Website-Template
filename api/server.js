@@ -29,7 +29,10 @@ const listFeatures = {
         { name: "Asuna", path: "/api/anime/asuna", desc: "Yuuki Asuna (SAO)" },
         { name: "Emilia", path: "/api/anime/emilia", desc: "Emilia (Re:Zero)" },
         { name: "Yumeko", path: "/api/anime/yumeko", desc: "Jabami Yumeko (Kakegurui)" },
-        { name: "Inori", path: "/api/anime/inori", desc: "Yuzuriha Inori" }
+        { name: "Inori", path: "/api/anime/inori", desc: "Yuzuriha Inori" },
+        { name: "Doraemon", path: "/api/anime/doraemon?apikey=", desc: "Random Image Doraemon" },
+        { name: "Pokemon", path: "/api/anime/pokemon?apikey=", desc: "Random Image Pokemon" },
+        { name: "Neko 2", path: "/api/anime/neko2?apikey=", desc: "Random Image Neko Anime v2" }
     ],
     AI: [
         { name: "AiLabs Image/Video", path: "/api/ai?feature=ailabs&query=&type=image", desc: "Generate Image atau Video dari Teks" },
@@ -94,7 +97,7 @@ app.get('/api/anime', checkApikey, async (req, res) => {
 const animeChars = [
     'elaina', 'kurumi', 'megumin', 'sagiri', 'itachi', 'mikey', 'keneki', 
     'loli', 'nekonime', 'madara', 'minato', 'kakasih', 'tsunade', 'asuna', 
-    'emilia', 'yumeko', 'inori'
+    'emilia', 'yumeko', 'inori', 'doraemon', 'pokemon', 'neko2'
 ];
 
 animeChars.forEach(char => {
