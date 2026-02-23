@@ -12,7 +12,24 @@ const listFeatures = {
         { name: "Euphy Random", path: "/api/anime?feature=euphy", desc: "Gambar Euphylia Magenta random" },
         { name: "JJ Cosplay", path: "/api/anime?feature=jjcosplay", desc: "Video cosplay random" },
         { name: "Livechart Search", path: "/api/anime?feature=livechart&query=", desc: "Cari anime di Livechart.me" },
-        { name: "Jikan Moe", path: "/api/anime?feature=jikanmoe&query=", desc: "Cari anime via Jikan API" }
+        { name: "Jikan Moe", path: "/api/anime?feature=jikanmoe&query=", desc: "Cari anime via Jikan API" },
+        { name: "Elaina", path: "/api/anime/elaina", desc: "Random Image Elaina (Favorit Yus)" },
+        { name: "Kurumi", path: "/api/anime/kurumi", desc: "Random Image Tokisaki Kurumi" },
+        { name: "Megumin", path: "/api/anime/megumin", desc: "Random Image Megumin" },
+        { name: "Sagiri", path: "/api/anime/sagiri", desc: "Random Image Izumi Sagiri" },
+        { name: "Itachi", path: "/api/anime/itachi", desc: "Random Image Uchiha Itachi" },
+        { name: "Mikey", path: "/api/anime/mikey", desc: "Random Image Manjiro Sano" },
+        { name: "Keneki", path: "/api/anime/keneki", desc: "Random Image Kaneki Ken" },
+        { name: "Random Loli", path: "/api/anime/loli", desc: "Random Image Loli" },
+        { name: "Random Neko", path: "/api/anime/nekonime", desc: "Random Image Neko Anime" },
+        { name: "Madara", path: "/api/anime/madara", desc: "Uchiha Madara Wallpaper" },
+        { name: "Minato", path: "/api/anime/minato", desc: "Namikaze Minato Wallpaper" },
+        { name: "Kakashi", path: "/api/anime/kakasih", desc: "Hatake Kakashi Wallpaper" },
+        { name: "Tsunade", path: "/api/anime/tsunade", desc: "Tsunade Senju Wallpaper" },
+        { name: "Asuna", path: "/api/anime/asuna", desc: "Yuuki Asuna (SAO)" },
+        { name: "Emilia", path: "/api/anime/emilia", desc: "Emilia (Re:Zero)" },
+        { name: "Yumeko", path: "/api/anime/yumeko", desc: "Jabami Yumeko (Kakegurui)" },
+        { name: "Inori", path: "/api/anime/inori", desc: "Yuzuriha Inori" }
     ],
     AI: [
         { name: "AiLabs Image/Video", path: "/api/ai?feature=ailabs&query=&type=image", desc: "Generate Image atau Video dari Teks" },
@@ -53,6 +70,7 @@ const checkApikey = (req, res, next) => {
 app.get('/api/list', (req, res) => res.json(listFeatures));
 
 // --- CATEGORY: ANIME ---
+// --- Endpoint Anime dengan Query Parameter (?feature=) ---
 app.get('/api/anime', checkApikey, async (req, res) => {
     const { feature, query } = req.query;
     try {
@@ -68,6 +86,27 @@ app.get('/api/anime', checkApikey, async (req, res) => {
             default: return res.status(400).json({ status: false, msg: "Endpoint Anime tidak ditemukan" });
         }
     } catch (e) { res.status(500).json({ status: false, msg: e.message }); }
+});
+
+// --- Endpoint Anime Jalur Langsung (/api/anime/:char) ---
+// Kita buat otomatis supaya semua karakter yang kita daftarkan di features.js langsung jalan
+const animeChars = [
+    'elaina', 'kurumi', 'megumin', 'sagiri', 'itachi', 'mikey', 'keneki', 
+    'loli', 'nekonime', 'madara', 'minato', 'kakasih', 'tsunade', 'asuna', 
+    'emilia', 'yumeko', 'inori'
+];
+
+animeChars.forEach(char => {
+    app.get(`/api/anime/${char}`, checkApikey, async (req, res) => {
+        try {
+            // Memanggil fungsi dinamis dari features.js (misal: handleElaina)
+            const functionName = `handle${char.charAt(0).toUpperCase() + char.slice(1)}`;
+            const imageUrl = await features[functionName]();
+            res.json({ status: true, author: "IyuszTempest", result: imageUrl });
+        } catch (e) {
+            res.status(500).json({ status: false, msg: e.message });
+        }
+    });
 });
 
 // --- CATEGORY AI ---
