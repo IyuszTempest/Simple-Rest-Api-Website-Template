@@ -1094,9 +1094,9 @@ module.exports = {
     handleHappymod,
     handleYtmp3,
     handleYtmp4,
-    handlePlay,
     handlePlayVideo,
     handleYtSearchList,
+    handlePlay,
     handleWaifu: () => getImg('waifu'),
     handleNeko: () => getImg('neko'),
     handleMegumin: () => getImg('megumin')
