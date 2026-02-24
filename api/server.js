@@ -150,7 +150,7 @@ app.get('/api/download', checkApikey, async (req, res) => {
                 if (!query) return res.status(400).json({ status: false, msg: "Mau cari video apa? (Gunakan parameter &query=)" });
                 // Fitur ini akan mencari di YT lalu memberikan link MP4
                 return res.json(await features.handlePlayVideo(query));
-            case 'ytsearch':
+            case 'ytsearch': // Pastikan namanya persis 'ytsearch'
                 if (!query) return res.status(400).json({ status: false, msg: "Query pencarian wajib diisi!" });
                 return res.json({ 
                     status: true, 
