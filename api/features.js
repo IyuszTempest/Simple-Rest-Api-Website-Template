@@ -1088,7 +1088,6 @@ module.exports = {
     handleAio,
     handleTikTok,
     handleHappymod,
-    handleYtmp3V2,
     handleYtmp3,
     handleYtmp4,
     handlePlay,
