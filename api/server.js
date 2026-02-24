@@ -134,7 +134,7 @@ app.get('/api/download', checkApikey, async (req, res) => {
                 return res.json(await features.handleAio(url));
             case 'tiktok': 
                 return res.json(await features.handleTikTok(url));
-            case 'ytmp3V2': 
+            case 'ytmp3v2': 
                 return res.json(await features.handleYtmp3V2(url));
             case 'ytmp3': 
                 if (!url) return res.status(400).json({ status: false, msg: "URL YouTube wajib diisi!" });
