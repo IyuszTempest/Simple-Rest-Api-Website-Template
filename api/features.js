@@ -439,14 +439,23 @@ const handleJikanmoe = async (query) => {
 
 const getImg = async (type) => {
     try {
-        const { data } = await axios.get(`https://raw.githubusercontent.com/Alpinnn/Database/main/anime/${type}.json`);
-        // Mengambil link gambar random dari array data
-        return data[Math.floor(Math.random() * data.length)];
+        // Alamat database GitHub kamu
+        const url = `https://raw.githubusercontent.com/Alpinnn/Database/main/anime/${type}.json`;
+        const { data } = await axios.get(url);
+        
+        // Pastikan kita ambil array-nya. Kalau data itu objek, sesuaikan
+        const images = Array.isArray(data) ? data : data.result || data.images;
+        
+        if (!images || images.length === 0) throw new Error("Database kosong");
+
+        return images[Math.floor(Math.random() * images.length)];
     } catch (e) {
-        // Fallback ke gambar default jika GitHub bermasalah
+        console.error(`Gagal muat anime ${type}:`, e.message);
+        // Link gambar default kalau database GitHub lagi down
         return "https://files.catbox.moe/pm0mmf.jpg"; 
     }
 };
+
 
 
 // ==========================================
