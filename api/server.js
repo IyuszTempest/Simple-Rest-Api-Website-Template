@@ -53,7 +53,11 @@ const listFeatures = {
     Downloader: [
         { name: "AIO Downloader", path: "/api/download?feature=aio&url=", desc: "Download media dari berbagai sosial media" },
         { name: "TikTok Downloader", path: "/api/download?feature=tiktok&url=", desc: "Download Video (No WM) atau Slide Foto TikTok" },
-        { name: "YouTube MP3", path: "/api/download?feature=ytmp3&url=", desc: "Download lagu dari YouTube" }
+        { name: "YouTube MP3V2", path: "/api/download?feature=ytmp3v2&url=", desc: "Download lagu dari YouTube" },
+        { name: "YouTube MP3", path: "/api/download?feature=ytmp3&url=", desc: "Convert YouTube ke Audio" },
+        { name: "YouTube MP4", path: "/api/download?feature=ytmp4&url=", desc: "Convert YouTube ke Video" },
+        { name: "Play Music", path: "/api/download?feature=play&query=", desc: "Cari & Download Musik" },
+        { name: "Play Video", path: "/api/download?feature=playvideo&query=", desc: "Cari & Download Video" }  
     ],
     Fun: [
         { name: "Lahelu Random", path: "/api/fun?feature=lahelu", desc: "Meme random dari Lahelu" }
@@ -126,7 +130,17 @@ app.get('/api/download', checkApikey, async (req, res) => {
         switch (feature) {
             case 'aio': return res.json(await features.handleAio(url));
             case 'tiktok': return res.json(await features.handleTikTok(url));
+            case 'ytmp3V2': return res.json(await features.handleYtmp3V2(url));
             case 'ytmp3': return res.json(await features.handleYtmp3(url));
+            case 'ytmp4': 
+                if (!url) return res.status(400).json({ msg: "Link mana?" }); 
+                return res.json(await features.handleYtmp4(url));
+            case 'play':
+                if (!query) return res.status(400).json({ msg: "Mau cari lagu apa?" });
+                return res.json(await features.handlePlay(query));
+            case 'playvideo':
+                if (!query) return res.status(400).json({ msg: "Mau cari video apa?" });
+                return res.json(await features.handlePlayVideo(query));            
             default: return res.status(400).json({ status: false, msg: "Feature Downloader tidak ditemukan" });
         }
     } catch (e) { res.status(500).json({ status: false, msg: e.message }); }
