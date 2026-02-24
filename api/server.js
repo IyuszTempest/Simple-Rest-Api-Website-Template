@@ -139,9 +139,9 @@ app.get('/api/download', checkApikey, async (req, res) => {
                 if (!url) return res.status(400).json({ status: false, msg: "URL YouTube wajib diisi!" }); 
                 return res.json(await features.handleYtmp4(url));
             case 'play':
-                if (!query) return res.status(400).json({ status: false, msg: "Mau cari lagu apa? (Gunakan parameter &query=)" });
-                // Fitur ini akan mencari di YT lalu memberikan link MP3
-                return res.json(await features.handlePlay(query));
+                if (!query) return res.status(400).json({ status: false, msg: "Mau cari lagu apa? Kasih judulnya dong, Yus!" });
+                const playResult = await features.handlePlay(query);
+                return res.json(playResult);
             case 'playvideo':
                 if (!query) return res.status(400).json({ status: false, msg: "Mau cari video apa? (Gunakan parameter &query=)" });
                 // Fitur ini akan mencari di YT lalu memberikan link MP4
