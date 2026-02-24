@@ -800,7 +800,6 @@ const handleTikTok = async (tiktokUrl) => {
 
 const handleYtmp3 = async (youtubeUrl) => {
     try {
-        // Regex yang lebih kuat untuk menangkap Video ID
         const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
         const match = youtubeUrl.match(regex);
         const videoId = match ? match[1] : null;
@@ -809,23 +808,41 @@ const handleYtmp3 = async (youtubeUrl) => {
 
         const ajaxUrl = 'https://ssyoutube.online/wp-admin/admin-ajax.php';
 
-        // Step 1: Ambil info video dan raw link
-        const step1Payload = new URLSearchParams({
-            action: 'get_mp3_yt_option',
-            videoId: videoId
+        // Step 1: Info & Raw Link
+        const step1Payload = new URLSearchParams({ action: 'get_mp3_yt_option', videoId: videoId });
+        const res1 = await axios.post(ajaxUrl, step1Payload, {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         });
+
+        if (!res1.data.success || !res1.data.data.link) throw new Error("Gagal mendapatkan raw link MP3.");
+
+        const { title, link: rawMp3Link, thumbnail } = res1.data.data;
+
+        // Step 2: Proxy Link
+        const step2Payload = new URLSearchParams({ action: 'mp3_yt_generic_proxy_ajax', targetUrl: rawMp3Link });
+        const res2 = await axios.post(ajaxUrl, step2Payload, {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        });
+
+        if (!res2.data.success || !res2.data.data.proxiedUrl) throw new Error("Gagal melakukan proxy link audio.");
+
+        return {
+            status: "success",
+            author: "IyuszTempest",
+            result: { title, videoId, thumbnail, download_url: res2.data.data.proxiedUrl }
+        };
+    } catch (error) {
+        throw new Error(`YT-MP3 Error: ${error.message}`);
+    }
+};
 
 const handlePlay = async (query) => {
     try {
         const searchResult = await handleYtSearchList(query);
         if (!searchResult || searchResult.length === 0) throw new Error("Lagu tidak ditemukan!");
-
         const firstVideo = searchResult[0];
-        // Ambil ID dari URL hasil search
         const videoId = firstVideo.url.split('v=')[1] || firstVideo.videoId;
         const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
-
-        // Lempar ke fungsi handleYtmp3 di atas
         return await handleYtmp3(videoUrl); 
     } catch (error) {
         throw new Error(`Play Error: ${error.message}`);
@@ -834,17 +851,9 @@ const handlePlay = async (query) => {
 
 const handleSaveTube = async (url, type = 'audio', quality = '128') => {
     try {
-        // Step 1: Ambil Info & Key (Ini biasanya didapat dari search/info endpoint savetube)
-        // Note: Key yang lu kasih itu dinamis, kita perlu fetch info dulu sebenernya.
-        // Tapi untuk kebutuhan cepat, kita coba hit langsung dengan data yang ada.
-        
         const res = await axios.post('https://cdn402.savetube.vip/download', {
-            downloadType: type,
-            quality: quality,
-            url: url // Pastikan URL youtube dikirim kalau API-nya butuh
-        }, {
-            headers: { 'Content-Type': 'application/json' }
-        });
+            downloadType: type, quality: quality, url: url 
+        }, { headers: { 'Content-Type': 'application/json' } });
 
         if (res.data && res.data.status) {
             return {
@@ -861,25 +870,22 @@ const handleSaveTube = async (url, type = 'audio', quality = '128') => {
     }
 };
 
-// Fungsi Baru: YTMP4
 const handleYtmp4 = async (url) => await handleSaveTube(url, 'video', '720');
 
-// Fungsi Pencarian YouTube
-const handleYtSearch = async (query) => {
-    const search = await yts(query);
-    return search.videos.length > 0 ? search.videos[0] : null;
-};
-
-// Update Fungsi PLAYVIDEO (Search -> Download MP4)
 const handlePlayVideo = async (query) => {
     try {
-        const video = await handleYtSearch(query);
+        const search = await yts(query);
+        const video = search.videos.length > 0 ? search.videos[0] : null;
         if (!video) throw new Error("Video tidak ditemukan!");
-        
         return await handleSaveTube(video.url, 'video', '720');
     } catch (e) { 
         throw new Error("Play Video Error: " + e.message); 
     }
+};
+// Fungsi Pencarian YouTube
+const handleYtSearch = async (query) => {
+    const search = await yts(query);
+    return search.videos.length > 0 ? search.videos[0] : null;
 };
 
 const handleYtSearchList = async (query) => {
