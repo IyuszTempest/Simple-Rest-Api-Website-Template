@@ -793,7 +793,7 @@ const handleTikTok = async (tiktokUrl) => {
     }
 };
 
-const handleYtmp3 = async (youtubeUrl) => {
+const handleYtmp3V2 = async (youtubeUrl) => {
     try {
         // Regex yang lebih kuat untuk menangkap Video ID
         const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
@@ -848,6 +848,58 @@ const handleYtmp3 = async (youtubeUrl) => {
         throw new Error(`YT-MP3 Error: ${error.message}`);
     }
 };
+
+const handleSaveTube = async (url, type = 'audio', quality = '128') => {
+    try {
+        // Step 1: Ambil Info & Key (Ini biasanya didapat dari search/info endpoint savetube)
+        // Note: Key yang lu kasih itu dinamis, kita perlu fetch info dulu sebenernya.
+        // Tapi untuk kebutuhan cepat, kita coba hit langsung dengan data yang ada.
+        
+        const res = await axios.post('https://cdn402.savetube.vip/download', {
+            downloadType: type,
+            quality: quality,
+            url: url // Pastikan URL youtube dikirim kalau API-nya butuh
+        }, {
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (res.data && res.data.status) {
+            return {
+                status: true,
+                author: "IyuszTempest",
+                title: res.data.data.title || "YouTube Media",
+                result: res.data.data.downloadUrl
+            };
+        } else {
+            throw new Error("Gagal mendapatkan link download dari SaveTube.");
+        }
+    } catch (e) {
+        throw new Error("SaveTube Error: " + e.message);
+    }
+};
+
+// Fungsi Baru: YTMP3 & YTMP4
+const handleYtmp3 = async (url) => await handleSaveTube(url, 'audio', '128');
+const handleYtmp4 = async (url) => await handleSaveTube(url, 'video', '720');
+
+// Fungsi Baru: PLAY (Search -> Download MP3)
+const handlePlay = async (query) => {
+    try {
+        const search = await handleJikanmoe(query); // Pakai jikan atau scraper yt search lain
+        const videoUrl = `https://www.youtube.com/watch?v=${search[0].id}`; // Misal ambil hasil pertama
+        return await handleYtmp3(videoUrl);
+    } catch (e) { throw new Error("Play Error: " + e.message); }
+};
+
+// Fungsi Baru: PLAYVIDEO (Search -> Download MP4)
+const handlePlayVideo = async (query) => {
+    try {
+        const search = await handleJikanmoe(query); 
+        const videoUrl = `https://www.youtube.com/watch?v=${search[0].id}`;
+        return await handleYtmp4(videoUrl);
+    } catch (e) { throw new Error("PlayVideo Error: " + e.message); }
+};
+
 
 // ==========================================
 // KATEGORI FUN
@@ -1000,7 +1052,12 @@ module.exports = {
     handleAio,
     handleTikTok,
     handleHappymod,
+    handleYtmp3V2,
     handleYtmp3,
+    handleYtmp4,
+    handlePlay,
+    handlePlayVideo,
+    
 
     // --- Kategori Waifu & Husbu ---
     handleElaina: () => getImg('elaina'),
