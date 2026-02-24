@@ -23,7 +23,7 @@ const listFeatures = {
         { name: "Jikan Moe", path: "/api/anime?feature=jikanmoe&query=", desc: "Cari anime via Jikan API" },
         { name: "Waifu", path: "/api/anime/waifu", desc: "Random Image Waifu" },
         { name: "Neko", path: "/api/anime/neko", desc: "Random Image Neko" },
-        { name: "Megumin", path: "/api/anime/megumin", desc: "Random Image Megumin" },
+        { name: "Megumin", path: "/api/anime/megumin", desc: "Random Image Megumin" }
     ],
     AI: [
         { name: "AiLabs Image/Video", path: "/api/ai?feature=ailabs&query=&type=image", desc: "Generate Image atau Video dari Teks" },
