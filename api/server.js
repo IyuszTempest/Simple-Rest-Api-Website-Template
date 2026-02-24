@@ -70,19 +70,16 @@ app.get('/', (req, res) => {
 
 app.get('/docs', (req, res) => {
     const filePath = path.resolve(__dirname, '..', 'public', 'docs.html');
+    
+    // Paksa browser ngebaca ini sebagai halaman web, bukan teks/json
+    res.setHeader('Content-Type', 'text/html'); 
+    
     res.sendFile(filePath, (err) => {
         if (err) {
-            // Kalau error, munculin pesan biar kita tau dia nyari ke mana
-            res.status(404).json({ 
-                status: false, 
-                msg: "File docs.html gak ketemu, Yus!",
-                debugPath: filePath 
-            });
+            res.status(404).send("<h1>Aduh Yus!</h1><p>File docs.html gak ketemu di folder public.</p>");
         }
     });
 });
-
-app.get('/api/list', (req, res) => res.json(listFeatures));
 
 app.get('/api/anime', checkApikey, async (req, res) => {
     const { feature, query } = req.query;
