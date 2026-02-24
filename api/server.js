@@ -63,6 +63,15 @@ const checkApikey = (req, res, next) => {
 };
 
 // --- ENDPOINTS ---
+// Halaman Utama & Dokumentasi
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/index.html'));
+});
+
+app.get('/docs', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/docs.html'));
+});
+
 app.get('/api/list', (req, res) => res.json(listFeatures));
 
 app.get('/api/anime', checkApikey, async (req, res) => {
