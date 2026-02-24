@@ -4,6 +4,7 @@ const cheerio = require('cheerio');
 const FormData = require('form-data');
 const ws = require('ws');
 const { Readable } = require('stream');
+const yts = require('yt-search');
 
 // --- DATABASE---
 const jjcosplayVideoUrls = [ 
@@ -882,22 +883,46 @@ const handleSaveTube = async (url, type = 'audio', quality = '128') => {
 const handleYtmp3 = async (url) => await handleSaveTube(url, 'audio', '128');
 const handleYtmp4 = async (url) => await handleSaveTube(url, 'video', '720');
 
-// Fungsi Baru: PLAY (Search -> Download MP3)
-const handlePlay = async (query) => {
-    try {
-        const search = await handleJikanmoe(query); // Pakai jikan atau scraper yt search lain
-        const videoUrl = `https://www.youtube.com/watch?v=${search[0].id}`; // Misal ambil hasil pertama
-        return await handleYtmp3(videoUrl);
-    } catch (e) { throw new Error("Play Error: " + e.message); }
+// Fungsi Pencarian YouTube
+const handleYtSearch = async (query) => {
+    const search = await yts(query);
+    return search.videos.length > 0 ? search.videos[0] : null;
 };
 
-// Fungsi Baru: PLAYVIDEO (Search -> Download MP4)
+// Update Fungsi PLAY (Search -> Download MP3)
+const handlePlay = async (query) => {
+    try {
+        const video = await handleYtSearch(query);
+        if (!video) throw new Error("Video tidak ditemukan!");
+        
+        // Langsung hajar ke SaveTube pakai URL hasil search
+        return await handleSaveTube(video.url, 'audio', '128');
+    } catch (e) { 
+        throw new Error("Play Music Error: " + e.message); 
+    }
+};
+
+// Update Fungsi PLAYVIDEO (Search -> Download MP4)
 const handlePlayVideo = async (query) => {
     try {
-        const search = await handleJikanmoe(query); 
-        const videoUrl = `https://www.youtube.com/watch?v=${search[0].id}`;
-        return await handleYtmp4(videoUrl);
-    } catch (e) { throw new Error("PlayVideo Error: " + e.message); }
+        const video = await handleYtSearch(query);
+        if (!video) throw new Error("Video tidak ditemukan!");
+        
+        return await handleSaveTube(video.url, 'video', '720');
+    } catch (e) { 
+        throw new Error("Play Video Error: " + e.message); 
+    }
+};
+
+const handleYtSearchList = async (query) => {
+    const search = await yts(query);
+    return search.videos.map(v => ({
+        title: v.title,
+        url: v.url,
+        duration: v.timestamp,
+        views: v.views,
+        thumbnail: v.thumbnail
+    }));
 };
 
 
@@ -1057,6 +1082,7 @@ module.exports = {
     handleYtmp4,
     handlePlay,
     handlePlayVideo,
+    handleYtSearchList
     
 
     // --- Kategori Waifu & Husbu ---
