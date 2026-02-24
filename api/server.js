@@ -78,29 +78,12 @@ app.get('/api/anime', checkApikey, async (req, res) => {
             case 'jikanmoe':
                 if (!query) return res.status(400).json({ msg: "Query wajib diisi!" });
                 return res.json({ status: "success", author: "IyuszTempest", data: await features.handleJikanmoe(query) });
+            case 'waifu': return res.json({ status: true, author: "IyuszTempest", result: await features.handleWaifu() });
+            case 'neko': return res.json({ status: true, author: "IyuszTempest", result: await features.handleNeko() });
+            case 'megumin': return res.json({ status: true, author: "IyuszTempest", result: await features.handleMegumin() });
             default: return res.status(400).json({ status: false, msg: "Endpoint tidak ditemukan" });
         }
     } catch (e) { res.status(500).json({ status: false, msg: e.message }); }
-});
-
-const animeChars = ['waifu', 'neko', 'megumin'];
-
-animeChars.forEach(char => {
-    app.get(`/api/anime/${char}`, checkApikey, async (req, res) => {
-        try {
-            // Mengubah nama char jadi handleWaifu, handleNeko, atau handleMegumin
-            const functionName = `handle${char.charAt(0).toUpperCase() + char.slice(1)}`;
-            
-            const imageUrl = await features[functionName]();
-            res.json({ 
-                status: true, 
-                author: "IyuszTempest", 
-                result: imageUrl 
-            });
-        } catch (e) {
-            res.status(500).json({ status: false, msg: e.message });
-        }
-    });
 });
 
 app.get('/api/ai', checkApikey, async (req, res) => {
@@ -118,29 +101,46 @@ app.get('/api/ai', checkApikey, async (req, res) => {
     } catch (e) { res.status(500).json({ status: false, msg: e.message }); }
 });
 
+// --- ENDPOINT DOWNLOADER & SEARCH ---
 app.get('/api/download', checkApikey, async (req, res) => {
-    const { feature, url } = req.query;
+    // Menambahkan 'query' agar fitur pencarian YouTube bisa terbaca
+    const { feature, url, query } = req.query; 
+    
     try {
         switch (feature) {
-            case 'aio': return res.json(await features.handleAio(url));
-            case 'tiktok': return res.json(await features.handleTikTok(url));
-            case 'ytmp3V2': return res.json(await features.handleYtmp3V2(url));
-            case 'ytmp3': return res.json(await features.handleYtmp3(url));
+            case 'aio': 
+                return res.json(await features.handleAio(url));
+            case 'tiktok': 
+                return res.json(await features.handleTikTok(url));
+            case 'ytmp3V2': 
+                return res.json(await features.handleYtmp3V2(url));
+            case 'ytmp3': 
+                if (!url) return res.status(400).json({ status: false, msg: "URL YouTube wajib diisi!" });
+                return res.json(await features.handleYtmp3(url));
             case 'ytmp4': 
-                if (!url) return res.status(400).json({ msg: "Link mana?" }); 
+                if (!url) return res.status(400).json({ status: false, msg: "URL YouTube wajib diisi!" }); 
                 return res.json(await features.handleYtmp4(url));
             case 'play':
-                if (!query) return res.status(400).json({ msg: "Mau cari lagu apa?" });
+                if (!query) return res.status(400).json({ status: false, msg: "Mau cari lagu apa? (Gunakan parameter &query=)" });
+                // Fitur ini akan mencari di YT lalu memberikan link MP3
                 return res.json(await features.handlePlay(query));
             case 'playvideo':
-                if (!query) return res.status(400).json({ msg: "Mau cari video apa?" });
+                if (!query) return res.status(400).json({ status: false, msg: "Mau cari video apa? (Gunakan parameter &query=)" });
+                // Fitur ini akan mencari di YT lalu memberikan link MP4
                 return res.json(await features.handlePlayVideo(query));
             case 'ytsearch':
-                if (!query) return res.status(400).json({ msg: "Mau cari video apa?" });
-                return res.json({ status: true, author: "IyuszTempest", result: await features.handleYtSearchList(query) });
-            default: return res.status(400).json({ status: false, msg: "Feature Downloader tidak ditemukan" });
+                if (!query) return res.status(400).json({ status: false, msg: "Query pencarian wajib diisi!" });
+                return res.json({ 
+                    status: true, 
+                    author: "IyuszTempest", 
+                    result: await features.handleYtSearchList(query) 
+                });
+            default: 
+                return res.status(400).json({ status: false, msg: "Feature Downloader tidak ditemukan" });
         }
-    } catch (e) { res.status(500).json({ status: false, msg: e.message }); }
+    } catch (e) { 
+        res.status(500).json({ status: false, msg: e.message }); 
+    }
 });
 
 app.get('/api/fun', checkApikey, async (req, res) => {
