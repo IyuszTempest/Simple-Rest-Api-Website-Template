@@ -439,23 +439,14 @@ const handleJikanmoe = async (query) => {
 
 const getImg = async (type) => {
     try {
-        // Alamat database GitHub kamu
-        const url = `https://raw.githubusercontent.com/Alpinnn/Database/main/anime/${type}.json`;
-        const { data } = await axios.get(url);
-        
-        // Pastikan kita ambil array-nya. Kalau data itu objek, sesuaikan
-        const images = Array.isArray(data) ? data : data.result || data.images;
-        
-        if (!images || images.length === 0) throw new Error("Database kosong");
-
-        return images[Math.floor(Math.random() * images.length)];
+        // Langsung tembak ke API waifu.pics
+        const { data } = await axios.get(`https://api.waifu.pics/sfw/${type}`);
+        return data.url; 
     } catch (e) {
-        console.error(`Gagal muat anime ${type}:`, e.message);
-        // Link gambar default kalau database GitHub lagi down
+        // Fallback jika API bermasalah, tetap tampilkan Elaina favoritmu
         return "https://files.catbox.moe/pm0mmf.jpg"; 
     }
 };
-
 
 
 // ==========================================
@@ -1096,40 +1087,7 @@ module.exports = {
     handleYtmp4,
     handlePlay,
     handlePlayVideo,
-    handleYtSearchList, // Tanda koma ditambahin di sini biar gak error
-
-    // --- Kategori Waifu & Husbu ---
-    handleElaina: () => getImg('elaina'),
-    handleKurumi: () => getImg('kurumi'),
-    handleNezuko: () => getImg('nezuko'),
-    handleMiku: () => getImg('miku'),
-    handleSagiri: () => getImg('sagiri'),
-    handleSakura: () => getImg('sakura'),
-    handleHinata: () => getImg('hinata'),
-    handleMegumin: () => getImg('megumin'),
-    handleRem: () => getImg('rem'),
-    handleAsuna: () => getImg('asuna'),
-    handleEmilia: () => getImg('emilia'),
-    handleInori: () => getImg('inori'),
-    handleToukachan: () => getImg('toukachan'),
-    handleYumeko: () => getImg('yumeko'),
-    
-    // --- Kategori Shinobi & Husbu ---
-    handleItachi: () => getImg('itachi'),
-    handleSasuke: () => getImg('sasuke'),
-    handleMinato: () => getImg('minato'),
-    handleMikey: () => getImg('mikey'),
-    handleKeneki: () => getImg('keneki'),
-    handleMadara: () => getImg('madara'),
-    handleKakasih: () => getImg('kakasih'), // Pastikan ejaan 'Kakasih' sinkron sama server.js
-    handleTsunade: () => getImg('tsunade'),
-    
-    // --- Kategori Spesial & Misc ---
+    handleYtSearchList,
     handleWaifu: () => getImg('waifu'),
-    handleHusbu: () => getImg('husbu'),
-    handleLoli: () => getImg('loli'),
-    handleNekonime: () => getImg('nekonime'),
-    handleDoraemon: () => getImg('doraemon'),
-    handlePokemon: () => getImg('pokemon'),
-    handleNeko2: () => getImg('neko2')
-};
+    handleNeko: () => getImg('neko'),
+    handleMegumin: () => getImg('megumin')
