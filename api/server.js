@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.json());
 
 // --- PROTEKSI REQUIRE (AGAR DASHBOARD TIDAK MATI) ---
 let features;
@@ -63,23 +63,7 @@ const checkApikey = (req, res, next) => {
 };
 
 // --- ENDPOINTS ---
-// Halaman Utama & Dokumentasi
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/index.html'));
-});
-
-app.get('/docs', (req, res) => {
-    const filePath = path.resolve(__dirname, '..', 'public', 'docs.html');
-    
-    // Paksa browser ngebaca ini sebagai halaman web, bukan teks/json
-    res.setHeader('Content-Type', 'text/html'); 
-    
-    res.sendFile(filePath, (err) => {
-        if (err) {
-            res.status(404).send("<h1>Aduh Yus!</h1><p>File docs.html gak ketemu di folder public.</p>");
-        }
-    });
-});
+app.get('/api/list', (req, res) => res.json(listFeatures));
 
 app.get('/api/anime', checkApikey, async (req, res) => {
     const { feature, query } = req.query;
@@ -210,4 +194,5 @@ app.get('/api/tools', checkApikey, async (req, res) => {
 });
 
 module.exports = app;
+
         
