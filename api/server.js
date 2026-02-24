@@ -57,7 +57,8 @@ const listFeatures = {
         { name: "YouTube MP3", path: "/api/download?feature=ytmp3&url=", desc: "Convert YouTube ke Audio" },
         { name: "YouTube MP4", path: "/api/download?feature=ytmp4&url=", desc: "Convert YouTube ke Video" },
         { name: "Play Music", path: "/api/download?feature=play&query=", desc: "Cari & Download Musik" },
-        { name: "Play Video", path: "/api/download?feature=playvideo&query=", desc: "Cari & Download Video" }  
+        { name: "Play Video", path: "/api/download?feature=playvideo&query=", desc: "Cari & Download Video" },
+        { name: "Youtube Search", path: "/api/download?feature=youtubesearch&query=", desc: "Youtube Search" }  
     ],
     Fun: [
         { name: "Lahelu Random", path: "/api/fun?feature=lahelu", desc: "Meme random dari Lahelu" }
@@ -140,7 +141,10 @@ app.get('/api/download', checkApikey, async (req, res) => {
                 return res.json(await features.handlePlay(query));
             case 'playvideo':
                 if (!query) return res.status(400).json({ msg: "Mau cari video apa?" });
-                return res.json(await features.handlePlayVideo(query));            
+                return res.json(await features.handlePlayVideo(query));
+            case 'ytsearch':
+                if (!query) return res.status(400).json({ msg: "Mau cari video apa?" });
+                return res.json({ status: true, author: "IyuszTempest", result: await features.handleYtSearchList(query) });
             default: return res.status(400).json({ status: false, msg: "Feature Downloader tidak ditemukan" });
         }
     } catch (e) { res.status(500).json({ status: false, msg: e.message }); }
