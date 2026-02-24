@@ -440,11 +440,14 @@ const handleJikanmoe = async (query) => {
 const getImg = async (type) => {
     try {
         const { data } = await axios.get(`https://raw.githubusercontent.com/Alpinnn/Database/main/anime/${type}.json`);
+        // Mengambil link gambar random dari array data
         return data[Math.floor(Math.random() * data.length)];
     } catch (e) {
-        return "https://telegra.ph/file/default-error.jpg"; // Fallback jika link mati
+        // Fallback ke gambar default jika GitHub bermasalah
+        return "https://files.catbox.moe/pm0mmf.jpg"; 
     }
 };
+
 
 // ==========================================
 // KATEGORI AI
@@ -1057,8 +1060,10 @@ const handleHappymod = async (keyword) => {
     }
 };
 
+
 // --- EXPORT SEMUA FUNGSI ---
 module.exports = { 
+    // Scrapers & Tools
     handleJjcosplay, 
     handleWangy, 
     handleEuphy, 
@@ -1082,8 +1087,7 @@ module.exports = {
     handleYtmp4,
     handlePlay,
     handlePlayVideo,
-    handleYtSearchList
-    
+    handleYtSearchList, // Tanda koma ditambahin di sini biar gak error
 
     // --- Kategori Waifu & Husbu ---
     handleElaina: () => getImg('elaina'),
@@ -1108,7 +1112,7 @@ module.exports = {
     handleMikey: () => getImg('mikey'),
     handleKeneki: () => getImg('keneki'),
     handleMadara: () => getImg('madara'),
-    handleKakasih: () => getImg('kakasih'),
+    handleKakasih: () => getImg('kakasih'), // Pastikan ejaan 'Kakasih' sinkron sama server.js
     handleTsunade: () => getImg('tsunade'),
     
     // --- Kategori Spesial & Misc ---
