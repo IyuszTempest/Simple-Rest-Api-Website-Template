@@ -817,7 +817,7 @@ const handleYtmp3 = async (youtubeUrl) => {
             videoId: videoId
         });
 
-        const res1 = await axconst handlePlay = async (query) => {
+const res1 = await axconst handlePlay = async (query) => {
     try {
         // Step 1: Cari video di YouTube
         const searchResult = await handleYtSearchList(query);
