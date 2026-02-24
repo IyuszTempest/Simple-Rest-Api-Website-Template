@@ -41,7 +41,7 @@ const listFeatures = {
         { name: "YouTube MP4", path: "/api/download?feature=ytmp4&url=", desc: "Convert YouTube ke Video" },
         { name: "Play Music", path: "/api/download?feature=play&query=", desc: "Cari & Download Musik" },
         { name: "Play Video", path: "/api/download?feature=playvideo&query=", desc: "Cari & Download Video" },
-        { name: "Youtube Search", path: "/api/download?feature=youtubesearch&query=", desc: "Youtube Search" }  
+        { name: "Youtube Search", path: "/api/download?feature=ytsearch&query=", desc: "Youtube Search" }  
     ],
     Fun: [
         { name: "Lahelu Random", path: "/api/fun?feature=lahelu", desc: "Meme random dari Lahelu" }
