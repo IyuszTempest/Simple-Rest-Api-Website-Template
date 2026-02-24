@@ -797,7 +797,27 @@ const handleTikTok = async (tiktokUrl) => {
     }
 };
 
-const handleYtmp3V2 = async (youtubeUrl) => {
+const handlePlay = async (query) => {
+    try {
+        // Step 1: Cari video berdasarkan query
+        const searchResult = await handleYtSearchList(query);
+        if (!searchResult || searchResult.length === 0) throw new Error("Lagu tidak ditemukan!");
+
+        // Ambil hasil pertama (yang paling relevan)
+        const firstVideo = searchResult[0];
+        const videoUrl = `https://www.youtube.com/watch?v=${firstVideo.videoId}`;
+
+        // Step 2: Lempar URL-nya ke handleYtmp3 yang sudah kamu buat
+        const downloadData = await handleYtmp3(videoUrl);
+
+        return downloadData;
+    } catch (error) {
+        throw new Error(`Play Error: ${error.message}`);
+    }
+};
+
+
+const handleYtmp3 = async (youtubeUrl) => {
     try {
         // Regex yang lebih kuat untuk menangkap Video ID
         const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
@@ -882,27 +902,13 @@ const handleSaveTube = async (url, type = 'audio', quality = '128') => {
     }
 };
 
-// Fungsi Baru: YTMP3 & YTMP4
-const handleYtmp3 = async (url) => await handleSaveTube(url, 'audio', '128');
+// Fungsi Baru: YTMP4
 const handleYtmp4 = async (url) => await handleSaveTube(url, 'video', '720');
 
 // Fungsi Pencarian YouTube
 const handleYtSearch = async (query) => {
     const search = await yts(query);
     return search.videos.length > 0 ? search.videos[0] : null;
-};
-
-// Update Fungsi PLAY (Search -> Download MP3)
-const handlePlay = async (query) => {
-    try {
-        const video = await handleYtSearch(query);
-        if (!video) throw new Error("Video tidak ditemukan!");
-        
-        // Langsung hajar ke SaveTube pakai URL hasil search
-        return await handleSaveTube(video.url, 'audio', '128');
-    } catch (e) { 
-        throw new Error("Play Music Error: " + e.message); 
-    }
 };
 
 // Update Fungsi PLAYVIDEO (Search -> Download MP4)
