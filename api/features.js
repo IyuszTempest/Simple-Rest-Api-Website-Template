@@ -1073,7 +1073,6 @@ const handleHappymod = async (keyword) => {
 
 // --- EXPORT SEMUA FUNGSI ---
 module.exports = { 
-    // Scrapers & Tools
     handleJjcosplay, 
     handleWangy, 
     handleEuphy, 
@@ -1096,7 +1095,7 @@ module.exports = {
     handleYtmp4,
     handlePlayVideo,
     handleYtSearchList,
-    handlePlay,
+    handlePlay, // <--- Pastikan fungsi ini sudah kamu buat di bagian atas
     handleWaifu: () => getImg('waifu'),
     handleNeko: () => getImg('neko'),
     handleMegumin: () => getImg('megumin')
