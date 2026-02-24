@@ -78,12 +78,34 @@ app.get('/api/anime', checkApikey, async (req, res) => {
             case 'jikanmoe':
                 if (!query) return res.status(400).json({ msg: "Query wajib diisi!" });
                 return res.json({ status: "success", author: "IyuszTempest", data: await features.handleJikanmoe(query) });
-            case 'waifu': return res.json({ status: true, author: "IyuszTempest", result: await features.handleWaifu() });
-            case 'neko': return res.json({ status: true, author: "IyuszTempest", result: await features.handleNeko() });
-            case 'megumin': return res.json({ status: true, author: "IyuszTempest", result: await features.handleMegumin() });
             default: return res.status(400).json({ status: false, msg: "Endpoint tidak ditemukan" });
         }
     } catch (e) { res.status(500).json({ status: false, msg: e.message }); }
+});
+
+const animeChars = ['waifu', 'neko', 'megumin'];
+
+animeChars.forEach(char => {
+    // Pastikan jalurnya sama dengan yang ada di menu dashboard kamu
+    app.get(`/api/anime/${char}`, checkApikey, async (req, res) => {
+        try {
+            const functionName = `handle${char.charAt(0).toUpperCase() + char.slice(1)}`;
+            
+            // Cek apakah fungsinya ada agar tidak crash
+            if (typeof features[functionName] !== 'function') {
+                return res.status(500).json({ status: false, msg: `Fungsi ${functionName} tidak ada!` });
+            }
+
+            const imageUrl = await features[functionName]();
+            res.json({ 
+                status: true, 
+                author: "IyuszTempest", 
+                result: imageUrl 
+            });
+        } catch (e) {
+            res.status(500).json({ status: false, msg: e.message });
+        }
+    });
 });
 
 app.get('/api/ai', checkApikey, async (req, res) => {
