@@ -798,8 +798,6 @@ const handleTikTok = async (tiktokUrl) => {
 };
 
 
-
-
 const handleYtmp3 = async (youtubeUrl) => {
     try {
         // Regex yang lebih kuat untuk menangkap Video ID
@@ -817,63 +815,20 @@ const handleYtmp3 = async (youtubeUrl) => {
             videoId: videoId
         });
 
-const res1 = await axconst handlePlay = async (query) => {
+const handlePlay = async (query) => {
     try {
-        // Step 1: Cari video di YouTube
         const searchResult = await handleYtSearchList(query);
         if (!searchResult || searchResult.length === 0) throw new Error("Lagu tidak ditemukan!");
 
-        // Ambil data video pertama
         const firstVideo = searchResult[0];
-        
-        // Ambil Video ID saja (misal dari 'https://youtube.com/watch?v=K4xLi8IF1FM' jadi 'K4xLi8IF1FM')
+        // Ambil ID dari URL hasil search
         const videoId = firstVideo.url.split('v=')[1] || firstVideo.videoId;
-
-        // Step 2: Langsung tembak ke handleYtmp3 pakai URL yang bener
         const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+
+        // Lempar ke fungsi handleYtmp3 di atas
         return await handleYtmp3(videoUrl); 
-        
     } catch (error) {
-        // Biar tau errornya di mana pas log
         throw new Error(`Play Error: ${error.message}`);
-    }
-};
-ios.post(ajaxUrl, step1Payload, {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        });
-
-        if (!res1.data.success || !res1.data.data.link) {
-            throw new Error("Gagal mendapatkan raw link MP3.");
-        }
-
-        const { title, link: rawMp3Link, thumbnail } = res1.data.data;
-
-        // Step 2: Ambil Proxied URL agar link bisa di-download langsung
-        const step2Payload = new URLSearchParams({
-            action: 'mp3_yt_generic_proxy_ajax',
-            targetUrl: rawMp3Link
-        });
-
-        const res2 = await axios.post(ajaxUrl, step2Payload, {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        });
-
-        if (!res2.data.success || !res2.data.data.proxiedUrl) {
-            throw new Error("Gagal melakukan proxy link audio.");
-        }
-
-        return {
-            status: "success",
-            author: "IyuszTempest",
-            result: {
-                title: title,
-                videoId: videoId,
-                thumbnail: thumbnail,
-                download_url: res2.data.data.proxiedUrl
-            }
-        };
-    } catch (error) {
-        throw new Error(`YT-MP3 Error: ${error.message}`);
     }
 };
 
