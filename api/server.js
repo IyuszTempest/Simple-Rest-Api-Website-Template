@@ -69,7 +69,17 @@ app.get('/', (req, res) => {
 });
 
 app.get('/docs', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/docs.html'));
+    const filePath = path.resolve(__dirname, '..', 'public', 'docs.html');
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            // Kalau error, munculin pesan biar kita tau dia nyari ke mana
+            res.status(404).json({ 
+                status: false, 
+                msg: "File docs.html gak ketemu, Yus!",
+                debugPath: filePath 
+            });
+        }
+    });
 });
 
 app.get('/api/list', (req, res) => res.json(listFeatures));
