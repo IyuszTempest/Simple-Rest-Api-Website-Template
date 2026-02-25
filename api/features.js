@@ -981,6 +981,41 @@ const handleSpotifyPlay = async (query) => {
     }
 };
 
+const handleFacebookDl = async (url) => {
+    try {
+        const ajaxUrl = 'https://www.instantdp.com/facebook';
+        const form = new FormData();
+        form.append("url", url);
+
+        const { data } = await axios.post(ajaxUrl, form, {
+            headers: {
+                ...form.getHeaders(),
+                "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+                "referer": "https://www.instantdp.com/facebook-video-downloader"
+            }
+        });
+
+        if (!data.success || !data.data || data.data.length === 0) {
+            throw new Error("Gagal mengambil data video Facebook.");
+        }
+
+        // Ambil hasil pertama (biasanya HD atau resolusi tertinggi)
+        const video = data.data[0];
+
+        return {
+            status: "success",
+            author: "IyuszTempest",
+            result: {
+                title: video.filename || "Facebook Video",
+                thumbnail: video.thumbnail,
+                quality: video.resolution,
+                download_url: video.url
+            }
+        };
+    } catch (error) {
+        throw new Error(`Facebook DL Error: ${error.message}`);
+    }
+};
 
 // ==========================================
 // KATEGORI FUN
@@ -1201,6 +1236,7 @@ module.exports = {
     handleSpotifySearch,
     handleSpotifyDl,
     handleSpotifyPlay,
+    handleFacebookDl,
     handlePlay, // <--- Pastikan fungsi ini sudah kamu buat di bagian atas
     handleWaifu: () => getImg('waifu'),
     handleNeko: () => getImg('neko'),
