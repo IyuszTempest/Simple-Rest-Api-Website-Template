@@ -165,7 +165,7 @@ app.get('/api/download', checkApikey, async (req, res) => {
             case 'spotifysearch':
                 if (!query) return res.status(400).json({ status: false, msg: "Cari lagu apa di Spotify?" });
                 return res.json(await features.handleSpotifySearch(query));
-            case 'facebook':
+            case 'fb':
                 if (!url) return res.status(400).json({ status: false, msg: "Link Facebook-nya mana?" });
                 return res.json(await features.handleFacebookDl(url));
             default: 
