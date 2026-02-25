@@ -38,7 +38,10 @@ const listFeatures = {
         { name: "YouTube MP4", path: "/api/download?feature=ytmp4&url=", desc: "Convert YouTube ke Video" },
         { name: "Play Music", path: "/api/download?feature=play&query=", desc: "Cari & Download Musik" },
         { name: "Play Video", path: "/api/download?feature=playvideo&query=", desc: "Cari & Download Video" },
-        { name: "Youtube Search", path: "/api/download?feature=ytsearch&query=", desc: "Youtube Search" }  
+        { name: "Youtube Search", path: "/api/download?feature=ytsearch&query=", desc: "Youtube Search" },
+        { name: "Spotify Search", path: "/api/download?feature=spotify&query=", desc: "Cari info lagu & link dari Spotify" },
+        { name: "Spotify Downloader", path: "/api/download?feature=spdl&query=", desc: "Download lagu Spotify via Link/Judul" },
+        { name: "Spotify Play", path: "/api/download?feature=splay&query=", desc: "Cari & Putar lagu Spotify secara instan" }
     ],
     Fun: [
         { name: "Lahelu Random", path: "/api/fun?feature=lahelu", desc: "Meme random dari Lahelu" }
@@ -152,6 +155,15 @@ app.get('/api/download', checkApikey, async (req, res) => {
             case 'igdl':
                 if (!url) return res.status(400).json({ status: false, msg: "Link Instagram-nya mana?" });
                 return res.json(await features.handleIgdl(url));
+            case 'spotifyplay':
+                if (!query) return res.status(400).json({ status: false, msg: "Lagu Spotify apa yang mau diputar?" });
+                return res.json(await features.handleSpotifyPlay(query));
+            case 'spotifydl':
+                if (!query && !url) return res.status(400).json({ status: false, msg: "Kasih link atau judul lagu Spotify-nya!" });
+                return res.json(await features.handleSpotifyDl(query || url));
+            case 'spotifysearch':
+                if (!query) return res.status(400).json({ status: false, msg: "Cari lagu apa di Spotify?" });
+                return res.json(await features.handleSpotifySearch(query));
             default: 
                 return res.status(400).json({ status: false, msg: "Feature Downloader tidak ditemukan" });
         }
