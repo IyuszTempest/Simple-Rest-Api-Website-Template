@@ -39,9 +39,9 @@ const listFeatures = {
         { name: "Play Music", path: "/api/download?feature=play&query=", desc: "Cari & Download Musik" },
         { name: "Play Video", path: "/api/download?feature=playvideo&query=", desc: "Cari & Download Video" },
         { name: "Youtube Search", path: "/api/download?feature=ytsearch&query=", desc: "Youtube Search" },
-        { name: "Spotify Search", path: "/api/download?feature=spotify&query=", desc: "Cari info lagu & link dari Spotify" },
-        { name: "Spotify Downloader", path: "/api/download?feature=spdl&query=", desc: "Download lagu Spotify via Link/Judul" },
-        { name: "Spotify Play", path: "/api/download?feature=splay&query=", desc: "Cari & Putar lagu Spotify secara instan" }
+        { name: "Spotify Search", path: "/api/download?feature=spotifysearch&query=", desc: "Cari info lagu & link dari Spotify" },
+        { name: "Spotify Downloader", path: "/api/download?feature=spotifydl&query=", desc: "Download lagu Spotify via Link/Judul" },
+        { name: "Spotify Play", path: "/api/download?feature=spotifyplay&query=", desc: "Cari & Putar lagu Spotify secara instan" }
     ],
     Fun: [
         { name: "Lahelu Random", path: "/api/fun?feature=lahelu", desc: "Meme random dari Lahelu" }
