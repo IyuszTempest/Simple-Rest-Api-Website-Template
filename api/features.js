@@ -743,28 +743,39 @@ const handlePlay = async (query) => {
     }
 };
 
-const handleSaveTube = async (url, type = 'audio', quality = '128') => {
+const handleYtmp4 = async (url, type = 'merge') => {
     try {
-        const res = await axios.post('https://cdn402.savetube.vip/download', {
-            downloadType: type, quality: quality, url: url 
-        }, { headers: { 'Content-Type': 'application/json' } });
+        let isCompleted = false;
+        let count = 0;
+        const maxAttempts = 20; // Batasan agar tidak looping selamanya di Vercel
 
-        if (res.data && res.data.status) {
-            return {
-                status: true,
-                author: "IyuszTempest",
-                title: res.data.data.title || "YouTube Media",
-                result: res.data.data.downloadUrl
-            };
-        } else {
-            throw new Error("Gagal mendapatkan link download dari SaveTube.");
+        while (!isCompleted && count < maxAttempts) {
+            const res = await axios.get(`https://youtubedl.siputzx.my.id/download?type=${type}&url=${encodeURIComponent(url)}`, {
+                headers: { "Accept": "application/json, text/plain, */*" }
+            });
+            
+            const data = res.data;
+            if (data.status === "completed") {
+                return {
+                    status: "success",
+                    author: "IyuszTempest",
+                    result: {
+                        title: data.title || "YouTube Media",
+                        download_url: "https://youtubedl.siputzx.my.id" + data.fileUrl
+                    }
+                };
+            }
+            
+            // Tunggu 2 detik sebelum polling lagi
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            count++;
         }
-    } catch (e) {
-        throw new Error("SaveTube Error: " + e.message);
+        throw new Error("Proses terlalu lama atau server sedang sibuk.");
+    } catch (error) {
+        throw new Error(`YT-DL Error: ${error.message}`);
     }
 };
 
-const handleYtmp4 = async (url) => await handleSaveTube(url, 'video', '720');
 
 const handlePlayVideo = async (query) => {
     try {
