@@ -208,18 +208,13 @@ app.get('/api/tools', checkApikey, async (req, res) => {
                 return res.json(await features.handleHappymod(query));
             case 'hd':
                 if (!query) return res.status(400).json({ status: false, msg: "Kasih link fotonya dulu!" });
-                
                 try {
-                    // Pastikan di features.js ini me-return Buffer (bukan Base64)
                     const imageBuffer = await features.handleUpscale(query);
-                    
                     res.setHeader('Content-Type', 'image/jpeg');
-                    res.setHeader('Cache-Control', 'public, max-age=86400');
                     return res.send(Buffer.from(imageBuffer));
                 } catch (err) {
-                    return res.status(500).json({ status: false, msg: `Gagal HD: ${err.message}` });
+                    return res.status(500).json({ status: false, msg: err.message });
                 }
-
             default: 
                 return res.status(400).json({ status: false, msg: "Feature Tools tidak ditemukan" });
         }
