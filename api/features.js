@@ -793,6 +793,44 @@ const handleYtSearchList = async (query) => {
     }));
 };
 
+const handleIgdl = async (url) => {
+    try {
+        const form = new FormData();
+        form.append("url", url);
+        form.append("action", "post");
+
+        const res = await axios.post("https://snapinsta.top/action.php", form, {
+            headers: {
+                ...form.getHeaders(),
+                "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Mobile Safari/537.36",
+                "origin": "https://snapinsta.top",
+                "referer": "https://snapinsta.top/"
+            }
+        });
+
+        const $ = cheerio.load(res.data);
+        const result = [];
+
+        $(".download-items__btn a").each((_, el) => {
+            let path = $(el).attr("href");
+            if (!path) return;
+            if (!path.startsWith("http")) path = "https://snapinsta.top" + path;
+            result.push(path);
+        });
+
+        if (result.length === 0) throw new Error("Gagal mengambil media Instagram. Pastikan link benar atau akun tidak diprivat.");
+
+        return {
+            status: "success",
+            author: "IyuszTempest",
+            result: result // Berisi array link download
+        };
+    } catch (error) {
+        throw new Error(`IGDL Error: ${error.message}`);
+    }
+};
+
+
 
 // ==========================================
 // KATEGORI FUN
@@ -925,6 +963,67 @@ const handleHappymod = async (keyword) => {
     }
 };
 
+const handleUpscale = async (imageUrl) => {
+    try {
+        // 1. Ambil Token & Task ID
+        const { data: html } = await axios.get('https://www.iloveimg.com/upscale-image');
+        const token = html.match(/"token":"(eyJ[^"]+)"/)?.[1];
+        const task = html.match(/ilovepdfConfig\.taskId\s*=\s*'([^']+)'/)?.[1];
+
+        if (!token || !task) throw new Error("Gagal mengambil session iLoveIMG.");
+
+        // 2. Download gambar dari URL ke Buffer
+        const imgRes = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+        const buffer = Buffer.from(imgRes.data);
+
+        // 3. Upload ke Server iLoveIMG
+        const formUpload = new FormData();
+        formUpload.append('name', 'image.jpg');
+        formUpload.append('chunk', '0');
+        formUpload.append('chunks', '1');
+        formUpload.append('task', task);
+        formUpload.append('preview', '1');
+        formUpload.append('v', 'web.0');
+        formUpload.append('file', buffer, { filename: 'image.jpg', contentType: 'image/jpeg' });
+
+        const uploadRes = await axios.post('https://api29g.iloveimg.com/v1/upload', formUpload, {
+            headers: {
+                ...formUpload.getHeaders(),
+                'Authorization': `Bearer ${token}`,
+                'Origin': 'https://www.iloveimg.com',
+                'Referer': 'https://www.iloveimg.com/'
+            }
+        });
+
+        const serverFilename = uploadRes.data.server_filename;
+
+        // 4. Proses Upscale (Scale x4)
+        const formUpscale = new FormData();
+        formUpscale.append('task', task);
+        formUpscale.append('server_filename', serverFilename);
+        formUpscale.append('scale', '4');
+
+        const upscaleRes = await axios.post('https://api29g.iloveimg.com/v1/upscale', formUpscale, {
+            headers: {
+                ...formUpscale.getHeaders(),
+                'Authorization': `Bearer ${token}`,
+                'Origin': 'https://www.iloveimg.com',
+                'Referer': 'https://www.iloveimg.com/'
+            },
+            responseType: 'arraybuffer'
+        });
+
+        // 5. Kembalikan hasil dalam Base64 agar bisa tampil di Dashboard
+        return {
+            status: "success",
+            author: "IyuszTempest",
+            result: `data:image/jpeg;base64,${Buffer.from(upscaleRes.data).toString('base64')}`
+        };
+    } catch (error) {
+        throw new Error(`Upscale Error: ${error.message}`);
+    }
+};
+    
 
 // --- EXPORT SEMUA FUNGSI ---
 module.exports = { 
@@ -947,6 +1046,8 @@ module.exports = {
     handleYtmp4,
     handlePlayVideo,
     handleYtSearchList,
+    handleIgdl,
+    handleUpscale,
     handlePlay, // <--- Pastikan fungsi ini sudah kamu buat di bagian atas
     handleWaifu: () => getImg('waifu'),
     handleNeko: () => getImg('neko'),
