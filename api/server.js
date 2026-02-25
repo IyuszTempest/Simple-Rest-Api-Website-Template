@@ -17,7 +17,6 @@ try {
 // --- DAFTAR MENU ---
 const listFeatures = {
     Anime: [
-        { name: "Euphy Random", path: "/api/anime?feature=euphy", desc: "Gambar Euphylia Magenta random" },
         { name: "JJ Cosplay", path: "/api/anime?feature=jjcosplay", desc: "Video cosplay random" },
         { name: "Livechart Search", path: "/api/anime?feature=livechart&query=", desc: "Cari anime di Livechart.me" },
         { name: "Jikan Moe", path: "/api/anime?feature=jikanmoe&query=", desc: "Cari anime via Jikan API" },
@@ -27,8 +26,6 @@ const listFeatures = {
     ],
     AI: [
         { name: "AiLabs Image/Video", path: "/api/ai?feature=ailabs&query=&type=image", desc: "Generate Image atau Video dari Teks" },
-        { name: "Creart AI", path: "/api/ai?feature=creart&query=", desc: "High Quality AI Image Generator" },
-        { name: "Create Prompt", path: "/api/ai?feature=createprompt&query=", desc: "Buat prompt gambar yang detail secara otomatis" },
         { name: "DeepImage (Flux)", path: "/api/ai?feature=deepimg&query=&style=realistic", desc: "Generate gambar HD dengan style (Flux-1-Dev)" },
         { name: "Live3D AI", path: "/api/ai?feature=live3d&query=&style=Anime", desc: "AI Image Generator (Support NSFW)" },
         { name: "Photo to Anime", path: "/api/ai?feature=f2anime", desc: "Ubah foto wajah menjadi karakter anime" }
@@ -69,7 +66,6 @@ app.get('/api/anime', checkApikey, async (req, res) => {
     const { feature, query } = req.query;
     try {
         switch (feature) {
-            case 'euphy': return res.json(await features.handleEuphy());
             case 'jjcosplay': return res.json(await features.handleJjcosplay());
             case 'livechart': 
                 if (!query) return res.status(400).json({ msg: "Query wajib diisi!" });
@@ -112,8 +108,6 @@ app.get('/api/ai', checkApikey, async (req, res) => {
     try {
         switch (feature) {
             case 'ailabs': return res.json(await features.handleAiLabs(query, type || 'image'));
-            case 'creart': return res.json(await features.handleCreart(query));
-            case 'createprompt': return res.json(await features.handleCreatePrompt(query));
             case 'deepimg': return res.json(await features.handleDeepImg(query, style || 'realistic'));
             case 'live3d': return res.json(await features.handleLive3D(query, style || 'Anime'));
             case 'f2anime': return res.json(await features.handleF2AnimeFromUrl(query));
