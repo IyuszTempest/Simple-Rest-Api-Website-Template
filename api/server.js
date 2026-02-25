@@ -200,22 +200,33 @@ app.get('/api/tools', checkApikey, async (req, res) => {
     const { feature, query } = req.query; 
     try {
         switch (feature) {
-            case 'presetam': return res.json(await features.handlePresetAM());
-            case 'sub4unlock': return res.json(await features.handleSub4Unlock(query));
-            case 'happymod': return res.json(await features.handleHappymod(query));
+            case 'presetam': 
+                return res.json(await features.handlePresetAM());
+            case 'sub4unlock': 
+                return res.json(await features.handleSub4Unlock(query));
+            case 'happymod': 
+                return res.json(await features.handleHappymod(query));
             case 'hd':
                 if (!query) return res.status(400).json({ status: false, msg: "Kasih link fotonya dulu!" });
+                
                 try {
+                    // Pastikan di features.js ini me-return Buffer (bukan Base64)
                     const imageBuffer = await features.handleUpscale(query);
+                    
                     res.setHeader('Content-Type', 'image/jpeg');
                     res.setHeader('Cache-Control', 'public, max-age=86400');
                     return res.send(Buffer.from(imageBuffer));
-            default: return res.status(400).json({ status: false, msg: "Feature Tools tidak ditemukan" });
-       } catch (err) {
-        // Kalau gagal upscale, baru deh balik ke format JSON buat kasih tau errornya
-        return res.status(500).json({ status: false, msg: err.message });
-    }
-    
-module.exports = app;
+                } catch (err) {
+                    return res.status(500).json({ status: false, msg: `Gagal HD: ${err.message}` });
+                }
 
+            default: 
+                return res.status(400).json({ status: false, msg: "Feature Tools tidak ditemukan" });
+        }
+    } catch (e) { 
+        res.status(500).json({ status: false, msg: e.message });
+    }
+});
+
+module.exports = app;
         
