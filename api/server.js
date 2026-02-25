@@ -205,7 +205,11 @@ app.get('/api/tools', checkApikey, async (req, res) => {
             case 'happymod': return res.json(await features.handleHappymod(query));
             case 'hd':
                 if (!query) return res.status(400).json({ status: false, msg: "Kasih link fotonya dulu!" });
-                return res.json(await features.handleUpscale(query));
+                try {
+                    const imageBuffer = await features.handleUpscale(query);
+                    res.setHeader('Content-Type', 'image/jpeg');
+                    res.setHeader('Cache-Control', 'public, max-age=86400');
+                    return res.send(Buffer.from(imageBuffer));
             default: return res.status(400).json({ status: false, msg: "Feature Tools tidak ditemukan" });
         }
     } catch (e) { res.status(500).json({ status: false, msg: e.message }); }
