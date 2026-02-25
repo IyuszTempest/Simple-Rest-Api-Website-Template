@@ -843,44 +843,40 @@ const handleIgdl = async (url) => {
 
 const handleSpotifySearch = async (query) => {
     try {
-        const CLIENT_ID = "4bf176753fa74eb46f7c1c6a512dd"; //
-        const CLIENT_SECRET = "5ed7ea931e5649f7a73694c20db553e0"; //
-        const auth = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString("base64");
+        // Copy ulang dari dashboard, pastikan TIDAK ADA SPASI di awal/akhir
+        const CLIENT_ID = "4bf176753fa74eb46f7c1c6a512dd"; 
+        const CLIENT_SECRET = "5ed7ea931e5649f7a73694c20db553e0";
 
-        // STEP 1: Ambil Token (Pake URL Resmi Spotify!)
-        const tokenRes = await axios({
-            method: 'post',
-            url: 'https://accounts.spotify.com/api/token',
-            data: 'grant_type=client_credentials',
-            headers: {
-                'Authorization': `Basic ${auth}`,
-                'Content-Type': 'application/x-www-form-urlencoded'
+        // Coba pakai URL resmi internasional, jangan pakai link dummy
+        const tokenRes = await axios.post('https://accounts.spotify.com/api/token', 
+            'grant_type=client_credentials', 
+            {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Authorization': 'Basic ' + Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64')
+                }
             }
-        });
+        );
+        
         const token = tokenRes.data.access_token;
 
-        // STEP 2: Cari Lagu
         const searchRes = await axios.get("https://api.spotify.com/v1/search", {
             headers: { 'Authorization': `Bearer ${token}` },
             params: { q: query, type: "track", limit: 10 }
         });
 
-        const items = (searchRes.data.tracks?.items ?? []).map(t => ({
-            name: t.name,
-            artists: t.artists.map(a => a.name).join(", "),
-            album: t.album.name,
-            thumbnail: t.album.images?.[0]?.url,
-            url: t.external_urls.spotify
-        }));
-
         return {
             status: "success",
             author: "IyuszTempest",
-            result: items
+            result: searchRes.data.tracks.items.map(t => ({
+                name: t.name,
+                artist: t.artists[0].name,
+                image: t.album.images[0].url,
+                url: t.external_urls.spotify
+            }))
         };
     } catch (error) {
-        const errorDetail = error.response?.data ? JSON.stringify(error.response.data) : error.message;
-        throw new Error(`Spotify API Error: ${errorDetail}`);
+        throw new Error(`Gagal: ${error.response?.data?.error_description || error.message}`);
     }
 };
 
