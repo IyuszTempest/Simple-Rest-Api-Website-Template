@@ -1193,11 +1193,9 @@ const handleUpscale = async (imageUrl) => {
             responseType: 'arraybuffer'
         });
 
-        // 5. Kembalikan hasil dalam Base64 agar bisa tampil di Dashboard
-        return {
-            status: "success",
-            author: "IyuszTempest",
-            return upscaleRes.data; 
+        // 5. Kembalikan Buffer mentah (Langsung kirim datanya)
+        return upscaleRes.data; 
+
     } catch (error) {
         throw new Error(`Upscale Error: ${error.message}`);
     }
