@@ -843,8 +843,8 @@ const handleIgdl = async (url) => {
 
 const handleSpotifySearch = async (query) => {
     try {
-        const CLIENT_ID = "4bf176753fa74eb3ad46f7c1c6a512dd"; // Isi dengan Client ID Spotify kamu
-        const CLIENT_SECRET = "5ed7ea931e5649f7a73694c20db553e0"; // Isi dengan Client Secret Spotify kamu
+        const CLIENT_ID = "4bf176753fa74eb3ad46f7c1c6a512dd"; // Pastikan Client ID kamu aktif
+        const CLIENT_SECRET = "5ed7ea931e5649f7a73694c20db553e0";
 
         const body = new URLSearchParams({ grant_type: "client_credentials" }).toString();
         const auth = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString("base64");
@@ -854,25 +854,25 @@ const handleSpotifySearch = async (query) => {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
                 Authorization: `Basic ${auth}`
-            },
-            timeout: 10000
+            }
         });
         const token = tokenRes.data.access_token;
 
-        // Step 2: Cari Lagu
-        const searchRes = await axios.get("https://api.spotify.com/v1/search", {
+        // Step 2: Cari data (Gunakan type album sesuai data baru)
+        const searchRes = await axios.get("https://api.spotify.com/v1/search?q=kawaikute+gomen&type=album&market=ID&limit=5", {
             headers: { Authorization: `Bearer ${token}` },
-            params: { q: query, type: "track", limit: 10 },
-            timeout: 10000
+            params: { q: query, type: "album", limit: 5 }
         });
 
-        const items = (searchRes.data.tracks?.items ?? []).map(t => ({
-            name: t.name,
-            artists: t.artists.map(a => a.name).join(", "),
-            album: t.album?.name ?? "",
-            release_date: t.album?.release_date,
-            thumbnail: t.album?.images?.[0]?.url,
-            url: t.external_urls?.spotify ?? ""
+        // Step 3: Mapping Data Album
+        const items = (searchRes.data.albums?.items ?? []).map(album => ({
+            album_name: album.name,
+            artist: album.artists.map(a => a.name).join(", "),
+            release_date: album.release_date,
+            total_tracks: album.total_tracks,
+            thumbnail: album.images?.[0]?.url, // Ambil gambar resolusi tertinggi
+            spotify_url: album.external_urls.spotify,
+            album_id: album.id
         }));
 
         return {
