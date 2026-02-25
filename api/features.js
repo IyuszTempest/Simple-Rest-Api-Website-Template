@@ -124,45 +124,6 @@ const wangyImageUrls = [
     "https://files.catbox.moe/viwj5r.jpg", 
     "https://files.catbox.moe/btn4zz.jpg"];
 
-const euphyImageUrls = [
-    "https://file.idnet.my.id/api/preview.php?file=5nw6c8du.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=4l7ypeso.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=ost7x2nv.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=xxdsfoz3.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=mdg0915g.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=0z4yfn8v.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=nbpjhqb8.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=rit8j60t.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=j4t1pay9.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=lv8tdwfu.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=p461z38p.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=biwbo3r0.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=v864vsp0.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=puaiorav.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=gaj3rt1y.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=q4ezft9i.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=xvjd2k6t.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=32523n5n.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=2oc1ux0b.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=db7ghpei.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=w2qc5w0o.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=67j6zogo.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=f4nxrbx6.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=xbvhbd6j.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=tqptfwre.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=6llqhtdt.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=fjd4tzg8.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=dms1c3am.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=uu6awqf7.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=jvjqkzli.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=fsi2kxi2.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=mm9vnesq.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=8yqp87d1.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=4n111fhk.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=p71vpie4.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=cw1hlhqo.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=5rvjpneb.jpg",
-    "https://file.idnet.my.id/api/preview.php?file=dxsdatez.jpg"];
 
 const presetsAM = [ 
     {UrlMb: 'https://alight.link/DkMZVF4nRRR3x3836', UrlXml: 'https://drive.google.com/file/d/1QkKltiQxMsjNDkoKCsoNMtkEj8MlQOzR/view?usp=drivesdk',Sound: 'https://drive.google.com/file/d/1QvYFwPzZ_HBqbDNdElTSqeXA5C17YOJ2/view?usp=drivesdk'},
@@ -402,14 +363,6 @@ const handleJjcosplay = async () => {
     };
 };
 
-const handleEuphy = async () => {
-    const randomUrl = euphyImageUrls[Math.floor(Math.random() * euphyImageUrls.length)];
-    return { 
-        status: "success", 
-        author: "IyuszTempest", 
-        media: { type: "image", url: randomUrl } 
-    };
-};
 
 const handleLivechart = async (query) => {
     try {
@@ -489,65 +442,6 @@ const aiLabs = {
     }
 };
 
-const handleCreart = async (prompt, imageBuffer = null) => {
-    try {
-        const translated = await translateToEn(prompt);
-        const form = new FormData();
-        form.append("prompt", translated);
-        form.append("aspect_ratio", "4x5");
-        form.append("guidance_scale", "9.5");
-        form.append("controlnet_conditioning_scale", "0.5");
-
-        let endpoint = "text2image";
-        if (imageBuffer) {
-            endpoint = "image2image";
-            form.append("input_image_type", "image2image");
-            form.append("image_file", imageBuffer, "image.png");
-        } else {
-            form.append("input_image_type", "text2image");
-        }
-
-        const response = await axios.post(`https://api.creartai.com/api/v2/${endpoint}`, form, {
-            headers: form.getHeaders(),
-            responseType: "arraybuffer"
-        });
-
-        // Kita balikkan dalam bentuk base64 agar aman di JSON
-        return {
-            status: "success",
-            author: "IyuszTempest",
-            result: Buffer.from(response.data).toString('base64')
-        };
-    } catch (err) {
-        throw new Error(err.message);
-    }
-};
-
-const handleCreatePrompt = async (prompt) => {
-    const payload = { content: prompt, op: 'op-prompt' };
-    const headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
-        'Origin': 'https://junia.ai',
-        'Referer': 'https://junia.ai/',
-        'Content-Type': 'application/json'
-    };
-
-    try {
-        const response = await axios.post('https://api-v1.junia.ai/api/free-tools/generate', payload, { headers });
-        const result = response.data?.result || response.data;
-        
-        if (!result) throw new Error('API tidak memberikan respon');
-
-        return {
-            status: "success",
-            author: "IyuszTempest",
-            credit: "Scrape by NB Script",
-            result: result
-        };
-    } catch (error) {
-        throw new Error("Gagal membuat prompt AI");
-    }
-};
 
 const handleDeepImg = async (prompt, style = 'realistic') => {
     const deviceId = `dev-${Math.floor(Math.random() * 1000000)}`;
@@ -1035,15 +929,12 @@ const handleHappymod = async (keyword) => {
 // --- EXPORT SEMUA FUNGSI ---
 module.exports = { 
     handleJjcosplay, 
-    handleWangy, 
-    handleEuphy, 
+    handleWangy,  
     handleLivechart, 
     handleJikanmoe,
     handleLahelu,
     handlePresetAM,
     handleSub4Unlock,
-    handleCreatePrompt,
-    handleCreart,
     handleAiLabs: aiLabs.generate,
     handleDeepImg,
     handleLive3D,
