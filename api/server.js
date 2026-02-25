@@ -131,9 +131,9 @@ app.get('/api/download', checkApikey, async (req, res) => {
                 return res.json(await features.handleTikTok(url));
             case 'ytmp3': 
                 return res.json(await features.handleYtmp3(url));
-            case 'ytmp4': 
-                if (!url) return res.status(400).json({ status: false, msg: "URL YouTube wajib diisi!" }); 
-                return res.json(await features.handleYtmp4(url));
+            case 'ytmp4':
+                if (!url) return res.status(400).json({ status: false, msg: "Link YouTube-nya mana?" });
+                return res.json(await features.handleYtmp4(url, 'merge'));
             case 'play':
                 if (!query) return res.status(400).json({ status: false, msg: "Mau cari lagu apa? Kasih judulnya dong!" });
                 const playResult = await features.handlePlay(query);
