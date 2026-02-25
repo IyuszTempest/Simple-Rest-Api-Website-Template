@@ -843,8 +843,8 @@ const handleIgdl = async (url) => {
 
 const handleSpotifySearch = async (query) => {
     try {
-        const CLIENT_ID = "xxx"; // Isi dengan Client ID Spotify kamu
-        const CLIENT_SECRET = "xxx"; // Isi dengan Client Secret Spotify kamu
+        const CLIENT_ID = "4bf176753fa74eb3ad46f7c1c6a512dd"; // Isi dengan Client ID Spotify kamu
+        const CLIENT_SECRET = "5ed7ea931e5649f7a73694c20db553e0"; // Isi dengan Client Secret Spotify kamu
 
         const body = new URLSearchParams({ grant_type: "client_credentials" }).toString();
         const auth = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString("base64");
@@ -887,8 +887,8 @@ const handleSpotifySearch = async (query) => {
 
 const handleSpotifyDl = async (query) => {
     try {
-        const CLIENT_ID = "xxx"; // Isi punya lo, Yus!
-        const CLIENT_SECRET = "xxx";
+        const CLIENT_ID = "4bf176753fa74eb3ad46f7c1c6a512dd"; // Isi punya lo, Yus!
+        const CLIENT_SECRET = "5ed7ea931e5649f7a73694c20db553e0";
 
         // 1. Get Spotify Token
         const token = await axios.post(
