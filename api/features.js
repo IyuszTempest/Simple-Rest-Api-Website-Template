@@ -1197,8 +1197,7 @@ const handleUpscale = async (imageUrl) => {
         return {
             status: "success",
             author: "IyuszTempest",
-            result: `data:image/jpeg;base64,${Buffer.from(upscaleRes.data).toString('base64')}`
-        };
+            return upscaleRes.data; 
     } catch (error) {
         throw new Error(`Upscale Error: ${error.message}`);
     }
