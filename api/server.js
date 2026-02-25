@@ -33,6 +33,7 @@ const listFeatures = {
     Downloader: [
         { name: "AIO Downloader", path: "/api/download?feature=aio&url=", desc: "Download media dari berbagai sosial media" },
         { name: "TikTok Downloader", path: "/api/download?feature=tiktok&url=", desc: "Download Video (No WM) atau Slide Foto TikTok" },
+        { name: "Instagram DL", path: "/api/download?feature=igdl&url=", desc: "Download Photo/Video/Carousel dari Instagram" },
         { name: "YouTube MP3", path: "/api/download?feature=ytmp3&url=", desc: "Convert YouTube ke Audio" },
         { name: "YouTube MP4", path: "/api/download?feature=ytmp4&url=", desc: "Convert YouTube ke Video" },
         { name: "Play Music", path: "/api/download?feature=play&query=", desc: "Cari & Download Musik" },
@@ -48,7 +49,8 @@ const listFeatures = {
     Tools: [
         { name: "Preset AM", path: "/api/tools?feature=presetam", desc: "Kumpulan link preset AM random (XML/MB)" },
         { name: "Sub4Unlock Skip", path: "/api/tools?feature=sub4unlock&query=", desc: "Lewati link sub4unlock secara instan" },
-        { name: "Happymod Search", path: "/api/tools?feature=happymod&query=", desc: "Cari aplikasi modifikasi di Happymod" }
+        { name: "Happymod Search", path: "/api/tools?feature=happymod&query=", desc: "Cari aplikasi modifikasi di Happymod" },
+        { name: "HD Image", path: "/api/tools?feature=hd&query=", desc: "Ubah gambar menjadi HD (4x Lipat)" }
     ]
 };
 
@@ -147,6 +149,9 @@ app.get('/api/download', checkApikey, async (req, res) => {
                     author: "IyuszTempest", 
                     result: await features.handleYtSearchList(query) 
                 });
+            case 'igdl':
+                if (!url) return res.status(400).json({ status: false, msg: "Link Instagram-nya mana?" });
+                return res.json(await features.handleIgdl(url));
             default: 
                 return res.status(400).json({ status: false, msg: "Feature Downloader tidak ditemukan" });
         }
@@ -182,6 +187,9 @@ app.get('/api/tools', checkApikey, async (req, res) => {
             case 'presetam': return res.json(await features.handlePresetAM());
             case 'sub4unlock': return res.json(await features.handleSub4Unlock(query));
             case 'happymod': return res.json(await features.handleHappymod(query));
+            case 'hd':
+                if (!query) return res.status(400).json({ status: false, msg: "Kasih link fotonya dulu!" });
+                return res.json(await features.handleUpscale(query));
             default: return res.status(400).json({ status: false, msg: "Feature Tools tidak ditemukan" });
         }
     } catch (e) { res.status(500).json({ status: false, msg: e.message }); }
