@@ -41,7 +41,8 @@ const listFeatures = {
         { name: "Youtube Search", path: "/api/download?feature=ytsearch&query=", desc: "Youtube Search" },
         { name: "Spotify Search", path: "/api/download?feature=spotifysearch&query=", desc: "Cari info lagu & link dari Spotify" },
         { name: "Spotify Downloader", path: "/api/download?feature=spotifydl&query=", desc: "Download lagu Spotify via Link/Judul" },
-        { name: "Spotify Play", path: "/api/download?feature=spotifyplay&query=", desc: "Cari & Putar lagu Spotify secara instan" }
+        { name: "Spotify Play", path: "/api/download?feature=spotifyplay&query=", desc: "Cari & Putar lagu Spotify secara instan" },
+        { name: "Facebook DL", path: "/api/download?feature=fb&url=", desc: "Download Video Facebook HD/SD" }
     ],
     Fun: [
         { name: "Lahelu Random", path: "/api/fun?feature=lahelu", desc: "Meme random dari Lahelu" }
@@ -164,6 +165,9 @@ app.get('/api/download', checkApikey, async (req, res) => {
             case 'spotifysearch':
                 if (!query) return res.status(400).json({ status: false, msg: "Cari lagu apa di Spotify?" });
                 return res.json(await features.handleSpotifySearch(query));
+            case 'facebook':
+                if (!url) return res.status(400).json({ status: false, msg: "Link Facebook-nya mana?" });
+                return res.json(await features.handleFacebookDl(url));
             default: 
                 return res.status(400).json({ status: false, msg: "Feature Downloader tidak ditemukan" });
         }
