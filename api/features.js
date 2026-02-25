@@ -843,36 +843,36 @@ const handleIgdl = async (url) => {
 
 const handleSpotifySearch = async (query) => {
     try {
-        const CLIENT_ID = "4bf176753fa74eb3ad46f7c1c6a512dd"; // Pastikan Client ID kamu aktif
+        // Masukkan ID & Secret dari screenshot kamu
+        const CLIENT_ID = "4bf176753fa74eb46f7c1c6a512dd"; 
         const CLIENT_SECRET = "5ed7ea931e5649f7a73694c20db553e0";
 
-        const body = new URLSearchParams({ grant_type: "client_credentials" }).toString();
         const auth = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString("base64");
 
-        // Step 1: Ambil Token
-        const tokenRes = await axios.post("https://accounts.spotify.com/api/token", body, {
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                Authorization: `Basic ${auth}`
+        // STEP 1: Ambil Token dari Endpoint RESMI Spotify
+        const tokenRes = await axios.post("https://accounts.spotify.com/api/token", 
+            new URLSearchParams({ grant_type: "client_credentials" }).toString(), 
+            {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    Authorization: `Basic ${auth}`
+                }
             }
-        });
+        );
         const token = tokenRes.data.access_token;
 
-        // Step 2: Cari data (Gunakan type album sesuai data baru)
-        const searchRes = await axios.get("https://api.spotify.com/v1/search?q=kawaikute+gomen&type=album&market=ID&limit=5", {
+        // STEP 2: Cari data menggunakan Endpoint RESMI Spotify
+        const searchRes = await axios.get("https://api.spotify.com/v1/search", {
             headers: { Authorization: `Bearer ${token}` },
-            params: { q: query, type: "album", limit: 5 }
+            params: { q: query, type: "track", limit: 10 }
         });
 
-        // Step 3: Mapping Data Album
-        const items = (searchRes.data.albums?.items ?? []).map(album => ({
-            album_name: album.name,
-            artist: album.artists.map(a => a.name).join(", "),
-            release_date: album.release_date,
-            total_tracks: album.total_tracks,
-            thumbnail: album.images?.[0]?.url, // Ambil gambar resolusi tertinggi
-            spotify_url: album.external_urls.spotify,
-            album_id: album.id
+        const items = (searchRes.data.tracks?.items ?? []).map(t => ({
+            name: t.name,
+            artists: t.artists.map(a => a.name).join(", "),
+            album: t.album.name,
+            thumbnail: t.album.images?.[0]?.url,
+            url: t.external_urls.spotify
         }));
 
         return {
@@ -881,7 +881,8 @@ const handleSpotifySearch = async (query) => {
             result: items
         };
     } catch (error) {
-        throw new Error(`Spotify Search Error: ${error.message}`);
+        // Biar kita tau error pastinya apa kalau gagal lagi
+        throw new Error(`Spotify API Error: ${error.response?.data?.error?.message || error.message}`);
     }
 };
 
