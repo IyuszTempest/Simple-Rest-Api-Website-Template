@@ -841,6 +841,145 @@ const handleIgdl = async (url) => {
     }
 };
 
+const handleSpotifySearch = async (query) => {
+    try {
+        const CLIENT_ID = "xxx"; // Isi dengan Client ID Spotify kamu
+        const CLIENT_SECRET = "xxx"; // Isi dengan Client Secret Spotify kamu
+
+        const body = new URLSearchParams({ grant_type: "client_credentials" }).toString();
+        const auth = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString("base64");
+
+        // Step 1: Ambil Token
+        const tokenRes = await axios.post("https://accounts.spotify.com/api/token", body, {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                Authorization: `Basic ${auth}`
+            },
+            timeout: 10000
+        });
+        const token = tokenRes.data.access_token;
+
+        // Step 2: Cari Lagu
+        const searchRes = await axios.get("https://api.spotify.com/v1/search", {
+            headers: { Authorization: `Bearer ${token}` },
+            params: { q: query, type: "track", limit: 10 },
+            timeout: 10000
+        });
+
+        const items = (searchRes.data.tracks?.items ?? []).map(t => ({
+            name: t.name,
+            artists: t.artists.map(a => a.name).join(", "),
+            album: t.album?.name ?? "",
+            release_date: t.album?.release_date,
+            thumbnail: t.album?.images?.[0]?.url,
+            url: t.external_urls?.spotify ?? ""
+        }));
+
+        return {
+            status: "success",
+            author: "IyuszTempest",
+            result: items
+        };
+    } catch (error) {
+        throw new Error(`Spotify Search Error: ${error.message}`);
+    }
+};
+
+const handleSpotifyDl = async (query) => {
+    try {
+        const CLIENT_ID = "xxx"; // Isi punya lo, Yus!
+        const CLIENT_SECRET = "xxx";
+
+        // 1. Get Spotify Token
+        const token = await axios.post(
+            "https://accounts.spotify.com/api/token",
+            new URLSearchParams({ grant_type: "client_credentials" }).toString(),
+            {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    Authorization: `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString("base64")}`
+                }
+            }
+        ).then(r => r.data.access_token);
+
+        // 2. Get Spotify Metadata
+        const trackId = query.match(/track\/([a-zA-Z0-9]+)/)?.[1];
+        const spotRes = trackId
+            ? await axios.get(`https://api.spotify.com/v1/tracks/$${trackId}`, { headers: { Authorization: `Bearer ${token}` } })
+            : await axios.get("https://api.spotify.com/v1/search", {
+                headers: { Authorization: `Bearer ${token}` },
+                params: { q: query, type: "track", limit: 1 }
+            });
+
+        const track = trackId ? spotRes.data : spotRes.data.tracks.items[0];
+        if (!track) throw new Error("Lagu Spotify tidak ditemukan.");
+
+        const meta = {
+            title: track.name,
+            artist: track.artists.map(a => a.name).join(", "),
+            cover: track.album.images?.[0]?.url
+        };
+
+        // 3. Search on YouTube
+        const ytSearch = await yts(`${meta.title} ${meta.artist}`);
+        const ytUrl = ytSearch.videos[0]?.url;
+        if (!ytUrl) throw new Error("Audio tidak ditemukan di sumber YouTube.");
+
+        // 4. Download via Siputzx (Polling)
+        let audioUrl = null;
+        let attempts = 0;
+        while (!audioUrl && attempts < 15) {
+            const res = await axios.get(`https://youtubedl.siputzx.my.id/download`, {
+                params: { type: "audio", url: ytUrl },
+                headers: { Accept: "application/json, text/plain, */*" }
+            });
+            if (res.data.status === "completed") {
+                audioUrl = "https://youtubedl.siputzx.my.id" + res.data.fileUrl;
+            } else {
+                await new Promise(r => setTimeout(r, 2000));
+                attempts++;
+            }
+        }
+
+        if (!audioUrl) throw new Error("Gagal mengonversi audio (Timeout).");
+
+        return {
+            status: "success",
+            author: "IyuszTempest",
+            result: {
+                title: meta.title,
+                artist: meta.artist,
+                thumbnail: meta.cover,
+                download_url: audioUrl
+            }
+        };
+    } catch (error) {
+        throw new Error(`Spotify DL Error: ${error.message}`);
+    }
+};
+
+// Kita gunakan handleSpotifyDl yang sudah ada, 
+// karena dia sudah mendukung pencarian lewat judul lagu (query).
+
+const handleSpotifyPlay = async (query) => {
+    try {
+        // Langsung panggil mesin downloader-nya
+        const result = await handleSpotifyDl(query);
+        
+        return {
+            status: "success",
+            author: "IyuszTempest",
+            result: {
+                title: result.result.title,
+                artist: result.result.artist,
+                thumbnail: result.result.thumbnail,
+                download_url: result.result.download_url
+            }
+        };
+    } catch (error) {
+        throw new Error(`Spotify Play Error: ${error.message}`);
+    }
+};
 
 
 // ==========================================
@@ -1059,6 +1198,9 @@ module.exports = {
     handleYtSearchList,
     handleIgdl,
     handleUpscale,
+    handleSpotifySearch,
+    handleSpotifyDl,
+    handleSpotifyPlay,
     handlePlay, // <--- Pastikan fungsi ini sudah kamu buat di bagian atas
     handleWaifu: () => getImg('waifu'),
     handleNeko: () => getImg('neko'),
