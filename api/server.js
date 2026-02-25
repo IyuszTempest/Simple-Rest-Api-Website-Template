@@ -211,10 +211,11 @@ app.get('/api/tools', checkApikey, async (req, res) => {
                     res.setHeader('Cache-Control', 'public, max-age=86400');
                     return res.send(Buffer.from(imageBuffer));
             default: return res.status(400).json({ status: false, msg: "Feature Tools tidak ditemukan" });
-        }
-    } catch (e) { res.status(500).json({ status: false, msg: e.message }); }
-});
-
+       } catch (err) {
+        // Kalau gagal upscale, baru deh balik ke format JSON buat kasih tau errornya
+        return res.status(500).json({ status: false, msg: err.message });
+    }
+    
 module.exports = app;
 
         
