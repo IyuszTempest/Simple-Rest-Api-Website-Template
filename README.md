@@ -20,7 +20,7 @@ A lightweight, high-performance REST API dashboard template with a clean glassmo
 The dashboard features a minimalist and elegant design, optimized for both user experience and performance.
 
 <p align="center">
-  <img src="assets/preview.png" alt="Euphy API Dashboard Preview" width="400">
+  <img src="preview.png" alt="Euphy API Dashboard Preview" width="400">
 </p>
 
 ---
