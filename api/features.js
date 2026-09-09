@@ -882,8 +882,8 @@ const handleSpotifySearch = async (query) => {
 
 const handleSpotifyDl = async (query) => {
     try {
-        const CLIENT_ID = "4bf176753fa74eb3ad46f7c1c6a512dd"; // Isi punya lo, Yus!
-        const CLIENT_SECRET = "5ed7ea931e5649f7a73694c20db553e0";
+        const CLIENT_ID = "-";
+        const CLIENT_SECRET = "-";
 
         // 1. Get Spotify Token
         const token = await axios.post(
